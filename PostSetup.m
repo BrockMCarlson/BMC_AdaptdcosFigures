@@ -15,7 +15,7 @@ switch user
         ALIGNDIR = 'C:\Users\Brock\Desktop\151221_E_eD\';
         STIMDIR  = 'C:\Users\Brock\Desktop\151221_E_eD\';
         SAVEDIR  = 'C:\Users\Brock\Desktop\151221_E_eD\';
-        CODEDIR =  'C:\Users\Brock\Documents\MATLAB\GitHub\PostProcessing';
+        CODEDIR =  'C:\Users\Brock\Documents\MATLAB\GitHub';
            
    
         
