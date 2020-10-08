@@ -312,6 +312,7 @@ e = 4; % forces depth of -3 on this day
     else
         error('remove spktm correction from code - diNeuralDat_usePhy has been rerun to also trim SUA')
     end
+    error('do not use spktm. This changes for each trial based on the spike times out.')
     if spktm(end) < sdfwin(2)  
         pad = [spktm(end):diff(spktm(1:2)):sdfwin(2)];
         pad(1) = [];
