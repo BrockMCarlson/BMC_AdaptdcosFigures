@@ -2,7 +2,7 @@ function setup(user)
 
 % helper function 
 % MAC, Feb 2020
-global HOMEDIR RIGDIR AUTODIR SORTDIR ALIGNDIR STIMDIR SAVEDIR CODEDIR OUTDIR tasks 
+global HOMEDIR RIGDIR AUTODIR SORTDIR ALIGNDIR STIMDIR SAVEDIR CODEDIR PLOTDIR tasks 
  
 
 switch user
@@ -13,10 +13,10 @@ switch user
         AUTODIR  = 'C:\Users\Brock\Desktop\151221_E_eD\';
         ALIGNDIR = 'C:\Users\Brock\Desktop\151221_E_eD\';
         STIMDIR  = 'C:\Users\Brock\Desktop\151221_E_eD\';
-        SORTDIR  =  'C:\Users\Brock\Desktop\151221_E_eD\New Outputs\';
+        SORTDIR  =  'C:\Users\Brock\Desktop\151221_E_eD\KLSoutputs\';
         SAVEDIR  = 'C:\Users\Brock\Desktop\151221_E_eD\';
         CODEDIR  =  'C:\Users\Brock\Documents\MATLAB\GitHub\';
-        OUTDIR   =  'C:\Users\Brock\Desktop\151221_E_eD\Output directory\';
+        PLOTDIR   =  'C:\Users\Brock\Desktop\151221_E_eD\Plot Directory\';
         tasks    = 'brfs';
            
    

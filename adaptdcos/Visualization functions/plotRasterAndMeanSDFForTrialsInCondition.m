@@ -9,7 +9,6 @@ spikesIn = SUA == 1;
 MarkerFormat.MarkerSize = 5;
 MarkerFormat.Marker = '.';
 plotSpikeRaster(spikesIn,'PlotType','scatter','MarkerFormat',MarkerFormat);
-
 newTM = TM(50:50:end);
 if newTM(9) ~= .4
     error('check the manual TM input')
