@@ -1,8 +1,14 @@
-# AdaptdcosPostProcessing
+# # BMC_AdaptdcosFigures
 
 This is "release issue" formatted code. 
 The idea is that the process to produce a figure for every step along a given paper's progression is stored here.
-A wiki page is dedicated to each figure dictating the required data, pre-processing repositories, and workflow for fast recreation.
+When a goal for a figure is made, the "master branch" is branched and named for the goal figure.
+The code is tested and figure outputs are shown to PI/Lab.
+The data directories and repositories are then stored in the "Docs" page for each figures' master fucntion.
+The docs page contains required data input directories, pre-processing repositories, and workflow for fast recreation of the figure in the future.
+The branch is then merged with a pull request back into master and deleted.
+A "release" of master **must** be issued at this point.
+
 
 ## Description: 
 The adaptdcos project is looking at dioptic and dichoptic stimuli under varying history conditions. The included levels of analysis are currently 
