@@ -5,9 +5,10 @@
 clear
 close all
 
-PostSetup('brock')
-global STIMDIR 
-cd(STIMDIR)
+% % PostSetup('brock')
+% % global STIMDIR 
+% % cd(STIMDIR)
+cd('D:\4 stimdir for KLS ex units\')
 list = recursdir(STIMDIR,'KLS');
 flag_saveFigs = false;
 
@@ -165,8 +166,8 @@ for i = 1:length(list)
         sgtitle(textForTitle)
        
         if flag_saveFigs
-            global OUTDIR
-            cd(OUTDIR)
+%             global OUTDIR
+            cd('C:\Users\Brock\Documents\MATLAB\Working IDX Dir\KLSsandboxTest\')
             textForSave = strcat(STIM.header,'_depth-',string(STIM.units(e).depth(2)));
             export_fig(textForSave,'-pdf','-nocrop')
         end

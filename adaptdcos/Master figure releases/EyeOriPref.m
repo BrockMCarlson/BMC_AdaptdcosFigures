@@ -6,9 +6,10 @@
 clear
 close all
 
-PostSetup('brock')
-global STIMDIR 
-cd(STIMDIR)
+% PostSetup('brock')
+% global STIMDIR 
+% cd(STIMDIR)
+cd('D:\4 stimdir for KLS ex units\')
 list = recursdir(STIMDIR,'KLS');
 
 for i = 1:length(list)
