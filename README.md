@@ -26,7 +26,7 @@ We are interested in probing data types, history, and contrast across a complex 
   - exampleKLS_condCompare
 
 ## Usage: 
-Please access the accompanying Wiki Page for re-producing any set of figures.
+Please access the accompanying Docs FILE_setup page for re-producing any set of figures. These contain the required direcotires and code repos to be accessed in the case of returning to a figure at a later date.
 ### For KiloSort
 1. Batch – download ns6 files
 1. Batch – process KLS sorts with correct kiloconfig files
