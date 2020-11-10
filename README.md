@@ -2,12 +2,13 @@
 
 This is "release issue" formatted code. 
 The idea is that the process to produce a figure for every step along a given paper's progression is stored here.
-When a goal for a figure is made, the "master branch" is branched and named for the goal figure.
-The code is tested and figure outputs are shown to PI/Lab.
-The data directories and repositories are then stored in the "Docs" page for each figures' master fucntion.
-The docs page contains required data input directories, pre-processing repositories, and workflow for fast recreation of the figure in the future.
-The branch is then merged with a pull request back into master and deleted.
-A "release" of master **must** be issued at this point.
+When a goal for a figure is made, the following steps are executed:
+1. the "master branch" is branched and named for the goal figure.
+1. The code is tested and figure outputs are shown to PI/Lab.
+1. The data directories and repositories are then stored in the "Docs" page for each figures' master fucntion.
+1. The docs page contains required data input directories, pre-processing repositories, and workflow for fast recreation of the figure in the future.
+1. The branch is then merged with a pull request back into master and deleted.
+1. A "release" of master **must** be issued at this point.
 
 
 ## Description: 
