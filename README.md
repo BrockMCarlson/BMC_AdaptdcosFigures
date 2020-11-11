@@ -70,6 +70,7 @@ Special influence, example code, and individual instruction was received from cu
 - Michele A. Cox
 - Kacie Dougherty
 - Jacob A Westerberg
+
 Special thank you to other Maier Lab members for their influence and advice
 - Loïc Daumail
 - Blake Mitchell
