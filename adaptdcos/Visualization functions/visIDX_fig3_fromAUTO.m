@@ -24,7 +24,7 @@ DIFF = nan(size(IDX.allV1(1).SDFdiff.raw,1),size(IDX.allV1(1).SDFdiff.raw,2),uct
 % loop uctLength
 depth = nan(3,uctLength);
 penetration = nan(3,uctLength,11);
-CondTrialNum_SDF = nan(3,uctLength,7); %admittidly the dimensions here are a bit confusint --(laminarCompartment,numberofContacts,6differentConditionTypes) -- also, IDK how I would use this to balance as I used to...
+CondTrialNum_SDF = nan(3,uctLength,10); %admittidly the dimensions here are a bit confusint --(laminarCompartment,numberofContacts,10differentConditionTypes) -- also, IDK how I would use this to balance as I used to...
 SDF = nan(10,450,uctLength);    
 count = 0;
 clear uct

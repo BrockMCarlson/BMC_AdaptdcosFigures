@@ -1,0 +1,43 @@
+function Monoc = visIDX_Monoc_fromAUTO(sdf,info)
+
+SDFmax = max(sdf,[],'all');
+TM = info.TM;
+Monoc = figure;
+    subplot(4,1,1)
+    plot(TM,sdf(1,:),'-k','LineWidth',2);hold on;
+    plot(TM,sdf(1,:),':k','LineWidth',1,'HandleVisibility','off'); hold on;
+    plot(TM,sdf(1,:),':k','LineWidth',1,'HandleVisibility','off'); hold on;
+    title({info.conditNameForCC{1},strcat('TrlNum=',string(info.CondTrialNum_SDF(1)))})
+   
+    subplot(4,1,2)
+    plot(TM,sdf(2,:),'-k','LineWidth',2);hold on;
+    plot(TM,sdf(2,:),':k','LineWidth',1,'HandleVisibility','off'); hold on;
+    plot(TM,sdf(2,:),':k','LineWidth',1,'HandleVisibility','off'); hold on;
+
+    subplot(4,1,3)
+    plot(TM,sdf(3,:),'-k','LineWidth',2);hold on;
+    plot(TM,sdf(3,:),':k','LineWidth',1,'HandleVisibility','off'); hold on;
+    plot(TM,sdf(3,:),':k','LineWidth',1,'HandleVisibility','off'); hold on;
+    
+    subplot(4,1,4)
+    plot(TM,sdf(4,:),'-k','LineWidth',2);hold on;
+    plot(TM,sdf(4,:),':k','LineWidth',1,'HandleVisibility','off'); hold on;
+    plot(TM,sdf(4,:),':k','LineWidth',1,'HandleVisibility','off'); hold on;
+     
+    
+    
+    xlim([-0.05 0.3])
+    ylim([-.5 1.2*SDFmax])
+    vline(0)
+   
+
+
+sgtitle(strcat('allV1_',,'_average'),'interpreter', 'none')
+set(gcf,'Position',[300.8000 83.4000 494.6000 466.2000])
+
+Monoc.Name = 'Monoc';
+
+
+
+end
+

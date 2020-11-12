@@ -1,7 +1,10 @@
 function visIDX_fig3_fromAUTO(IDX,dataType)
 %% taken from visIDX_fig3aAllV1_CvsIC.m
 
-
+% viIDX_fig3_fromAUTO.m can be found in Visualization functions. 
+% It takes the SDFs from all of V1 in the IDX variable and averages them 
+% together. This can be done with raw dMUA inputs or z-scored inputs. 
+% Both are plotted in dMUAdCOF master fuction
 
 
 
@@ -21,7 +24,7 @@ DIFF = nan(size(IDX.allV1(1).SDFdiff.raw,1),size(IDX.allV1(1).SDFdiff.raw,2),uct
 % loop uctLength
 depth = nan(3,uctLength);
 penetration = nan(3,uctLength,11);
-CondTrialNum_SDF = nan(3,uctLength,7); %admittidly the dimensions here are a bit confusint --(laminarCompartment,numberofContacts,6differentConditionTypes) -- also, IDK how I would use this to balance as I used to...
+CondTrialNum_SDF = nan(3,uctLength,10); %admittidly the dimensions here are a bit confusint --(laminarCompartment,numberofContacts,10differentConditionTypes) -- also, IDK how I would use this to balance as I used to...
 SDF = nan(10,450,uctLength);    
 count = 0;
 clear uct
@@ -89,10 +92,13 @@ allV1 = figure;
     plot(TM,AvgSDFOut.SDFavg(10,:),'-m','LineWidth',2);hold on;
     plot(TM,AvgSDFOut.SDFsem.up(10,:),':m','LineWidth',1,'HandleVisibility','off'); hold on;
     plot(TM,AvgSDFOut.SDFsem.down(10,:),':m','LineWidth',1,'HandleVisibility','off'); hold on;
-        
+     
+    legend('biSimult','diSimult','biAdapted','diAdapted')
+    
     xlim([-0.05 0.3])
     ylim([-.5 1.2*SDFmax])
     vline(0)
+   
 
 
     title(strcat('allV1_',dataType,'_average'),'interpreter', 'none')
