@@ -1,22 +1,19 @@
-function AUTOdiIDX
+function AUTOdiIDX_JoVContrast
 % taken from diIDX_May27
 
-
-%goal --> Fig 2 and 3 -- MUA
-% all are binned laminar
-% 2 parts to each - binned laminar and difference plots
-% 2a. Monoc vs C Simult
-% 2b. Monoc vs IC Simult
-
-% 3a. C vs IC simult - show dCOS
-% 3b. C vs IC suppressor - show dCOF
+% AUTODdiIDX can be found in "Event-alignment fuctions." 
+% It takes all STIM_AUTO.mat inputs, finds relevant conditions, makes sure
+% the contact is tuned, and then saves results in a diIDX matrix which is 
+% stored locally on HDD D:\5 diIDX dir. Note that all the STIM_AUTO.mat 
+% files are already photo-diode triggered and this function does not do 
+% any triggering.
 
 clear
 tic
 
 
 didir = 'T:\diSTIM - adaptdcos&CRF\STIM\';
-saveName = 'diIDX_AUTO';
+saveName = 'diIDX_AUTO_JoVContrast';
 anaType = '_AUTO.mat';
 flag_saveIDX    = 1;
 
@@ -283,7 +280,7 @@ for cond = 1:size(conditionarray,1)
             STIM.suppressor   == conditionarray(cond,4) & ...
             STIM.soa       == conditionarray(cond,5) & ...
             STIM.monocular == conditionarray(cond,6) & ...
-            ((SORTED.contrasts(:,1)  >= .8) & (SORTED.contrasts(:,1)  <= 1 )) &...
+            ((SORTED.contrasts(:,1)  >= .3) & (SORTED.contrasts(:,1)  <= .5 )) &...
             ((SORTED.contrasts(:,2)  >= .8) & (SORTED.contrasts(:,2)  <= 1 ));
         trlsLogical(:,cond) = trls;
         CondTrials{cond} = find(trls);
@@ -299,7 +296,7 @@ for cond = 1:size(conditionarray,1)
         STIM.suppressor   == conditionarray(cond,4) & ...  
         STIM.soa       == conditionarray(cond,5) & ...
         STIM.monocular == conditionarray(cond,6) & ...
-            ((SORTED.contrasts(:,1)  >= .8) & (SORTED.contrasts(:,1)  <= 1 )) &...
+            ((SORTED.contrasts(:,1)  >= .3) & (SORTED.contrasts(:,1)  <= .5 )) &...
             ((SORTED.contrasts(:,2)  >= .8) & (SORTED.contrasts(:,2)  <= 1 ));
     trlsLogical(:,cond) = trls;
     CondTrials{cond} = find(trls);

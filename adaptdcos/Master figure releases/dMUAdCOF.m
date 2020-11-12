@@ -16,16 +16,26 @@ close all
 flag_saveFigs = true;
 
 cd('D:\5 diIDX dir')
-if ~exist('diIDX_AUTO.mat')
-    % No inputs or outputs are required. This will run all of the _AUTO
-    % files found on TEBA in T:\diSTIM - adaptdcos&CRF\STIM and save the
-    % diIDX variable will all of of the saved photo-diode triggered SDFs
-    % etc. to the pre-determined IDX direcotry. This should be backed up on
-    % TEBA. The IDX variable is 183 MB.
-    AUTOdiIDX
-else
-    load('diIDX_AUTO.mat')
+list = {'JoVContrast','HighContrast'};
+[indx,tf] = listdlg('ListString',list);
+if indx == 1 
+    if ~exist('diIDX_AUTO_JoVContrast.mat','file')
+        % No inputs or outputs are required. This will run all of the _AUTO
+        % files found on TEBA in T:\diSTIM - adaptdcos&CRF\STIM and save the
+        % diIDX variable will all of of the saved photo-diode triggered SDFs
+        % etc. to the pre-determined IDX direcotry. This should be backed up on
+        % TEBA. The IDX variable is 183 MB.
+        AUTOdiIDX_JoVContrast
+    end
+    load('diIDX_AUTO_JoVContrast.mat')
+elseif indx == 2 
+    if ~exist('diIDX_AUTO_highContrast.mat','file')
+        AUTOdiIDX_highContrast
+    end
+    load('diIDX_AUTO_highContrast.mat')
 end
+
+
 
 %% Figures!
 close all
@@ -38,10 +48,25 @@ raw.Name = 'raw';
 
 
 
-if flag_saveFigs
-    cd('D:\6 Plot Dir')
-    saveas(zScored,'dMUA_allV1_dCOF_zScored.svg');
-    saveas(raw,'dMUA_allV1_dCOF_raw.svg');
+
+
+if indx == 1
+    if flag_saveFigs
+        cd('D:\6 Plot Dir\dMUAdCOF')
+        saveas(zScored,'dMUA_allV1_dCOF_zScored-JoVContrast.png');
+        saveas(raw,'dMUA_allV1_dCOF_raw-JoVContrast.png');
+    end
+    
+    
+elseif indx == 2 
+
+    if flag_saveFigs
+        cd('D:\6 Plot Dir\dMUAdCOF')
+        saveas(zScored,'dMUA_allV1_dCOF_zScored-HighContrast.png');
+        saveas(raw,'dMUA_allV1_dCOF_raw-HighContrast.png');
+    end  
+    
+    
 end
 
 

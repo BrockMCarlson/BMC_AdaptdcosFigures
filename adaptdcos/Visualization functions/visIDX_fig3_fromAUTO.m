@@ -1,7 +1,10 @@
 function visIDX_fig3_fromAUTO(IDX,dataType)
 %% taken from visIDX_fig3aAllV1_CvsIC.m
 
-
+% viIDX_fig3_fromAUTO.m can be found in Visualization functions. 
+% It takes the SDFs from all of V1 in the IDX variable and averages them 
+% together. This can be done with raw dMUA inputs or z-scored inputs. 
+% Both are plotted in dMUAdCOF master fuction
 
 
 
