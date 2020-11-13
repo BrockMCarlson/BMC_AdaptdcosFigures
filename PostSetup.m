@@ -12,7 +12,7 @@ switch user
         SORTDIR  = 'D:\3 brfs Phy outputs of KLS sorts\';
         CODEDIR  = 'C:\Users\Brock\Documents\MATLAB\GitHub\';
         STIMDIR  = 'D:\4 stimdir for KLS ex units\';
-        OUTDIR  = 'C:\Users\Brock\Documents\MATLAB\Working IDX Dir\KLSsandboxTest\';
+        OUTDIR  = 'C:\Users\Brock\Documents\MATLAB\Working IDX Dir\dMUA-dCOF\';
         
         tasks    = 'brfs';
        

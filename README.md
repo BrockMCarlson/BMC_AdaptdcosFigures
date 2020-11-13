@@ -24,13 +24,15 @@ We are interested in probing data types, history, and contrast across a complex 
 - Example Units A
   - 11/10/20
   - looked at units from 151221_E, 160108_E, 160211_I, & 161005_E.
-- dMUA session averages
+- dMUA-dCOF
   - 11/10/20
   - current fig2. Code updated into "release" framework.
 ### Wiki pages contents (for "Master functions")
 - Example Units A
   - EyeOriPref
   - exampleKLS_condCompare
+- dMUA-dCOF
+   - dMUA-dCOF - takes and plots old fig 2 data, but in Modular Function Structure
 
 ## Usage: 
 Please access the accompanying Docs FILE_setup page for re-producing any set of figures. These contain the required direcotires and code repos to be accessed in the case of returning to a figure at a later date.

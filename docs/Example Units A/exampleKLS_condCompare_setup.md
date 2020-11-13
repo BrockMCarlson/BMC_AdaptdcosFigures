@@ -41,8 +41,8 @@ Notes: each brfs session was only given two tilts as inputs.
 
 ### BMC_KiloSortUtils
 - 11/10/20
-- branch - ModularFunction Structure
+- release 1.1.1 = ModularFunction Structure
 
 ### BMC_AdaptdcosPostProcessing
 - 11/10/20
-- branch - ModularFunctionStructure (same name as KiloSortUtils)
+- release 1.1.1 = ModularFunctionStructure (same name as KiloSortUtils)
