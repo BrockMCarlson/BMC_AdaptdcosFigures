@@ -23,7 +23,8 @@ TEBA so it can be accesses, edited, and re-run anytime.
 - KLS sorts                 = N/A
 - Phy outputs of KLS sorts  = N/A
 - STIM                      = 'T:\diSTIM - adaptdcos&CRF\STIM\'
-- STIM_Data                 = 'T:\diSTIM - adaptdcos&CRF\STIM\'
+- STIM_Data                 = 'T:\diSTIM - adaptdcos&CRF\STIM\' 
+- IDX data                  = 'T:\Adaptdcos\dMUAdCOF' - diIDX_Auto_JoVContrast
 - *Figure Outputs*          = T:\Adaptdcos\dMUAdCOF
 
 
