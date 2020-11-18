@@ -37,6 +37,7 @@ each eye, but with varying history and PS vs NS
 - Phy outputs of KLS sorts  = N/A
 - STIM                      = 'T:\diSTIM - adaptdcos&CRF\STIM\'
 - STIM_Data                 = 'T:\diSTIM - adaptdcos&CRF\STIM\'
+- IDX data                  = 'T:\Adaptdcos\dMUAdCOF' - diIDX_Auto_160108
 - *Figure Outputs*          = T:\Adaptdcos\dMUAdCOF\160108 all contacts
 
 
