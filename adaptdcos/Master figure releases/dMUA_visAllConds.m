@@ -26,7 +26,7 @@ clear
 close all
 
 
-flag_saveFigs = true;
+flag_saveFigs = false;
 
 cd('D:\5 diIDX dir')
 load('diIDX_AUTO_160108')

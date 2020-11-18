@@ -24,9 +24,9 @@ cd('D:\5 diIDX dir')
 
 for indx = 1:4
     for indx2 = 1:2
-       cd('D:\5 diIDX dir')
+                    cd('D:\5 diIDX dir')
         if indx == 1 
-            if ~exist('D:\5 diIDX dir\diIDX_AUTO_JoVContrast.mat','file')
+            if ~exist('diIDX_AUTO_JoVContrast.mat','file')
                 % No inputs or outputs are required. This will run all of the _AUTO
                 % files found on TEBA in T:\diSTIM - adaptdcos&CRF\STIM and save the
                 % diIDX variable will all of of the saved photo-diode triggered SDFs
@@ -34,22 +34,22 @@ for indx = 1:4
                 % TEBA. The IDX variable is 183 MB.
                 AUTOdiIDX_JoVContrast
             end
-            load('D:\5 diIDX dir\diIDX_AUTO_JoVContrast.mat')
+            load('diIDX_AUTO_JoVContrast.mat')
         elseif indx == 2 
-            if ~exist('D:\5 diIDX dir\diIDX_AUTO_highContrast.mat','file')
+            if ~exist('diIDX_AUTO_highContrast.mat','file')
                 AUTOdiIDX_highContrast
             end
-            load('D:\5 diIDX dir\diIDX_AUTO_highContrast.mat')
+            load('diIDX_AUTO_highContrast.mat')
         elseif indx == 3
-            if ~exist('D:\5 diIDX dir\diIDX_AUTO_LowLowContrast.mat','file')
+            if ~exist('diIDX_AUTO_LowLowContrast.mat','file')
                 AUTOdiIDX_LowLowContrast
             end
-            load('D:\5 diIDX dir\diIDX_AUTO_LowLowContrast.mat')
+            load('diIDX_AUTO_LowLowContrast.mat')
         elseif indx == 4
-            if ~exist('D:\5 diIDX dir\diIDX_AUTO_MediumMediumContrast.mat','file')
+            if ~exist('diIDX_AUTO_MediumMediumContrast.mat','file')
                 AUTOdiIDX_MediumMediumContrast
             end
-            load('D:\5 diIDX dir\diIDX_AUTO_MediumMediumContrast.mat')
+            load('diIDX_AUTO_MediumMediumContrast.mat')
         end
 
 
@@ -86,10 +86,9 @@ for indx = 1:4
             elseif indx == 3 
                 saveas(zScored,'dMUA_allV1_dCOF_zScored-LowLowC.png');
                 saveas(raw,'dMUA_allV1_dCOF_raw-LowLowC.png');
-            elseif indx == 4 
+           elseif indx == 4 
                 saveas(zScored,'dMUA_allV1_dCOF_zScored-MedMedC.png');
                 saveas(raw,'dMUA_allV1_dCOF_raw-MedMedC.png');
-            end
 
         elseif indx2 == 2 && flag_saveFigs
             cd('D:\6 Plot Dir\dMUAdCOF\Contrast comparison in I34 only')
@@ -108,7 +107,7 @@ for indx = 1:4
 
             end
             
-            
+            end
         end
     end
 end
