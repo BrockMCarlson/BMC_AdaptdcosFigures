@@ -13,17 +13,17 @@ clear
 close all
 
 
-flag_saveFigs = true;
+flag_saveFigs = false;
 
 cd('D:\5 diIDX dir')
-% % list = {'JoVContrast','HighContrast','LowLow','MedMed'};
-% % [indx,tf] = listdlg('ListString',list);
+list = {'JoVContrast','HighContrast','LowLow','MedMed'};
+[indx,tf] = listdlg('ListString',list);
 
-% % list2 = {'all V1 contacts','I 34 contacts only'};
-% % [indx2,tf2] = listdlg('ListString',list2);
+list2 = {'all V1 contacts','I 34 contacts only'};
+[indx2,tf2] = listdlg('ListString',list2);
 
-for indx = 1:4
-    for indx2 = 1:2
+% for indx = 1:4
+%     for indx2 = 1:2
        cd('D:\5 diIDX dir')
         if indx == 1 
             if ~exist('D:\5 diIDX dir\diIDX_AUTO_JoVContrast.mat','file')
@@ -55,8 +55,10 @@ for indx = 1:4
 
 
         %% Figures!
-        close all
-
+        if flag_saveFigs
+            close all
+        end
+        
         if indx2 == 1
             visIDX_fig3_fromAUTO(IDX,'z-scored');
             zScored = gcf;
@@ -110,8 +112,8 @@ for indx = 1:4
             
             
         end
-    end
-end
+%     end
+% end
 
 
 

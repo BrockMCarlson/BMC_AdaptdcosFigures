@@ -1,12 +1,20 @@
 % SingleSession_hyperdMUA
 
+% 1. find median response for each channel (one chan. one recording)
+% 2. for each trial, subtract the average response.
+% 3. for 1 channel, plot all trials like a raster plot
+    % trials on y axis, 
+    % time on x axis. 
+% 4. "depth activation plot"
+    % do this for every trial. Each trial can be put into TPM.
+    
 clear 
 close all
 setup('brockSand')
 global SAVEDIR STIMDIR RIGDIR HOMEDIR
 cd(STIMDIR)
 penetration = '160108_E_eD';
-sdfwin  = [-0.05  .3];
+sdfwin  = [-0.05  .4];
 
 
 load('160108_E_eD.mat')
