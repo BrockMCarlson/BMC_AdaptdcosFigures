@@ -22,8 +22,8 @@ list = {'JoVContrast','HighContrast','LowLow','MedMed'};
 list2 = {'all V1 contacts','I 34 contacts only'};
 [indx2,tf2] = listdlg('ListString',list2);
 
-% for indx = 1:4
-%     for indx2 = 1:2
+% % for indx = 1:4
+% %     for indx2 = 1:2
        cd('D:\5 diIDX dir')
         if indx == 1 
             if ~exist('D:\5 diIDX dir\diIDX_AUTO_JoVContrast.mat','file')
@@ -40,11 +40,11 @@ list2 = {'all V1 contacts','I 34 contacts only'};
                 AUTOdiIDX_highContrast
             end
             load('D:\5 diIDX dir\diIDX_AUTO_highContrast.mat')
-        elseif indx == 3
-            if ~exist('D:\5 diIDX dir\diIDX_AUTO_LowLowContrast.mat','file')
-                AUTOdiIDX_LowLowContrast
-            end
-            load('D:\5 diIDX dir\diIDX_AUTO_LowLowContrast.mat')
+% %         elseif indx == 3
+% %             if ~exist('D:\5 diIDX dir\diIDX_AUTO_LowLowContrast.mat','file')
+% %                 AUTOdiIDX_LowLowContrast
+% %             end
+% %             load('D:\5 diIDX dir\diIDX_AUTO_LowLowContrast.mat')
         elseif indx == 4
             if ~exist('D:\5 diIDX dir\diIDX_AUTO_MediumMediumContrast.mat','file')
                 AUTOdiIDX_MediumMediumContrast
@@ -85,9 +85,9 @@ list2 = {'all V1 contacts','I 34 contacts only'};
             elseif indx == 2
                 saveas(zScored,'dMUA_allV1_dCOF_zScored-HighContrast.png');
                 saveas(raw,'dMUA_allV1_dCOF_raw-HighContrast.png');
-            elseif indx == 3 
-                saveas(zScored,'dMUA_allV1_dCOF_zScored-LowLowC.png');
-                saveas(raw,'dMUA_allV1_dCOF_raw-LowLowC.png');
+% %             elseif indx == 3 
+% %                 saveas(zScored,'dMUA_allV1_dCOF_zScored-LowLowC.png');
+% %                 saveas(raw,'dMUA_allV1_dCOF_raw-LowLowC.png');
             elseif indx == 4 
                 saveas(zScored,'dMUA_allV1_dCOF_zScored-MedMedC.png');
                 saveas(raw,'dMUA_allV1_dCOF_raw-MedMedC.png');
@@ -112,8 +112,8 @@ list2 = {'all V1 contacts','I 34 contacts only'};
             
             
         end
-%     end
-% end
+% %     end
+% % end
 
 
 

@@ -29,17 +29,14 @@ close all
 flag_saveFigs = false;
 
 cd('D:\5 diIDX dir')
-<<<<<<< Updated upstream:adaptdcos/Master figure releases/dMUA_visAllConds.m
-load('diIDX_AUTO_160108')
-=======
-if exist('diIDX_AUTO_160108','file')
+
+if exist('diIDX_AUTO_160108.mat','file')
     load('diIDX_AUTO_160108') % this has all 16 conditions.
 else
     AUTOdiIDX_160108allCond
     clear
     load('diIDX_AUTO_160108')
 end
->>>>>>> Stashed changes:adaptdcos/Master figure releases/1.2 dMUAdCOF/dMUA_visAllConds.m
 
 
 
@@ -71,12 +68,16 @@ for uct = 1:uctLength
     end
 end
 
+%% Vis all cond average
+visIDX_fig3_fromAUTO(IDX,'z-scored')
+
+haha
 clear IDX
 
 
 %% Figures!
 for i = 1:size(SDF,3)
-    close all
+%     close all
     sdf = squeeze(SDF(:,:,i));
     info = INFO(i);
     Monoc = visIDX_Monoc_fromAUTO(sdf,info);

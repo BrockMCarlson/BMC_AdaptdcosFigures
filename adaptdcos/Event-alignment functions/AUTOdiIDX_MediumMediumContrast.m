@@ -32,26 +32,30 @@ noBrfs = 0;
 yesBrfs = 0;
 %% For loop on unit
 for i = 1:length(list)
-
+    
 
 %% load session data
 clear penetration
 penetration = list(i).name(1:11); 
+if strcmp(penetration,'160422_E_eD')
+    warning('160422 skipped -- problem with 4 null oris in di Unit Tuning?')
+    continue
+end
 
 clear STIM nel difiles
 load([didir penetration '.mat'],'STIM')
 
-% Balance conditions
-if ~any(contains(STIM.paradigm,'brfs'))
-   warning('no brfs on day...')
-   disp(penetration)
-   noBrfs = noBrfs + 1;
-   MISSNIG(noBrfs,:) = penetration;
-   continue
-else
-    yesBrfs = yesBrfs+1;
-    FOUND(yesBrfs,:) = penetration;
-end
+% % Balance conditions
+% if ~any(contains(STIM.paradigm,'brfs'))
+%    warning('no brfs on day...')
+%    disp(penetration)
+%    noBrfs = noBrfs + 1;
+%    MISSNIG(noBrfs,:) = penetration;
+%    continue
+% else
+%     yesBrfs = yesBrfs+1;
+%     FOUND(yesBrfs,:) = penetration;
+% end
 if contains(anaType,'KLS')
     nel = length(STIM.units);
 else
@@ -77,6 +81,8 @@ elseif isequal(win_ms(4,:),[50 250])
 else
     error('RESP dimension issue')
 end
+
+
 
 %% Electrode loop
 for e = 1:nel
@@ -126,6 +132,8 @@ for e = 1:nel
      NDE = X.dinull(1);
      PS = X.dipref(2);
      NS = X.dinull(2);
+     
+     
  
 %% Set limits on acceptable tuning.
 if X.diana ~= 1
@@ -156,6 +164,8 @@ if X.dianp(1) > 0.05
     ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
     continue
 end
+
+
     
 %% Conditions established to pull out SDFs
    % loop through different resp windows based on win_ms;
@@ -168,38 +178,43 @@ if isnan(DE)
     disp(uct+1);
 end
 
-% 1 - simult
-%   1. Monocular DE PS
-%   2. Cong Simult
-%   3. IC   Simult
-% 2 - 200ms
-%   4. Cong 200
-%   5. IC   200
-% 3 - 800ms
-%   6. Cong 800
-%   7. IC   800
+
+
+
+
+
+
 condition= table(...
-[DE  NDE DE  NDE DE  DE  DE  DE  DE  DE]',... %eyes1
-[PS  PS  NS  NS  PS  PS  PS  PS  PS  PS]',... %tilt1
-[1   1   1   1   1   0   1   0   1   0]',... %tiltmatch
-[0   0   0   0   0   0   1   1   1   1]',... %suppressor
-[0   0   0   0   0   0   200 200 800 800]',... %soa
-[1   1   1   1   0   0   0   0   0   0]',... %monoc
+[DE  NDE DE  NDE DE  DE  DE  DE  DE  NDE DE  NDE DE  NDE DE  NDE]',... %eyes1
+[PS  NS  NS  PS  PS  NS  PS  NS  PS  NS  NS  PS  PS  NS  NS  PS]',... %tilt1
+[1   1   1   1   1   1   0   0   1   1   1   1   0   0   0   0]',... %tiltmatch
+[0   0   0   0   0   0   0   0   1   1   1   1   1   1   1   1]',... %suppressor
+[0   0   0   0   0   0   0   0   800 800 800 800 800 800 800 800]',... %soa
+[1   1   1   1   0   0   0   0   0   0   0   0   0   0   0   0]',... %monoc
 'VariableNames',{'eyes1','tilt1','tiltmatch','suppressor','soa','monoc'});
 
 condition.Properties.RowNames = {...
     'Monocualr PS DE',...
-    'Monocualr PS NDE',...
-    'Monocualr NS DE',...
     'Monocualr NS NDE',...
-    'Cong Simult',...
-    'IC   Simult',...
-    'Cong 200',...
-    'IC   200',...
-    'Cong 800',...
-    'IC   800',...
+    'Monocualr NS DE',...
+    'Monocualr PS NDE',...
+    'Cong PS Simult',...
+    'Cong NS Simult',...
+    'IC PS DE - NS NDE Simult',...d
+    'IC NS DE - PS NDE Simult',...d
+    'C PS DEflash - PS NDE adapted',...d
+    'C NS NDEflash - NS DE adapted',...NS NDE
+    'C NS DEflash - NS NDE adapted',...d
+    'C PS NDEflash - PS DE adapted',...PS NDE
+    'IC PS DEflash - NS NDE adapted',...d
+    'IC NS NDEflash - PS DE adapted',...d
+    'IC NS DEflash - PS NDE adapted',...d
+    'IC PS NDEflash - NS DE adapted',...
     };
 conditionarray = table2array(condition);
+
+
+
 
 clear I
 I = STIM.ditask...
@@ -251,7 +266,6 @@ for cond = 1:size(conditionarray,1)
     clear trls    
     % get monocular trials
     if cond < 5
-        
       trls = I &...
             STIM.eye        == conditionarray(cond,1) &...
             STIM.tilt(:,1)  == conditionarray(cond,2) & ...
@@ -259,29 +273,20 @@ for cond = 1:size(conditionarray,1)
             STIM.suppressor == conditionarray(cond,4) & ...
             STIM.soa        == conditionarray(cond,5) & ...
             STIM.monocular  == conditionarray(cond,6) & ...
-            (STIM.contrast(:,1)  >= .41 & STIM.contrast(:,1) <= .75);
-%         
-%         trls = I &...
-%             STIM.eyes(:,1) == conditionarray(cond,1) &...
-%             SORTED.tilts(:,1) == conditionarray(cond,2) & ...
-%             STIM.tiltmatch == conditionarray(cond,3) & ...
-%             STIM.suppressor   == conditionarray(cond,4) & ...
-%             STIM.soa       == conditionarray(cond,5) & ...
-%             STIM.monocular == conditionarray(cond,6) & ...
-%             (SORTED.contrasts(:,1)  >= .9 & SORTED.contrasts(:,1) <= 1);
+            (STIM.contrast(:,1)  >= .3 & STIM.contrast(:,1) <= .6);
         trlsLogical(:,cond) = trls;
         CondTrials{cond} = find(trls);
         CondTrialNum_SDF(cond,1) = sum(trls); 
         SDF_uncrop(cond,:)   = nanmean(sdf(:,trls),2);    % Use trls to pull out continuous data   
-    elseif cond == 5 || cond == 6 % get simultaneous trials
+    elseif cond >= 5 && cond <= 8 % get simultaneous trials
         trls = I &...
             SORTED.tilts(:,1) == conditionarray(cond,2) & ...
             STIM.tiltmatch == conditionarray(cond,3) & ...
             STIM.suppressor   == conditionarray(cond,4) & ...
             STIM.soa       == conditionarray(cond,5) & ...
             STIM.monocular == conditionarray(cond,6) & ...
-            ((SORTED.contrasts(:,1)  >= .41) & (SORTED.contrasts(:,1)  <= .75 )) &...
-            ((SORTED.contrasts(:,2)  >= .41) & (SORTED.contrasts(:,2)  <= .75 ));
+            ((SORTED.contrasts(:,1)  >= .3) & (SORTED.contrasts(:,1)  <= .6 )) &...
+            ((SORTED.contrasts(:,2)  >= .3) & (SORTED.contrasts(:,2)  <= .6 ));
         trlsLogical(:,cond) = trls;
         CondTrials{cond} = find(trls);
         CondTrialNum_SDF(cond,1) = sum(trls); 
@@ -296,8 +301,8 @@ for cond = 1:size(conditionarray,1)
         STIM.suppressor   == conditionarray(cond,4) & ...  
         STIM.soa       == conditionarray(cond,5) & ...
         STIM.monocular == conditionarray(cond,6) & ...
-            ((SORTED.contrasts(:,1)  >= .41) & (SORTED.contrasts(:,1)  <= .75 )) &...
-            ((SORTED.contrasts(:,2)  >= .41) & (SORTED.contrasts(:,2)  <= .75 ));
+            ((SORTED.contrasts(:,1)  >= .3) & (SORTED.contrasts(:,1)  <= .6 )) &...
+            ((SORTED.contrasts(:,2)  >= .3) & (SORTED.contrasts(:,2)  <= .6 ));
     trlsLogical(:,cond) = trls;
     CondTrials{cond} = find(trls);
     CondTrialNum_SDF(cond,1) = sum(trls); 
@@ -306,9 +311,7 @@ for cond = 1:size(conditionarray,1)
     
 end
 
-if any(isnan(CondTrialNum_SDF))
-    error('all conditions not met')
-end
+
 
 
 
@@ -384,27 +387,15 @@ end
 %% Difference of Conditions
 % condition indexing -- for reference
 
-% % condition.Properties.RowNames = {...
-% %   1  'Monocualr PS DE',...
-% %   2  'Monocualr NS DE',...
-% %   3  'Monocualr PS NDE',...
-% %   4  'Monocualr NS NDE',...
-% %   5  'Cong Simult',...
-% %   6  'IC   Simult',...
-% %   7  'Cong 200',...
-% %   8  'IC   200',...
-% %   9  'Cong 800',...
-% %   10  'IC   800',...
-% %     };
-SDFdiff.raw(1,:) = SDF.raw(5,:) - SDF.raw(1,:);
-SDFdiff.raw(2,:) = SDF.raw(6,:) - SDF.raw(1,:);
-SDFdiff.raw(3,:) = SDF.raw(5,:) - SDF.raw(6,:);
-SDFdiff.raw(4,:) = SDF.raw(9,:) - SDF.raw(10,:);
-
-SDFdiff.zs(1,:) = SDF.zs(5,:) - SDF.zs(1,:);
-SDFdiff.zs(2,:) = SDF.zs(6,:) - SDF.zs(1,:);
-SDFdiff.zs(3,:) = SDF.zs(5,:) - SDF.zs(6,:);
-SDFdiff.zs(4,:) = SDF.zs(9,:) - SDF.zs(10,:);
+% % SDFdiff.raw(1,:) = SDF.raw(5,:) - SDF.raw(1,:);
+% % SDFdiff.raw(2,:) = SDF.raw(6,:) - SDF.raw(1,:);
+% % SDFdiff.raw(3,:) = SDF.raw(5,:) - SDF.raw(6,:);
+% % SDFdiff.raw(4,:) = SDF.raw(9,:) - SDF.raw(10,:);
+% % 
+% % SDFdiff.zs(1,:) = SDF.zs(5,:) - SDF.zs(1,:);
+% % SDFdiff.zs(2,:) = SDF.zs(6,:) - SDF.zs(1,:);
+% % SDFdiff.zs(3,:) = SDF.zs(5,:) - SDF.zs(6,:);
+% % SDFdiff.zs(4,:) = SDF.zs(9,:) - SDF.zs(10,:);
 
 % Output is..
 % 2a. Monoc vs C Simult (1-2)
@@ -461,7 +452,7 @@ SDFdiff.zs(4,:) = SDF.zs(9,:) - SDF.zs(10,:);
         holder.tm        = TM;
 
         holder.SDF      = SDF;
-        holder.SDFdiff	= SDFdiff;
+%         holder.SDFdiff	= SDFdiff;
 
 
         holder.condition        = condition;
@@ -487,7 +478,6 @@ SDFdiff.zs(4,:) = SDF.zs(9,:) - SDF.zs(10,:);
 
 
 end
-% % % %     end   %%%%% KLS loop removed for now
 end
 
 

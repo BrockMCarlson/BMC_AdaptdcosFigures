@@ -168,38 +168,36 @@ if isnan(DE)
     disp(uct+1);
 end
 
-% 1 - simult
-%   1. Monocular DE PS
-%   2. Cong Simult
-%   3. IC   Simult
-% 2 - 200ms
-%   4. Cong 200
-%   5. IC   200
-% 3 - 800ms
-%   6. Cong 800
-%   7. IC   800
 condition= table(...
-[DE  NDE DE  NDE DE  DE  DE  DE  DE  DE]',... %eyes1
-[PS  PS  NS  NS  PS  PS  PS  PS  PS  PS]',... %tilt1
-[1   1   1   1   1   0   1   0   1   0]',... %tiltmatch
-[0   0   0   0   0   0   1   1   1   1]',... %suppressor
-[0   0   0   0   0   0   200 200 800 800]',... %soa
-[1   1   1   1   0   0   0   0   0   0]',... %monoc
+[DE  NDE DE  NDE DE  DE  DE  DE  DE  NDE DE  NDE DE  NDE DE  NDE]',... %eyes1
+[PS  NS  NS  PS  PS  NS  PS  NS  PS  NS  NS  PS  PS  NS  NS  PS]',... %tilt1
+[1   1   1   1   1   1   0   0   1   1   1   1   0   0   0   0]',... %tiltmatch
+[0   0   0   0   0   0   0   0   1   1   1   1   1   1   1   1]',... %suppressor
+[0   0   0   0   0   0   0   0   800 800 800 800 800 800 800 800]',... %soa
+[1   1   1   1   0   0   0   0   0   0   0   0   0   0   0   0]',... %monoc
 'VariableNames',{'eyes1','tilt1','tiltmatch','suppressor','soa','monoc'});
 
 condition.Properties.RowNames = {...
     'Monocualr PS DE',...
-    'Monocualr PS NDE',...
-    'Monocualr NS DE',...
     'Monocualr NS NDE',...
-    'Cong Simult',...
-    'IC   Simult',...
-    'Cong 200',...
-    'IC   200',...
-    'Cong 800',...
-    'IC   800',...
+    'Monocualr NS DE',...
+    'Monocualr PS NDE',...
+    'Cong PS Simult',...
+    'Cong NS Simult',...
+    'IC PS DE - NS NDE Simult',...d
+    'IC NS DE - PS NDE Simult',...d
+    'C PS DEflash - PS NDE adapted',...d
+    'C NS NDEflash - NS DE adapted',...NS NDE
+    'C NS DEflash - NS NDE adapted',...d
+    'C PS NDEflash - PS DE adapted',...PS NDE
+    'IC PS DEflash - NS NDE adapted',...d
+    'IC NS NDEflash - PS DE adapted',...d
+    'IC NS DEflash - PS NDE adapted',...d
+    'IC PS NDEflash - NS DE adapted',...
     };
 conditionarray = table2array(condition);
+
+
 
 clear I
 I = STIM.ditask...
@@ -273,7 +271,7 @@ for cond = 1:size(conditionarray,1)
         CondTrials{cond} = find(trls);
         CondTrialNum_SDF(cond,1) = sum(trls); 
         SDF_uncrop(cond,:)   = nanmean(sdf(:,trls),2);    % Use trls to pull out continuous data   
-    elseif cond == 5 || cond == 6 % get simultaneous trials
+    elseif cond >= 5 && cond <= 8 % get simultaneous trials
         trls = I &...
             SORTED.tilts(:,1) == conditionarray(cond,2) & ...
             STIM.tiltmatch == conditionarray(cond,3) & ...

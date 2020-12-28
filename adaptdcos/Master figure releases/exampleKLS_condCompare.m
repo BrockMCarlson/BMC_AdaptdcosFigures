@@ -5,12 +5,12 @@
 clear
 close all
 
-% % PostSetup('brock')
-% % global STIMDIR 
-% % cd(STIMDIR)
+PostSetup('brock')
+global STIMDIR 
+cd(STIMDIR)
 cd('D:\4 stimdir for KLS ex units\')
 list = recursdir(STIMDIR,'KLS');
-flag_saveFigs = false;
+flag_saveFigs = true;
 
 for i = 1:length(list)
     clear RESP SDF STIM SUA psthtm sdftm win_ms
@@ -64,7 +64,7 @@ for i = 1:length(list)
         count = 0;
         clear CondTrials CondTrialNum
         for cond = [5 6 9 10]
-            if cond == 5 || cond == 6 % get simultaneous trials
+            if cond == 5 && cond == 6 % get simultaneous trials
                 trls = I &...
                     SORTED.tilts(:,1) == conditionarray(cond,2) & ...
                     STIM.tiltmatch == conditionarray(cond,3) & ...

@@ -19,61 +19,58 @@ uctLength = length(IDX.allV1);
 %preallocate
 
 SDF = nan(size(IDX.allV1(1).SDF.raw,1),size(IDX.allV1(1).SDF.raw,2),uctLength);
-DIFF = nan(size(IDX.allV1(1).SDFdiff.raw,1),size(IDX.allV1(1).SDFdiff.raw,2),uctLength);
+% % DIFF = nan(size(IDX.allV1(1).SDFdiff.raw,1),size(IDX.allV1(1).SDFdiff.raw,2),uctLength);
 
 % loop uctLength
 depth = nan(3,uctLength);
 penetration = nan(3,uctLength,11);
 CondTrialNum_SDF = nan(3,uctLength,10); %admittidly the dimensions here are a bit confusint --(laminarCompartment,numberofContacts,10differentConditionTypes) -- also, IDK how I would use this to balance as I used to...
-SDF = nan(10,450,uctLength);    
 count = 0;
 clear uct
 for uct = 1:uctLength
     switch dataType
         case 'raw'
             sdf = IDX.allV1(uct).SDF.raw;
-            diff = IDX.allV1(uct).SDFdiff.raw;
+%             diff = IDX.allV1(uct).SDFdiff.raw;
         case 'z-scored'
             sdf = IDX.allV1(uct).SDF.zs;
-            diff = IDX.allV1(uct).SDFdiff.zs;
+%             diff = IDX.allV1(uct).SDFdiff.zs;
     end
     count = count + 1;
     SDF(:,:,count) = sdf;
-    DIFF(:,:,count) = diff;
+% %     DIFF(:,:,count) = diff;
 end
-
-clear IDX   
+clear IDX
 
 
 % C. Average across laminar compartments 3x(6,450)
 % Avg
 clear SDFavg 
 SDFavg = nanmean(squeeze(SDF(:,:,:)),3);
-DIFFavg = nanmean(squeeze(DIFF(:,:,:)),3);
+
+
+% DIFFavg = nanmean(squeeze(DIFF(:,:,:)),3);
 %SEM
 sdfsem  = (nanstd(squeeze(SDF(:,:,:)),[],3))./sqrt(count);
 for a = 1:size(SDFavg,1)
     SDFsem.up(a,:) = SDFavg(a,:) + sdfsem(a,:);
     SDFsem.down(a,:) = SDFavg(a,:) - sdfsem(a,:);
 end
-diffsem  = (nanstd(squeeze(DIFF(:,:,:)),[],3))./sqrt(count);
-for a = 1:size(DIFFavg,1)
-    DIFFsem.up(a,:) = DIFFavg(a,:) + diffsem(a,:);
-    DIFFsem.down(a,:) = DIFFavg(a,:) - diffsem(a,:);
-end
+% diffsem  = (nanstd(squeeze(DIFF(:,:,:)),[],3))./sqrt(count);
+% for a = 1:size(DIFFavg,1)
+%     DIFFsem.up(a,:) = DIFFavg(a,:) + diffsem(a,:);
+%     DIFFsem.down(a,:) = DIFFavg(a,:) - diffsem(a,:);
+% end
 
 
-    AvgSDFOut.SDFavg      = SDFavg;
-    AvgSDFOut.SDFsem      = SDFsem;
-    AvgSDFOut.DIFFavg     = DIFFavg;
-    AvgSDFOut.DIFFsem     = DIFFsem;
+AvgSDFOut.SDFavg      = SDFavg;
+AvgSDFOut.SDFsem      = SDFsem;
+%     AvgSDFOut.DIFFavg     = DIFFavg;
+%     AvgSDFOut.DIFFsem     = DIFFsem;
 
-clear IDX
 
 %% Plot SDF Condition Comparisons - fig 2. Monoc vs
 SDFmax = max(AvgSDFOut.SDFavg,[],'all');
-
-
 
 
 allV1 = figure;
@@ -84,16 +81,16 @@ allV1 = figure;
     plot(TM,AvgSDFOut.SDFavg(6,:),'-r','LineWidth',2);hold on;
     plot(TM,AvgSDFOut.SDFsem.up(6,:),':r','LineWidth',1,'HandleVisibility','off'); hold on;
     plot(TM,AvgSDFOut.SDFsem.down(6,:),':r','LineWidth',1,'HandleVisibility','off'); hold on;
-
-    plot(TM,AvgSDFOut.SDFavg(9,:),'-c','LineWidth',2);hold on;
-    plot(TM,AvgSDFOut.SDFsem.up(9,:),':c','LineWidth',1,'HandleVisibility','off'); hold on;
-    plot(TM,AvgSDFOut.SDFsem.down(9,:),':c','LineWidth',1,'HandleVisibility','off'); hold on;
-    
-    plot(TM,AvgSDFOut.SDFavg(10,:),'-m','LineWidth',2);hold on;
-    plot(TM,AvgSDFOut.SDFsem.up(10,:),':m','LineWidth',1,'HandleVisibility','off'); hold on;
-    plot(TM,AvgSDFOut.SDFsem.down(10,:),':m','LineWidth',1,'HandleVisibility','off'); hold on;
+% % 
+% %     plot(TM,AvgSDFOut.SDFavg(9,:),'-c','LineWidth',2);hold on;
+% %     plot(TM,AvgSDFOut.SDFsem.up(9,:),':c','LineWidth',1,'HandleVisibility','off'); hold on;
+% %     plot(TM,AvgSDFOut.SDFsem.down(9,:),':c','LineWidth',1,'HandleVisibility','off'); hold on;
+% %     
+% %     plot(TM,AvgSDFOut.SDFavg(10,:),'-m','LineWidth',2);hold on;
+% %     plot(TM,AvgSDFOut.SDFsem.up(10,:),':m','LineWidth',1,'HandleVisibility','off'); hold on;
+% %     plot(TM,AvgSDFOut.SDFsem.down(10,:),':m','LineWidth',1,'HandleVisibility','off'); hold on;
      
-    legend('biSimult','diSimult','biAdapted','diAdapted')
+%     legend('biSimult','diSimult','biAdapted','diAdapted')
     
     xlim([-0.05 0.3])
     ylim([-.5 1.2*SDFmax])
@@ -105,8 +102,57 @@ allV1 = figure;
 set(gcf,'Position',[300.8000 83.4000 494.6000 466.2000])
 
 
+biCvsM = figure;
+    plot(TM,AvgSDFOut.SDFavg(1,:),'-k','LineWidth',2);hold on;
+    plot(TM,AvgSDFOut.SDFsem.up(1,:),':k','LineWidth',1,'HandleVisibility','off'); hold on;
+    plot(TM,AvgSDFOut.SDFsem.down(1,:),':k','LineWidth',1,'HandleVisibility','off'); hold on;
 
 
+    plot(TM,AvgSDFOut.SDFavg(5,:),'-b','LineWidth',2);hold on;
+    plot(TM,AvgSDFOut.SDFsem.up(5,:),':b','LineWidth',1,'HandleVisibility','off'); hold on;
+    plot(TM,AvgSDFOut.SDFsem.down(5,:),':b','LineWidth',1,'HandleVisibility','off'); hold on;
+    
+    xlim([-0.05 0.3])
+    ylim([-.5 1.2*SDFmax])
+    vline(0)
+    title('binoc Cong vs Monoc','interpreter', 'none')
+
+    
+% % biDIFFCvsM = figure;
+% %     plot(TM,AvgSDFOut.DIFFavg(1,:),'-b','LineWidth',2);hold on;
+% %     plot(TM,AvgSDFOut.DIFFsem.up(1,:),':b','LineWidth',1,'HandleVisibility','off'); hold on;
+% %     plot(TM,AvgSDFOut.DIFFsem.down(1,:),':b','LineWidth',1,'HandleVisibility','off'); hold on;
+% %     
+% %     xlim([-0.05 0.3])
+% %     vline(0)
+% %     hline(0)
+% %         title('DIFF_binocCong-Monoc','interpreter', 'none')
+
+   
+ biICvsM = figure;
+    plot(TM,AvgSDFOut.SDFavg(1,:),'-k','LineWidth',2);hold on;
+    plot(TM,AvgSDFOut.SDFsem.up(1,:),':k','LineWidth',1,'HandleVisibility','off'); hold on;
+    plot(TM,AvgSDFOut.SDFsem.down(1,:),':k','LineWidth',1,'HandleVisibility','off'); hold on;
+   
+    plot(TM,AvgSDFOut.SDFavg(6,:),'-r','LineWidth',2);hold on;
+    plot(TM,AvgSDFOut.SDFsem.up(6,:),':r','LineWidth',1,'HandleVisibility','off'); hold on;
+    plot(TM,AvgSDFOut.SDFsem.down(6,:),':r','LineWidth',1,'HandleVisibility','off'); hold on;   
+
+    xlim([-0.05 0.3])
+    ylim([-.5 1.2*SDFmax])
+    vline(0)
+        title('binoc Incong. vs Monoc','interpreter', 'none')
+
+% %     
+% % biDIFFICvsM = figure;
+% %     plot(TM,AvgSDFOut.DIFFavg(2,:),'-r','LineWidth',2);hold on;
+% %     plot(TM,AvgSDFOut.DIFFsem.up(2,:),':r','LineWidth',1,'HandleVisibility','off'); hold on;
+% %     plot(TM,AvgSDFOut.DIFFsem.down(2,:),':r','LineWidth',1,'HandleVisibility','off'); hold on;
+% %     
+% %     xlim([-0.05 0.3])
+% %     vline(0)
+% %     hline(0)
+% %             title('DIFF_binocIncong-Monoc','interpreter', 'none')
 
 end
 
