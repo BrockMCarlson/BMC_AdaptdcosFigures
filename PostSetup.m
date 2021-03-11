@@ -15,6 +15,8 @@ switch user
         OUTDIR  = 'C:\Users\Brock\Documents\MATLAB\Working IDX Dir\dMUA-dCOF\';
         
         tasks    = 'brfs';
+        
+        cd(CODEDIR)
        
               
     case {'brockExUnitTest'}
