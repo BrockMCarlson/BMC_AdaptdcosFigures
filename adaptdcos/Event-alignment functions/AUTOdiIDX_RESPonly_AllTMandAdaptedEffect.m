@@ -1,4 +1,4 @@
-function AUTOdiIDX_RESPonly_equiocularIncluded
+function AUTOdiIDX_RESPonly_AllTMandAdaptedEffect
 % Make sure tm goes out to .9 (in time for the second stimuli) Hopefully I
 % can crop the extra .1 later if needed. But this should at least show me
 % the second peak as a sanity check.
@@ -8,7 +8,7 @@ tic
 
 
 didir = 'T:\diSTIM - adaptdcos&CRF\STIM\';
-saveName = 'AUTOdiIDX_RESPonly_equiocularIncluded'; % THIS IS CONTRAST LEVELS OF .41-.75 INCLUSIVE
+saveName = 'AUTOdiIDX_RESPonly_AllTMandAdaptedEffect'; % THIS IS CONTRAST LEVELS OF .41-.75 INCLUSIVE
 anaType = '_AUTO.mat';
 flag_saveIDX    = 1;
 
@@ -303,9 +303,8 @@ dII(1,:) = (RESPout(5,:)-RESPout(7,:))./(RESPout(5,:)+RESPout(7,:)); %Cong PS Si
 dII(2,:) = (RESPout(10,:)-RESPout(18,:))./(RESPout(10,:)+RESPout(18,:)); %Cong PS adapt - IC PS DE - NS NDE adapt
 
 %% Adapted effect
-adapEff(1,:) = (RESPout(5,:)-RESPout(7,:))
-
-
+adapEff(1,:) = (RESPout(5,:)-RESPout(9,:));
+adapEffindex(1,:) = (RESPout(5,:)-RESPout(9,:))./(RESPout(5,:)+RESPout(9,:));
 
 %% SAVE  IDX
 
@@ -351,6 +350,8 @@ adapEff(1,:) = (RESPout(5,:)-RESPout(7,:))
         %%%% NEW ADDITIONS FROM BMC
         holder.RESPout = RESPout;
         holder.dII = dII;
+        holder.adapEff = adapEff;
+        holder.adapEffindex = adapEffindex;
 
 
         holder.condition        = condition;

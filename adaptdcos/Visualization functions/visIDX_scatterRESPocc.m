@@ -1,4 +1,4 @@
-function visIDX_scatterRESPocc(IDX)
+function [rsq_simult,rsq_adapted] = visIDX_scatterRESPocc(IDX,flag_SaveFigs)
 
 
 %% Goal
@@ -19,23 +19,28 @@ uctLength = length(IDX.allV1);
 % RESPout = nan(size(IDX.allV1(1).RESPout,1),size(IDX.allV1(1).RESPout,2),uctLength);
 % dII = nan(size(IDX.allV1(1).dII,1),size(IDX.allV1(1).dII,2),uctLength);
 % occ = nan(3,uctLength);
-count = 0;
+
+for RespWin = 1:4
+
+% 1 = transient, 2 = sustained, 3 = full time, 4 = baseline.
 % loop uctLength
+count = 0;
 clear RESPout dII occ Xval Yval_simult Yval_adapted
 for uct = 1:uctLength
-     if ~any(isnan(IDX.allV1(uct).dII),'all') && ~any(isnan(IDX.allV1(uct).occ(1)))
+     if ~any(isnan(IDX.allV1(uct).dII),'all') && ~any(isnan(IDX.allV1(uct).occ(1)))...
+             && (IDX.allV1(uct).occ(1) <= .05) % This is now tuned to occularity
          count = count + 1;
         RESPout(:,:,count) = IDX.allV1(uct).RESPout;
         dII(:,:,count) = IDX.allV1(uct).dII;
         occ(:,count)      = IDX.allV1(uct).occ(1:3);
-        Xval(count)     = IDX.allV1(uct).occ(1);
-        Yval_simult(count)     = IDX.allV1(uct).dII(1,3);
-        Yval_adapted(count)     = IDX.allV1(uct).dII(2,3);
+        Xval(count)     = IDX.allV1(uct).occ(3);
+%          Xval(count)     = IDX.allV1(uct).adapEffindex(1,RespWin);
+        Yval_simult(count)     = IDX.allV1(uct).dII(1,RespWin);
+        Yval_adapted(count)     = IDX.allV1(uct).dII(2,RespWin);
      end
 
 
 end
-clear IDX
 %resp dimension
 %    50   100
 %    150   250
@@ -48,25 +53,55 @@ clear IDX
 % %     occ(2) = stats.tstat;
 % %     occ(1) = p;
 
-
+%% Linear Regression
+% Simult
+    % test for linearity
+    
+    % Model the regression
+    coef_simult = polyfit(Xval,Yval_simult,1);
+    
+    %Find an R^2
+    clear yfit yresid SSresid SStotal
+    yfit = polyval(coef_simult,Xval);
+    yresid = Yval_simult - yfit;
+    SSresid = sum(yresid.^2);
+    SStotal = (length(Yval_simult)-1) * var(Yval_simult);
+    rsq_simult(RespWin) = 1 - SSresid/SStotal;
+    
+% adapted
+    % test for linearity
+    
+    % Model the regression
+    coef_adapted = polyfit(Xval,Yval_adapted,1);
+    
+    %Find an R^2
+    clear yfit yresid SSresid SStotal
+    yfit = polyval(coef_adapted,Xval);
+    yresid = Yval_adapted - yfit;
+    SSresid = sum(yresid.^2);
+    SStotal = (length(Yval_adapted)-1) * var(Yval_adapted);
+    rsq_adapted(RespWin) = 1 - SSresid/SStotal;
 
 %% PLOT SCATTER
 
 
-
+figure(RespWin)
 %Simult
 subplot(1,2,1)
 scatter(Xval,Yval_simult,[],'magenta')
 hold on
-coef = polyfit(Xval,Yval_simult,1);
-slope(1) = coef(1);
-h(1) = refline(coef(1), coef(2));
+slope(1) = coef_simult(1);
+h(1) = refline(coef_simult(1), coef_simult(2));
 h(1).Color = 'blue';
 hold on
 
+ylim([-.5 .4])
 hline(0)
-ylim([-.4 .4])
-title('Simultaneous')
+vline(0)
+clear simultTitleText
+r2Text = string(rsq_simult(RespWin));
+simultTitleText = {'Simultaneous',strcat('R2 equals_',r2Text)};
+title(simultTitleText,'interpreter', 'none')
 
 % % scatter(Xval,Yval(3,:),[],'red')
 % % hold on
@@ -89,17 +124,31 @@ title('Simultaneous')
 subplot(1,2,2)
 scatter(Xval,Yval_adapted,[],'green')
 hold on
-coef = polyfit(Xval,Yval_adapted,1);
-slope(1) = coef(1);
-h(1) = refline(coef(1), coef(2));
+coef_adapted = polyfit(Xval,Yval_adapted,1);
+slope(1) = coef_adapted(1);
+h(1) = refline(coef_adapted(1), coef_adapted(2));
 h(1).Color = 'red';
 hold on
 
+ylim([-.5 .4])
 hline(0)
-ylim([-.4 .4])
-title('adapted')
+vline(0)
+clear adaptedTitleText r2Text
+r2Text = string(rsq_adapted(RespWin));
+adaptedTitleText = {'Adapted',strcat('R2 equals_',r2Text)};
+title(adaptedTitleText,'interpreter', 'none')
 
-sgtitle('dichoptic influence index vs occularity')
+if RespWin == 1
+    WinText = 'Transient';
+elseif RespWin == 2
+    WinText = 'Sustained';
+elseif RespWin == 3
+    WinText = 'FullTM';
+elseif RespWin == 4
+    WinText = 'Baseline';
+end
+bigTitleText = {'Dichoptic influence index vs adapted effect',WinText};
+sgtitle(bigTitleText)
 
 % % scatter(Xval,Yval(4,:),[],'red')
 % % hold on
@@ -115,6 +164,16 @@ sgtitle('dichoptic influence index vs occularity')
 % % vline(0)
 % % sgtitle(figTitle)
 
-% set(gcf,'Position',[488 327.4000 931.4000 434.6000])
+set(gcf,'Position',[680 558 1005 420])
+
+%% Save Figs?
+if flag_SaveFigs
+    cd('D:\6 Plot Dir\dIIvsOcc')
+    saveas(gcf,strcat('satterRespOcc_',WinText,'.png'))
+end
+
+
+end
+
 
 end

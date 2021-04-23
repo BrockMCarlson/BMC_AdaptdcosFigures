@@ -142,17 +142,15 @@ end
 
 
 %% Get IDX
-if ~exist('D:\5 diIDX dir\AUTOdiIDX_RESPonly_equiocularIncluded.mat','file')
-    AUTOdiIDX_RESPonly_equiocularIncluded
+if ~exist('D:\5 diIDX dir\AUTOdiIDX_RESPonly_AllTMandAdaptedEffect.mat','file')
+    AUTOdiIDX_RESPonly_AllTMandAdaptedEffect
 end
-    load('D:\5 diIDX dir\AUTOdiIDX_RESPonly_equiocularIncluded.mat')
+    load('D:\5 diIDX dir\AUTOdiIDX_RESPonly_AllTMandAdaptedEffect.mat')
 
-visIDX_scatterRESPocc(IDX)
-if flag_SaveFigs
-    error('saveFigDirNotChosenYet')
-    cd('D:\6 Plot Dir')
-    saveas(gcf,'satterRespOcc.svg')
-end
+ flag_SaveFigs = true;
+ close all
+[rsq_simult,rsq_adapted] = visIDX_scatterRESPocc(IDX,flag_SaveFigs)
+
 
 
 %% Bar plots on fig 2 and 3
