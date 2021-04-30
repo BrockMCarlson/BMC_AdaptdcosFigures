@@ -141,24 +141,34 @@ end
 % % % visIDX_EffectofTuning(IDX,dataType)
 
 
+
+
 %% Get IDX
 if ~exist('D:\5 diIDX dir\AUTOdiIDX_RESPonly_AllTMandAdaptedEffect.mat','file')
     AUTOdiIDX_RESPonly_AllTMandAdaptedEffect
 end
     load('D:\5 diIDX dir\AUTOdiIDX_RESPonly_AllTMandAdaptedEffect.mat')
 
- flag_SaveFigs = true;
+ flag_SaveFigs = false;
  close all
 [rsq_simult,rsq_adapted] = visIDX_scatterRESPocc(IDX,flag_SaveFigs)
 
 
 
-%% Bar plots on fig 2 and 3
 if ~exist('D:\5 diIDX dir\AUTOdiIDX_RESPonly_equiocularIncluded.mat','file')
     AUTOdiIDX_RESPonly_equiocularIncluded
 end
-    load('D:\5 diIDX dir\AUTOdiIDX_RESPonly_equiocularIncluded.mat')
+    load('E:\5 diIDX dir\AUTOdiIDX_RESPonly_equiocularIncluded.mat')
 close all
+
+
+%% BMC new occular split analysis 4/30/2021
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ visIDX_scatterRESPocc_binnedOcc(IDX,flag_SaveFigs)
+% !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+%% %% Bar plots on fig 2 and 3
 % optional - use the incongruent stimulus with PS/DE rather than both IC
 % stim.
 % % bmcSuperBarAdaptation_ICPSDE(IDX)
