@@ -1,11 +1,16 @@
-# MasterFunctionName
+# FullTimeClassicBRFS
 
 ## Brief Description
-
+Plot Full time course with physically identical stimulus but re-triggered at second stimulus onset
+Plot figures needed for 1-5 figs on the manuscript
 
 
 ## Goal Figures
-
+1. Fig1 - Full time course BRFS physically same stimulus on example unit for methods figure
+1. Fig2 - dichoptic suppression replication
+1. Fig3 - 2x2 matrix plot. CvsICvsSimultvsAdapted
+1. Fig4 - dII vs occularity
+1. Fig5 - reuse unit from Fig1 and create a cartoon model of intracolumnar suppression
 
 ## Directories
 ### Teba 
@@ -26,7 +31,6 @@
   - dCOSand2x2BarPlots
   - 2x2
 - Polished Figs in Illustrator = E:\adaptdcos figures
-
 
 ## Dependencies
 ### ephys-analysis
