@@ -2,17 +2,17 @@ function PostSetup(user)
 
 % helper function 
 % MAC, Feb 2020
-global HOMEDIR NS6DIR AUTODIR SORTDIR ALIGNDIR STIMDIR SAVEDIR CODEDIR OUTDIR tasks 
+global HOMEDIR NS6DIR AUTODIR SORTDIR ALIGNDIR IDXDIR STIMDIR SAVEDIR CODEDIR OUTDIR tasks 
  
 
 switch user
     
     case {'brock'}
-        NS6DIR   = 'D:\brfs ns6 files\';
-        SORTDIR  = 'D:\3 brfs Phy outputs of KLS sorts\';
-        CODEDIR  = 'C:\Users\Brock\Documents\MATLAB\GitHub\';
-        STIMDIR  = 'D:\4 stimdir for KLS ex units\';
-        OUTDIR  = 'C:\Users\Brock\Documents\MATLAB\Working IDX Dir\dMUA-dCOF\';
+        NS6DIR   = 'E:\brfs ns6 files\';
+        CODEDIR  = 'C:\Users\Brock\Documents\MATLAB\GitHub\BMC_AdaptdcosFigures\adaptdcos\Master figure releases\1.4 - LaminarAnalysis';
+        IDXDIR   = 'E:\5 diIDX dir';
+        STIMDIR  = 'T:\diSTIM - adaptdcos&CRF\STIM';
+        OUTDIR   = 'E:\6 Plot Dir\1.4 LaminarAnalysis';
         
         tasks    = 'brfs';
         
