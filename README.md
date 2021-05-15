@@ -21,18 +21,20 @@ We are interested in probing data types, history, and contrast across a complex 
 
 ## Table of Contents:
 ### Issues released
-- Example Units A
+- 1.1 Example Units A
   - 11/10/20
   - looked at units from 151221_E, 160108_E, 160211_I, & 161005_E.
-- dMUA-dCOF
+- 1.2 dMUA-dCOF
   - 11/10/20
   - current fig2. Code updated into "release" framework.
-### Wiki pages contents (for "Master functions")
-- Example Units A
-  - EyeOriPref
-  - exampleKLS_condCompare
-- dMUA-dCOF
-   - dMUA-dCOF - takes and plots old fig 2 data, but in Modular Function Structure
+- 1.3 FullTimeClassicBRFS
+  - 1/1/2021 - 5/15/2021
+  - Spring 2021 semester
+  - Plotted all figures 1-5 for manuscript draft in the master function
+- 1.4 LaminarAnalysis
+  - 5/15/2021 - present
+  - 2021 Summer
+  - dII by layers and Jake's adaptation analysis.
 
 ## Usage: 
 Please access the accompanying Docs FILE_setup page for re-producing any set of figures. These contain the required direcotires and code repos to be accessed in the case of returning to a figure at a later date.
