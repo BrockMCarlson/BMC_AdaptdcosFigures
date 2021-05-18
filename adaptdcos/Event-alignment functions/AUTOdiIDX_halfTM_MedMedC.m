@@ -25,6 +25,7 @@ count = 0;
 ErrorCount = 0;
 noBrfs = 0;
 yesBrfs = 0;
+paradigm = cell(32,8);
 %% For loop on unit
 for i = 1:length(list)
     
@@ -39,6 +40,10 @@ end
 
 clear STIM nel difiles
 load([didir penetration '.mat'],'STIM')
+for j = 1:length(STIM.paradigm)
+    paradigm(i,j)= STIM.paradigm(j)';
+end
+
 
 % Balance conditions
 if ~any(contains(STIM.paradigm,'brfs'))
@@ -57,6 +62,7 @@ else
     nel = length(STIM.el_labels);
 end
 difiles = unique(STIM.filen(STIM.ditask));
+
 
 
 clear matobj_RESP matobj_SDF win_ms
