@@ -7,7 +7,19 @@ global HOMEDIR NS6DIR AUTODIR SORTDIR ALIGNDIR IDXDIR STIMDIR SAVEDIR CODEDIR OU
 
 switch user
     
-    case {'brock'}
+    case {'brockHome'}
+        NS6DIR   = 'E:\brfs ns6 files\';
+        CODEDIR  = 'C:\Users\Brock Carlson\Documents\GitHub\BMC_AdaptdcosFigures\adaptdcos\Master figure releases\1.4 - LaminarAnalysis';
+        IDXDIR   = 'E:\5 diIDX dir';
+        STIMDIR  = 'T:\diSTIM - adaptdcos&CRF\STIM';
+        OUTDIR   = 'E:\6 Plot Dir\1.4 LaminarAnalysis';
+        
+        tasks    = 'brfs';
+        
+        cd(CODEDIR)
+       
+    
+    case {'brockWork'}
         NS6DIR   = 'E:\brfs ns6 files\';
         CODEDIR  = 'C:\Users\Brock\Documents\MATLAB\GitHub\BMC_AdaptdcosFigures\adaptdcos\Master figure releases\1.4 - LaminarAnalysis';
         IDXDIR   = 'E:\5 diIDX dir';
