@@ -1,9 +1,19 @@
 function summary = RELIABILITY_SELECTION(dat_in, varargin)
+% dat_in does not acount for time
+% dat_in is a cell array of the samples that the function draws from. In a
+% sense this is the trials for a given condition of interest or the
+% "features" presented. I.e. datin = 1x3cell [eye_1,eye_2,eye_3]
+
+%%% THIS function DOES NOT take any information regarding numbers of
+%%% channels or time or anything like that. To look at this through time,
+%%% you need to loop through each time point. you have to play around with
+%%% it and find the most meaninful dimension to look at to you (number of
+%%% trials on the x axis is a pretty good one)
 
 summary.counts          = 'min'; %either vector (e.g., 1:250) or 'min'
 summary.percent         = 80;
 summary.boots           = 1000;
-summary.resample        = false;
+summary.resample        = true; 
 summary.subsample       = false;
 summary.method          = 'counts'; % Alternatives: 'count', 'percent'
 
