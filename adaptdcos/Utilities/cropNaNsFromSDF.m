@@ -1,18 +1,13 @@
-function croppedSDF = cropNaNsFromSDF(SDF)
-croppedSDF = nan(size(SDF,1),size(SDF,2)-2,size(SDF,3));
-for i = 1:size(SDF,1)
-    for j = 1:size(SDF,3)
-       clear holder
-       holder = SDF(i,:,j);
-       nanCount(i,j) = sum(isnan(holder));
-       croppedSDF(i,:,j) = holder(1,1:end-2);
-    end
+function [croppedSDF,croppedSdftm] = cropNaNsFromSDF(SDF,STIM,sdftm)
+% Find trials associated with non-brfs paradigms
+nonBrfsTrials = ((~strcmp(STIM.task,'brfs')) & (~strcmp(STIM.task,'dbrfs')));
+taskSDF = SDF(:,:,nonBrfsTrials);
 
-end
+% Crop dow to [-150 to 200 ms based on sdftm]
+startTm = find(sdftm == -.150);
+stopTm  = find(sdftm == .200);
+croppedSdftm = sdftm(1,startTm:stopTm);
+croppedSDF = taskSDF(:,startTm:stopTm,:);
 
-lengthOut = find(nanCount > 3);
-if ~isempty(lengthOut)
-    error('Too many NaNs')
-end
 
 end

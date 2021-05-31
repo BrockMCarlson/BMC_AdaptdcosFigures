@@ -1,8 +1,5 @@
 function data = D_BAND_BASIC_NODECI( data_in, data_fs, band, band_name, varargin )
-% clear
-% cd('C:\Users\Brock Carlson\Desktop\V1featSelectSandbox')
-% load('151206_E_eD_LFP')
-% croppedSDF = cropNaNsFromSDF(SDF);
+% example input
 % data = D_BAND_BASIC_NODECI(croppedSDF, 1000, [70 150], 'highGamma')
 
 

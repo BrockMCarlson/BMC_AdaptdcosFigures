@@ -2,7 +2,7 @@
 clear
 close all
 PostSetup('brock')
-flag_SaveFigs = true;
+flag_SaveFigs = false;
 
 %% Goal --
 % Make violin plots using Gramm

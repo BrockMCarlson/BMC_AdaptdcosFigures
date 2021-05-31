@@ -1,4 +1,4 @@
-% 1.4.1 Laminar Analysis - Monocular Occularity adaptation
+% 1.4.2 Laminar Analysis - Monocular Occularity adaptation
 clear
 close all
 PostSetup('brock')
