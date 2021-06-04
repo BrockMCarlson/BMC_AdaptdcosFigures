@@ -1,13 +1,6 @@
-function [eyeFeatureTrls, oriFeatureTrls, tiltOfOriFeature]...
-    = findTrialsForFeatures(STIM)
-% Pull trials from STIM for use in RELIABILITY_SELECTION.m
-% Gets out trials in a cell structure for the eye feature selection and for
-% the orientation feature selection. I *think* that this will always pull
-% out the two orientations primarily used on any given day. This assume
-% that they are the only two orientations shown to the subject more than 15
-% times. However.... this could break depending on the day, I'll have to
-% find a consistant way to fix this at a later date if this is an issue.
-
+function [congruentTrls, incongruentTrls]...
+    = findTrialsForCoherence(STIM)
+% Pull trials from STIM for use in mscohere or wcoherence
 
 %ipsi: eye = 2
 eyeFeatureTrls{1} =  find(~STIM.blank & ...
