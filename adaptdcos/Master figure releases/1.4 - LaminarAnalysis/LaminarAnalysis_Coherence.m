@@ -30,7 +30,20 @@ load('151221_E_eD_LFP')
     
 
 % Find trials
- [congruentTrls, incongruentTrls] = findTrialsForCoherence(STIM);
+PS = 0;
+ [congruentTrls, incongruentTrls] = findTrialsForCoherence(STIM,PS);
+ 
+ error('the PS shown by the reliability selection analysis is never shown on this day in the binocular congruent settting.......')
+ so I may have issues in the reliability analysis? 
+ Probably not, trust yourself...
+     Is this just a bad day to look at? Did the online preferences chosen get the coice wrong? Unlikly?
+ Why would they only show the NS to both eyes? This makes no sense.
+ Is this why I have all poor responses in the visual evoked period? PErhaps...
+     I can just run all of this on a differnet day... 
+     Or... I 
+     
+ My problem is that I have to update Alex soon adn it all seems to big but also too inconsequential to do so
+ Idk what to do...
 
 % get SDF out for trils of interest
 SDF_CongTrials = SDF(:,:,congruentTrls);
@@ -46,7 +59,7 @@ x = 7;
 nfft = 2^x; % must be 2^x
 window = nfft*2; %window = nfft also would work if too slow
 noverlap = window-1; %noverlap = window/2 could also work if too slow
-clear cxy_Cong cxy_Incong
+clear cxy_Cong cxy_Incong s
 
 
 % Supragranular
@@ -59,22 +72,31 @@ clear cxy_Cong cxy_Incong
     SDF_IncongCropped_chan0 = squeeze(SDF_IncongCropped(chan0,:,:));
     SDF_IncongCropped_chan1 = squeeze(SDF_IncongCropped(chan1,:,:));
 
-% tic
+% tic 
+clear s
     for i = 1:size(SDF_CongCropped_chan0,2)
         clear holder0 holder1
         holder0 = squeeze(SDF_CongCropped_chan0(:,i));
         holder1 = squeeze(SDF_CongCropped_chan1(:,i));
+        
+        [s(:,:,i)] = spectrogram(holder0,[],[],[],1000);
+%         xspectrogram(holder0,holder1)
 
+%         [wcoh(:,:,i),~,f,coi] = wcoherence(holder0,holder1,1000);
 %          [cxy_Cong(:,i),F] = mscohere(holder0,holder1,window,noverlap,nfft,1000); 
-        [wcoh(:,:,i),~,f,coi] = wcoherence(holder0,holder1,1000);
 
     end
     
-    wcohAvg = mean(wcoh,3);
-    TrialTested = randi(100)
-    wcohTest = wcoh(:,:,TrialTested);
-    helperPlotCoherence(wcohAvg,croppedSdftmforSimult,f,coi,'Seconds','Hz');
-    vline(0)
+sAvg = mean(s,3);
+sAbs = abs(sAvg);
+imagesc(sAbs)
+    
+    %%% Wcoherence
+% % %     wcohAvg = mean(wcoh,3);
+% % %     TrialTested = randi(100)
+% % %     wcohTest = wcoh(:,:,TrialTested);
+% % %     helperPlotCoherence(wcohAvg,croppedSdftmforSimult,f,coi,'Seconds','Hz');
+% % %     vline(0)
     
     % Question 1 - why does it go to 256 Hz? The F vector that I put in has
     % 97 samples ranging from 1.8 Hz to 477 Hz
