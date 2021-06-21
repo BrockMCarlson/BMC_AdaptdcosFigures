@@ -8,11 +8,11 @@ global HOMEDIR NS6DIR AUTODIR SORTDIR ALIGNDIR IDXDIR STIMDIR SAVEDIR CODEDIR OU
 switch user
     
     case {'BrockHome'}
-        NS6DIR   = 'E:\brfs ns6 files\';
+        NS6DIR   = 'D:\brfs ns6 files\';
         CODEDIR  = 'C:\Users\Brock Carlson\Documents\GitHub\BMC_AdaptdcosFigures\adaptdcos\Master figure releases\1.4 - LaminarAnalysis';
-        IDXDIR   = 'E:\5 diIDX dir';
-        STIMDIR  = 'E:\STIM for CRF data';
-        OUTDIR   = 'E:\6 Plot Dir\1.4 LaminarAnalysis\1.4.3 laminar reliability analysis';
+        IDXDIR   = 'D:\5 diIDX dir';
+        STIMDIR  = 'D:\STIM for CRF data';
+        OUTDIR   = 'D:\6 Plot Dir\1.4 LaminarAnalysis\1.4.5 Replicate Old Results and testLFPspec';
         
         tasks    = 'brfs';
         
@@ -24,7 +24,7 @@ switch user
         CODEDIR  = 'C:\Users\Brock\Documents\MATLAB\GitHub\BMC_AdaptdcosFigures\adaptdcos\Master figure releases\1.4 - LaminarAnalysis';
         IDXDIR   = 'E:\5 diIDX dir';
         STIMDIR  = 'E:\STIM for CRF data';
-        OUTDIR   = 'E:\6 Plot Dir\1.4 LaminarAnalysis\1.4.3 laminar reliability analysis';
+        OUTDIR   = 'E:\6 Plot Dir\1.4 LaminarAnalysis\1.4.5 Replicate Old Results and testLFPspec';
         
         tasks    = 'brfs';
         
