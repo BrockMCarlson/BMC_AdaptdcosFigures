@@ -158,11 +158,37 @@ for cond = 1:size(conditionarray,1)
         STIM.soa       == conditionarray(cond,6) & ...
         STIM.monocular == conditionarray(cond,7) & ...
         ((STIM.contrast(:,1)  >= .3) & (STIM.contrast(:,1)   <= .6 ));
+    
+    % Make sure the adapter trials are only for 800ms soa brfs (you can
+    % change this to 200soa later if you want... you must also change
+    % getCond.m)
+        CondTrials{cond} = find(trls);
+        soa800count = 0;
+        soa200count = 0;
+        clear found800soaAdapterTrls found200soaAdapterTrls
+        for sp = 1:size(CondTrials{cond},1)
+            checkSoaTrls(sp,1) = CondTrials{cond}(sp)+1;
+            if STIM.soa(checkSoaTrls(sp,1)) == 800
+                soa800count = soa800count + 1;
+                found800soaAdapterTrls(soa800count) = CondTrials{cond}(sp);
+            elseif STIM.soa(checkSoaTrls(sp,1)) == 200
+                soa200count = soa200count + 1;
+                found200soaAdapterTrls(soa200count) = CondTrials{cond}(sp);
+            else
+                error('This does not work as you suspect it does')
+            end
+        end
         
-    trlsLogical(:,cond) = trls;
-    CondTrials{cond} = find(trls);
-    CondTrialNum_SDF(cond,1) = sum(trls); 
-    SDF_uncrop{cond}   = sdf(:,trls);    
+        adapterTrlsWithCorrectSoa = false(size(trls));
+        if sum(trls) > 0 %found800soaAdapterTrls does not exist if trls is not > 0
+            adapterTrlsWithCorrectSoa(found800soaAdapterTrls) = true;
+        end
+    
+        
+    trlsLogical(:,cond) = adapterTrlsWithCorrectSoa;
+    CondTrials{cond} = find(adapterTrlsWithCorrectSoa);
+    CondTrialNum_SDF(cond,1) = sum(adapterTrlsWithCorrectSoa); 
+    SDF_uncrop{cond}   = sdf(:,adapterTrlsWithCorrectSoa);    
     
     
     elseif cond == 10 || cond == 12 || cond == 14 || cond == 16 || cond == 18 || cond == 20 || cond == 22 || cond == 24
@@ -237,6 +263,8 @@ end
         holder.NDE    = NDE;
         holder.NS    = NS;        
         holder.TM        = TM;
+        
+        holder.CondTrials = CondTrials;
 
         holder.SDF_crop      = SDF_crop;
         holder.SDF_uncrop    = SDF_uncrop;
