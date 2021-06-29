@@ -27,7 +27,7 @@
 %% Initial settings
     clear
     close all
-    PostSetup('BrockHome')
+    PostSetup('BrockWork')
     flag_SaveFigs = false;
 
 % load session data
@@ -125,7 +125,33 @@ for i = 1:length(CondVec)
 end
 
 %% 2b.
-Edit plotSpectorgramFullcontactAvg (maybe save a new file) so that you have
-% Both types of conditions in the file. Just concatenate the conditions
-% together on line 18. Don't worry about balancing the conditions quite
-% yet. Do that when everything is more finalized. 
+
+% Congruent
+CondToCombine = [12 14];
+[SpcTimeVector,F,SpcContactAvg.Cflash] = ...
+    plotSpectrogramFullContactAvg_combineConditions(IDX,CondToCombine);
+
+
+% Incongruent
+CondToCombine = [18 24];
+[SpcTimeVector,F,SpcContactAvg.ICflash] = ...
+    plotSpectrogramFullContactAvg_combineConditions(IDX,CondToCombine);
+
+
+
+SpcContactAvg.flashDiff =...
+    abs(SpcContactAvg.Cflash - SpcContactAvg.ICflash);
+
+
+
+
+% plot
+figure
+imagesc(SpcTimeVector,F,SpcContactAvg.flashDiff) %travg_spc is (f x t)
+colormap bone
+set(gca,'ydir','normal');   
+xlabel('Time (sec)')
+ylabel('Hz')
+vline(0)
+title({'C - IC diff after flash'})
+
