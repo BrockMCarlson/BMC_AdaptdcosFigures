@@ -27,24 +27,23 @@
 %% Initial settings
     clear
     close all
-    PostSetup('BrockWork')
+    PostSetup('BrockHome')
     flag_SaveFigs = false;
 
 % load session data
-    penetration = '151221_E_eD_LFP.mat';
+    penetration = '160102_E_eD_LFP.mat';
     sdfwin  = [-0.150  .5];
 
 % Assign preferences
     X.DE  = 2;
     X.NDE = 3;
-    X.PS  = 0;
-    X.NS  = 90;
+    X.PS  = 125;
+    X.NS  = 35;
     IDX = singleSessionIDX(penetration,sdfwin,X);
+   
+  
 
-% note: Available conditions fro 151221 are as follows:
-% [ 2 3  6 7 8  11 12 13 14  17 18  23 24]
-% Null stim (90) always - when congruent. NS adapted when adapted. all
-% simuls IC conditions available
+
 
 
 %% Goal # 1. Simultaneous c vs IC
@@ -54,11 +53,15 @@
     
 %% 1a. C vs IC averaged across the whole electrode
 
-CondIdx.C   = [NaN 6]; % 6 = congruent NS (this is what was shown on 151221)
+CondIdx.C   = [5 6]; % 6 = congruent NS (this is what was shown on 151221)
 CondIdx.IC  = [7 8]; %It also has trials for 7 and 8, both IC configs
 
 clear SpcContactAvg
 close all
+
+ConditionToTest = CondIdx.C(1);
+[SpcTimeVector,F,SpcContactAvg.C] =...
+    plotSpectrogramFullContactAvg(IDX,ConditionToTest);
 
 ConditionToTest = CondIdx.C(2);
 [SpcTimeVector,F,SpcContactAvg.C] =...
@@ -119,7 +122,7 @@ CondVec = [11 12 13 14 17 18 23 24];
 
 for i = 1:length(CondVec)
 
-    [~,~,SpcContactAvg(i,:,:)] =...
+    [~,~,SpcContactAvg.AllAdapted(i,:,:)] =...
         plotSpectrogramFullContactAvg(IDX,CondVec(i));
 
 end

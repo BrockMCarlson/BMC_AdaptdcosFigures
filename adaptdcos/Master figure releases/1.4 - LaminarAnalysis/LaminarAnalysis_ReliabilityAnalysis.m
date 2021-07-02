@@ -1,7 +1,7 @@
 % 1.4.3 Laminar Analysis - Reliability Analysis
 clear
 close all
-PostSetup('brockWork')
+PostSetup('BrockHome')
 flag_SaveFigs = false;
 
 %% Goal --
@@ -22,7 +22,7 @@ flag_SaveFigs = false;
 % Get our example STMM_LFP
 global STIMDIR
 cd(STIMDIR)
-load('151221_E_eD_LFP')
+load('160102_E_eD_LFP')
 
 %bl Average all lfp data
 blSDF = blSubSDF(SDF,sdftm);
@@ -33,32 +33,32 @@ blSDF = blSubSDF(SDF,sdftm);
 [croppedSDF,croppedSdftm] = cropNaNsFromSDF(blSDF,STIM,sdftm);
     close all
     figure
-    plot(croppedSdftm,squeeze(croppedSDF(5,:,randi(1373,1,50))));
+    plot(croppedSdftm,squeeze(croppedSDF(5,:,randi(529,1,50))));
     title('Raw LFP')
     vline(0)
     xlabel('time from stim onset (sec)')
 
 GammaBand = D_BAND_BASIC_NODECI(croppedSDF, 1000, [70 150], 'highGamma');
     figure
-    plot(croppedSdftm,squeeze(GammaBand.data(5,:,randi(1373,1,50)))); hold on;
+    plot(croppedSdftm,squeeze(GammaBand.data(5,:,randi(529,1,50)))); hold on;
     title('GammaBand')
     vline(0)
     xlabel('time from stim onset (sec)')
     
     figure
-    plot(croppedSdftm,squeeze(GammaBand.highGamma_pwr(5,:,randi(1373,1,50)))); hold on;
+    plot(croppedSdftm,squeeze(GammaBand.highGamma_pwr(5,:,randi(529,1,50)))); hold on;
     title('GammaPwr')
     vline(0)
     xlabel('time from stim onset (sec)')
 
 [trimGammaBand,trimSdftm] = trimGammaBand(GammaBand,croppedSdftm);
     figure
-    plot(trimSdftm,squeeze(trimGammaBand.data(5,:,randi(1373,1,50)))); hold on;
+    plot(trimSdftm,squeeze(trimGammaBand.data(5,:,randi(529,1,50)))); hold on;
     title('GammaBand-trimToTransient')
     xlabel('time from stim onset (sec)')
     
     figure
-    plot(trimSdftm,squeeze(trimGammaBand.highGamma_pwr(5,:,randi(1373,1,50)))); hold on;
+    plot(trimSdftm,squeeze(trimGammaBand.highGamma_pwr(5,:,randi(529,1,50)))); hold on;
     title('GammaPwr-trimToTransient')
     xlabel('time from stim onset (sec)')
 
@@ -87,6 +87,7 @@ for ch = 1:size(GammaBand.data,1)
     oriFeatureSummary(ch) = RELIABILITY_SELECTION(oriFeatureData);
     
 end
+holdUpRightHere
 
 %% Vis code for each channel
 

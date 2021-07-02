@@ -1,7 +1,8 @@
 function [croppedSDF,croppedSdftm] = cropNaNsFromSDF(SDF,STIM,sdftm)
-% Find trials associated with non-brfs paradigms
-nonBrfsTrials = ((~strcmp(STIM.task,'brfs')) & (~strcmp(STIM.task,'dbrfs')));
-taskSDF = SDF(:,:,nonBrfsTrials);
+% % % Find trials associated with non-brfs paradigms
+% % nonBrfsTrials = ((~strcmp(STIM.task,'brfs')) & (~strcmp(STIM.task,'dbrfs')));
+% % taskSDF = SDF(:,:,nonBrfsTrials);
+taskSDF = SDF;
 
 % Crop dow to [-150 to 200 ms based on sdftm]
 startTm = find(sdftm == -.150);
