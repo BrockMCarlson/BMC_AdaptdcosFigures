@@ -27,7 +27,7 @@
 %% Initial settings
     clear
     close all
-    PostSetup('BrockHome')
+    PostSetup('BrockWork')
     flag_SaveFigs = false;
 
 % load session data
@@ -41,8 +41,11 @@
     X.NS  = 35;
     IDX = singleSessionIDX(penetration,sdfwin,X);
    
-  
-
+%       penetration = '151221_E_eD_LFP.mat';
+%    X.DE  = 2;
+%     X.NDE = 3;
+%     X.PS  = 0;
+%     X.NS  = 90;
 
 
 
@@ -60,11 +63,11 @@ clear SpcContactAvg
 close all
 
 ConditionToTest = CondIdx.C(1);
-[SpcTimeVector,F,SpcContactAvg.C] =...
+[SpcTimeVector,F,SpcContactAvg.CPS] =...
     plotSpectrogramFullContactAvg(IDX,ConditionToTest);
 
 ConditionToTest = CondIdx.C(2);
-[SpcTimeVector,F,SpcContactAvg.C] =...
+[SpcTimeVector,F,SpcContactAvg.CNS] =...
     plotSpectrogramFullContactAvg(IDX,ConditionToTest);
 
 ConditionToTest = CondIdx.IC(1);
@@ -76,13 +79,13 @@ ConditionToTest = CondIdx.IC(2);
     plotSpectrogramFullContactAvg(IDX,ConditionToTest);
 
 
-%% 1b: Subtract two spectrograms
+%% 1b: Subtract C-IC spectrograms
 
 SpcContactAvg.diff_highDrive =...
-    abs(SpcContactAvg.C - SpcContactAvg.IC_highDrive);
+    abs(SpcContactAvg.CPS - SpcContactAvg.IC_highDrive);
 
 SpcContactAvg.diff_lowDrive =...
-    abs(SpcContactAvg.C - SpcContactAvg.IC_highDrive);
+    abs(SpcContactAvg.CPS - SpcContactAvg.IC_highDrive);
 
 
 % plot
@@ -105,6 +108,25 @@ xlabel('Time (sec)')
 ylabel('Hz')
 vline(0)
 title({'C - IC diff','lowDriveIC'})
+
+
+%% 1c: Subtract PS-NS spectrograms
+
+SpcContactAvg.diff_PSNS =...
+    abs(SpcContactAvg.CPS - SpcContactAvg.CNS);
+
+
+% plot
+figure
+imagesc(SpcTimeVector,F,SpcContactAvg.diff_PSNS) %travg_spc is (f x t)
+colormap bone
+set(gca,'ydir','normal');   
+xlabel('Time (sec)')
+ylabel('Hz')
+vline(0)
+title({'PS-NS diff'})
+
+
 
 
 %% Goal # 2. Adapted C vs IC

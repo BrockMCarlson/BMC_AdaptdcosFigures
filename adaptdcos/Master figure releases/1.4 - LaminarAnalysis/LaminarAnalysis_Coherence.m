@@ -1,7 +1,7 @@
 % 1.4.4 Laminar Analysis - Coherence
 clear
 close all
-PostSetup('brockWork')
+PostSetup('BrockWork')
 flag_SaveFigs = false;
 
 %% Goal --
@@ -30,7 +30,7 @@ load('151221_E_eD_LFP')
     
 
 % Find trials
-PS = 0;
+PS = 90;
  [congruentTrls, incongruentTrls] = findTrialsForCoherence(STIM,PS);
  
  error('the PS shown by the reliability selection analysis is never shown on this day in the binocular congruent settting.......')
