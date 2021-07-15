@@ -1,15 +1,15 @@
 % FullTimeClassicBRFS - update to use Gramm
 clear
 close all
-PostSetup('BrockWork')
+PostSetup('BrockHome')
 flag_SaveFigs = false;
 
 
 %% Get IDX
-if ~exist('E:\5 diIDX dir\diIDX_AUTO_halfTM_MedMedC.mat','file')
-    AUTOdiIDX_halfTM_MedMedC
+if ~exist('D:\5 diIDX dir\IDXforGrammJuly2021.mat','file')
+    IDXforGrammJuly2021
 end
-    load('E:\5 diIDX dir\diIDX_AUTO_halfTM_MedMedC.mat')
+    load('D:\5 diIDX dir\IDXforGrammJuly2021.mat')
     
 %% Goal - 
 % 1. Take the new SingleSessionIDX code and use it to create IDX variables

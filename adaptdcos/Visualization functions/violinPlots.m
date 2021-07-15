@@ -92,7 +92,7 @@ end
 
 
 
-%% Gram plots
+%% Gramm plots
 close all
 
 % Supra

@@ -1,7 +1,7 @@
 % 1.4.1 Laminar Analysis - dII_laminarViolin
 clear
 close all
-PostSetup('brock')
+PostSetup('BrockHome')
 flag_SaveFigs = false;
 
 %% Goal --
@@ -15,10 +15,10 @@ flag_SaveFigs = false;
 
 
 %% Get IDX - response only (no SDF)
-if ~exist('E:\5 diIDX dir\AUTOdiIDX_RESPonly_AllTMandAdaptedEffect.mat','file')
+if ~exist('D:\5 diIDX dir\AUTOdiIDX_RESPonly_AllTMandAdaptedEffect.mat','file')
     AUTOdiIDX_RESPonly_AllTMandAdaptedEffect
 end
-    load('E:\5 diIDX dir\AUTOdiIDX_RESPonly_AllTMandAdaptedEffect.mat')
+    load('D:\5 diIDX dir\AUTOdiIDX_RESPonly_AllTMandAdaptedEffect.mat')
 
 %     % Full Time Course IDX
 %     cd('E:\5 diIDX dir\')
