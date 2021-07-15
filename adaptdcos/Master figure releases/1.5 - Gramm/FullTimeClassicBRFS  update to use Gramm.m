@@ -1,4 +1,4 @@
-% FullTimeClassicBRFS
+% FullTimeClassicBRFS - update to use Gramm
 clear
 close all
 PostSetup('BrockWork')
@@ -10,37 +10,21 @@ if ~exist('E:\5 diIDX dir\diIDX_AUTO_halfTM_MedMedC.mat','file')
     AUTOdiIDX_halfTM_MedMedC
 end
     load('E:\5 diIDX dir\diIDX_AUTO_halfTM_MedMedC.mat')
+    
+%% Goal - 
+% 1. Take the new SingleSessionIDX code and use it to create IDX variables
+% for all of the sessions where you have trial average and also individual
+% trial data
 
+% 2. Plot all previous figures but update the bar plots and line plots to the
+% gramm plotting structure. This will require new visualization fuctions
+% for each and perhaps restrucuting of the IDX variable? 
 
-%% Plot Full time course for 1 ex day with physically identical stimulus
-% Make sure that you plot each history
-% Not exactly sure where the tm is set, but I need to make sure it is not
-% cut down to 400 - this is where the cropping/padding algorythim that I
-% don't totally understand is going to help or hurt me 
-% I miiiiight skip this if it is too hard.
+% 3. Make a new plot for Alex using the Gramm scatter stacker where we show
+% the violin plots of the response wins (trans and sustained) that
+% describes all of the different conditions of varying levels of "drive".
 
-% Ok. 12.29.20 update. I am indeed going to skip this because, no matter
-% what, making two tm lengths of SDF varibles will require different IDXes.
-% I do want to do the full time IDX but im not sure if it will be too big
-% of data and crash the computer. Also, I'm not sure if going past a second
-% stimulus will create other issues in the code (it shouldent but I'm not
-% sure) so I will tackle this later either. A) as a sanity check or B) if
-% the re-trigger option does not line up well or does not look right.
-
-% I made loose trials with this version as trials that did not go for 1800
-% ms of fixation may not be kept. . Althought I know that these trials do
-% exist becaus othersie the re-triggered brfs suppressor stimuli should be
-% aborted.
-
-
-
-%% Plot the same as above but re-triggered at second stimulus onset
-% this is a sanity check to make sure I am not mis-finding the 
-% This may be all I have (I guess I'll just have to start looking in order
-% to know). 
-% HOWEVER, an additional problem may be that all of the timecourses are cut
-% at 400ms post stimulus onset and I cannot therefore represent the whole
-% sequence without re-acquiring an IDX. I think this is correct.
+%%
 
 dataType = 'z-scored';
 visIDX_FullTmBRFS_AllCond(IDX,dataType)

@@ -1,7 +1,7 @@
 % 1.4.3 Laminar Analysis - Reliability Analysis
 clear
 close all
-PostSetup('BrockHome')
+PostSetup('BrockWork')
 flag_SaveFigs = false;
 
 %% Goal --
@@ -22,6 +22,7 @@ flag_SaveFigs = false;
 % Get our example STMM_LFP
 global STIMDIR
 cd(STIMDIR)
+% load('151221_E_eD_LFP')
 load('160102_E_eD_LFP')
 
 %bl Average all lfp data
@@ -87,7 +88,6 @@ for ch = 1:size(GammaBand.data,1)
     oriFeatureSummary(ch) = RELIABILITY_SELECTION(oriFeatureData);
     
 end
-holdUpRightHere
 
 %% Vis code for each channel
 
