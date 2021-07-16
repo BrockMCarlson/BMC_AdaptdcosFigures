@@ -1,4 +1,4 @@
-function IDX = IDXforGrammJuly2021(penetration,sdfwin,X);
+function IDX = IDXforGrammJuly2021;
 
 %% load session data
 global STIMDIR
@@ -63,16 +63,15 @@ difiles = unique(STIM.filen(STIM.ditask));
 
 
 
-clear matobj_RESP matobj_SDF win_ms
-matobj_RESP = matfile([didir penetration '_AUTO.mat']);
+clear matobj matobj win_ms
+matobj = matfile([didir penetration anaType]);
 if contains(anaType,'CSD') || contains(anaType,'AUTO')
     youAreGood = true;
 else
-    matobj_RESP= matfile([didir penetration anaType]);
+    matobj= matfile([didir penetration anaType]);
 end
-matobj_SDF = matfile([didir penetration anaType]);
 
-win_ms = matobj_RESP.win_ms;
+win_ms = matobj.win_ms;
 if isequal(win_ms(3,:),[50 250])
     respDimension = 3;
 elseif isequal(win_ms(4,:),[50 250])
@@ -91,7 +90,7 @@ for e = 1:nel
    
 
     clear respFullTM resp sdf sdftm X M TRLS SUB 
-    respFullTM = squeeze(matobj_RESP.RESP(e,respDimension,:));
+    respFullTM = squeeze(matobj.RESP(e,respDimension,:));
 
     % get "goodfiles" for each cluster
     % i.e., the files over which the cluster is present
@@ -216,13 +215,13 @@ end; clear w
 %% Pull out SDF
 % Pre-allocate
 clear  cond SDF SDF_uncrop SDF_crop sdf resp trlsLogical
-CondTrialNum_SDF = nan(size(condition,1),1);
+CondTrialNum = nan(size(condition,1),1);
 CondTrials = cell(size(condition,1),1);
-sdf  = squeeze(matobj_SDF.SDF(e,:,:));
-resp = squeeze(matobj_RESP.RESP(e,:,:))';
+sdf  = squeeze(matobj.SDF(e,:,:));
+resp = squeeze(matobj.RESP(e,:,:));
 SDF_uncrop  = cell(size(condition,1),1);
 SDF_crop    = cell(size(condition,1),1);
-RESP_cond   = cell(size(condition,1),4);
+RESP_alltrls   = cell(size(condition,1),1);
 
 for cond = 1:size(conditionarray,1)
     clear trls    
@@ -305,10 +304,9 @@ for cond = 1:size(conditionarray,1)
     
     trlsLogical(:,cond) = trls;
     CondTrials{cond} = find(trls);
-    CondTrialNum_SDF(cond,1) = sum(trls); 
+    CondTrialNum(cond,1) = sum(trls); 
     SDF_uncrop{cond}   = sdf(:,trls); 
-    RESP_cond{cond,:}        = resp(:,trls);
-    error('something wrong with assignment here')
+    RESP_alltrls{cond}        = resp(:,trls);
 end
 
 
@@ -339,7 +337,18 @@ end
             end
             SDF_crop{cond} = data_crop;
         end
-        
+
+%% Get avg results and cumsum
+SDF_avg     = cell(size(condition,1),1);
+SDF_cumsum 	= cell(size(condition,1),1);
+RESP_avg    = cell(size(condition,1),1);
+clear cond
+for cond = 1:size(conditionarray,1)
+    sdfholder = SDF_crop{cond};
+    SDF_avg{cond} = mean(SDF_crop{cond},2);
+    SDF_cumsum{cond} = mean(cumsum(sdfholder),2); %get the cumulative sum for each trial, average over all trials, ouput is trial-averaged cumulative sum for each condition.
+    RESP_avg{cond}= mean(RESP_alltrls{cond},2);
+end
         
 
 %% SAVE  IDX
@@ -355,24 +364,33 @@ end
 
         holder.depth = STIM.depths(e,:)';
 
-        holder.mask         = any(STIM.rsvpmask(STIM.cued ~=0));
         holder.dicontrast   = stimcontrast';
-
+        
+        %Anove tuning from diUnitTuning
         holder.DE    = DE;
         holder.PS    = PS;
         holder.NDE    = NDE;
-        holder.NS    = NS;        
-        holder.TM        = TM;
+        holder.NS    = NS; 
         
+        % Condition info
         holder.CondTrials = CondTrials;
-
-        holder.SDF_crop      = SDF_crop;
-        holder.SDF_uncrop    = SDF_uncrop;
-
-
         holder.condition        = condition;
-        holder.CondTrialNum_SDF     = CondTrialNum_SDF;        
+        holder.CondTrialNum     = CondTrialNum;        
+
+        % Continuous data info
+        holder.TM           = TM;
+        holder.SDF_crop     = SDF_crop;
+        holder.SDF_avg      = SDF_avg;
+        holder.SDF_cumsum   = SDF_cumsum;  %get the cumulative sum for each trial, average over all trials, ouput is trial-averaged cumulative sum for each condition.
+
+        % Time-win binned info;
+        holder.win_ms           = win_ms;
+        holder.RESP_alltrls     = RESP_alltrls;
+        holder.RESP_avg         = RESP_avg;
         
+        
+        %Save the STIM - in case you ever need to troubleshoot what the
+        %selections are for each trial. Access from CondTrials
         holder.STIM               = STIM;
 
 
@@ -402,7 +420,8 @@ end
 
 %% SAVE
 if flag_saveIDX
-    cd('D:\5 diIDX dir')
+    global IDXDIR
+    cd(IDXDIR)
 %     if isfile(strcat(saveName,'.mat'))
 %         error('file already exists')        
 %     end
@@ -412,7 +431,7 @@ else
     warning('IDX not saved')
 end
 
-toc
+
 
 load gong
 sound(y,Fs)

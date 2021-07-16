@@ -1,18 +1,21 @@
 % FullTimeClassicBRFS - update to use Gramm
 clear
 close all
-PostSetup('BrockHome')
+PostSetup('BrockWork')
 flag_SaveFigs = false;
 
 
 %% Get IDX
-if ~exist('D:\5 diIDX dir\IDXforGrammJuly2021.mat','file')
+global IDXDIR
+cd(IDXDIR)
+if ~exist(strcat(IDXDIR,'\IDXforGrammJuly2021.mat'),'file')
     IDXforGrammJuly2021
 end
-    load('D:\5 diIDX dir\IDXforGrammJuly2021.mat')
+    load(strcat(IDXDIR,'\IDXforGrammJuly2021.mat'))
     
 %% Goal - 
-% 1. Take the new SingleSessionIDX code and use it to create IDX variables
+% 1. Take the new IDXforGrammJuly2021 (based on SingleSessionIDX) 
+% code and use it to create IDX variables
 % for all of the sessions where you have trial average and also individual
 % trial data
 
@@ -24,95 +27,34 @@ end
 % the violin plots of the response wins (trans and sustained) that
 % describes all of the different conditions of varying levels of "drive".
 
-%%
-
-dataType = 'z-scored';
-visIDX_FullTmBRFS_AllCond(IDX,dataType)
-
-% Save all plots
-% Hopefully in an intelligent way that is doccumented on GitHub
-if flag_SaveFigs
-    FolderName = 'D:\6 Plot Dir\FullTm_160108_AllCond';   % Your destination folder
-    cd(FolderName)
-    FigList = findobj(allchild(0), 'flat', 'Type', 'figure');
-    for iFig = 1:length(FigList)
-      FigHandle = FigList(iFig);
-      FigName   = num2str(get(FigHandle, 'Number'));
-      set(0, 'CurrentFigure', FigHandle);
-      savefig(fullfile(FolderName, [FigName '.fig']));
-      saveas(FigHandle,fullfile(FolderName, [FigName '.svg']));
-    end
-end
 
 
-%% Plot and save re-trig
-%Plot
+
+
+%% gramm_dCOS -- built from dCOS fig and violinPlots
 close all
 dataType = 'z-scored';
-visIDX_FullTmBRFS_ReTrig(IDX,dataType)
+gramm_dCOS(IDX,dataType)
 
-%Save
 
-if flag_SaveFigs
-    FolderName = 'D:\6 Plot Dir\FullTm__160108_BRFSonlyreTrig';   % Your destination folder
-    cd(FolderName)
-    FigList = findobj(allchild(0), 'flat', 'Type', 'figure');
-    for iFig = 1:length(FigList)
-      FigHandle = FigList(iFig);
-      FigName   = num2str(get(FigHandle, 'Number'));
-      set(0, 'CurrentFigure', FigHandle);
-      savefig(fullfile(FolderName, [FigName '.fig']));
-      saveas(FigHandle,fullfile(FolderName, [FigName '.svg']));
-    end
-end
-
-%% Plot conditions as average of all units
+%% gramm_2x2 -- built from visIDX_2x2Fig and violin plots
 close all
 dataType = 'z-scored';
-visIDX_FullTmBRFS_AllCond_AllContacts(IDX,dataType)
-if flag_SaveFigs
-    FolderName = 'D:\6 Plot Dir\FullTm_AllContacts_AllCond';   % Your destination folder
-    cd(FolderName)
-    FigList = findobj(allchild(0), 'flat', 'Type', 'figure');
-    for iFig = 1:length(FigList)
-      FigHandle = FigList(iFig);
-      FigName   = num2str(get(FigHandle, 'Number'));
-      set(0, 'CurrentFigure', FigHandle);
-      savefig(fullfile(FolderName, [FigName '.fig']));
-      saveas(FigHandle,fullfile(FolderName, [FigName '.svg']));
-    end
-end
+gramm_2x2(IDX,dataType)
 
-%% Plot dCOS as average of two IC
+
+
+%% gramm_2x2 laminar - built from 
 close all
 dataType = 'z-scored';
-visIDX_dCOSFig(IDX,dataType)
-if flag_SaveFigs
-    cd('D:\6 Plot Dir')
-    saveas(gcf,'dCOS.svg')
-end
+gramm_2x2_laminar(IDX,dataType)
 
-%% Plot 2x2
+%% gramm_driveAndGain
 close all
 dataType = 'z-scored';
-visIDX_2x2Fig(IDX,dataType)
-if flag_SaveFigs
-    FolderName = 'D:\6 Plot Dir\2x2';   % Your destination folder
-    cd(FolderName)
-    FigList = findobj(allchild(0), 'flat', 'Type', 'figure');
-    for iFig = 1:length(FigList)
-      FigHandle = FigList(iFig);
-      FigName   = num2str(get(FigHandle, 'Number'));
-      set(0, 'CurrentFigure', FigHandle);
-      savefig(fullfile(FolderName, [FigName '.fig']));
-      saveas(FigHandle,fullfile(FolderName, [FigName '.svg']));
-    end
-end
+gramm_driveAndGain(IDX,dataType)
 
 
-%%
-
-%%
 %%
 %% Get new untuned IDX -- This did not work as expected
 % % clear
