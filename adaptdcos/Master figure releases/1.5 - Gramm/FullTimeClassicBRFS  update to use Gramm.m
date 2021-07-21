@@ -29,30 +29,27 @@ end
 
 
 
-
+close all
 
 %% gramm_dCOS -- built from dCOS fig and violinPlots
-close all
-dataType = 'z-scored';
-gramm_dCOS(IDX,dataType)
-
+gramm_dCOS_line(IDX);
+gramm_dCOS_RESP(IDX);
 
 %% gramm_2x2 -- built from visIDX_2x2Fig and violin plots
-close all
-dataType = 'z-scored';
-gramm_2x2(IDX,dataType)
+gramm_2x2_line(IDX)
+gramm_2x2_subline(IDX)
+
+HEY! YOU ARE RIGHT HERE!!! JUST GO ONTO THE 2X2_RESP plots!!
+make it match gramm_dCOS_RESP pleasseee
+gramm_2x2_RESP(IDX)
 
 
 
-%% gramm_2x2 laminar - built from 
-close all
-dataType = 'z-scored';
-gramm_2x2_laminar(IDX,dataType)
+%% gramm_2x2 laminar.
+gramm_2x2_laminar(IDX)
 
 %% gramm_driveAndGain
-close all
-dataType = 'z-scored';
-gramm_driveAndGain(IDX,dataType)
+gramm_driveAndGain(IDX)
 
 
 %%

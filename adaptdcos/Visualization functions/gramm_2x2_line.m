@@ -1,4 +1,4 @@
-function gramm_dCOS(IDX)
+function gramm_2x2_line(IDX)
 %% Goal
 % use gramm and plot the simultaneous congruent, incongruent, and monoc
 % preferred.
@@ -12,18 +12,18 @@ TM = IDX.allV1(1).TM(1:560);
 clear DataForVis
 count = 0;
 uctLength = length(IDX.allV1);
-for condLabel = [1 5 7 8]
+for condLabel = [5 7 10 18]
    for uct = 1:uctLength
        count = count + 1;       
        % Categoricals - IVs
-       if condLabel == 1
-           DataForVis.condLabel{count} = 'Monocular';
-       elseif condLabel == 5
+       if condLabel == 5
            DataForVis.condLabel{count} = 'Binocular';
        elseif condLabel == 7
            DataForVis.condLabel{count} = 'Dichoptic';
-       elseif condLabel == 8
-           DataForVis.condLabel{count} = 'Dichoptic';       
+       elseif condLabel == 10
+           DataForVis.condLabel{count} = 'Binoc Adapted';
+       elseif condLabel == 18
+           DataForVis.condLabel{count} = 'Dichop Adapted';
        end
 
        % DV - SDF
@@ -34,33 +34,29 @@ for condLabel = [1 5 7 8]
            DataForVis.SDF{count,1} = IDX.allV1(uct).SDF_avg{condLabel}(1:560)';
        end
        
-       % DV - RESP
-       DataForVis.RESPtrans{count,1} = IDX.allV1(uct).RESP_avg{condLabel}(1);
-       DataForVis.RESPsusta{count,1} = IDX.allV1(uct).RESP_avg{condLabel}(2);
-       
    end
 end
 
 
 
 %% Gramm plots for vis repeated trajectories
-close all
 clear g
 % g(1,1)=gramm('x',x,'y',y,'color',c);
 
 g(1,1)=gramm('x',TM,'y',DataForVis.SDF,'color',DataForVis.condLabel);
-g.axe_property('XLim',[-.050 .350]);
+g.axe_property('XLim',[-.050 .5]);
 g.axe_property('YLim',[0 200]);
 g.geom_vline('xintercept',0)
 
 g(1,1).stat_summary();
 g(1,1).set_title('stat_summary()');
 g(1,1).set_color_options('map','brewer2');
-g(1,1).set_order_options('x',0);
+g(1,1).set_order_options('color',0);
+g(1,1).geom_polygon('x',{[.05 .1 .1 .05] ; [.15 .25 .25 .15]} ,'y',{[40 40 190 190];  [40 40 190 190]},'color',[.5 .5 .5]);
 
 
-g.set_title('Dichoptic Suppression');
-figure('Position',[100 100 800 550]);
+g.set_names('x','Time (sec)','y','Impulses/sec','color','Visual Stimulus');g.set_title('Simult vs Adapted');
+figure('Position',[292 260 1042 550]);
 g.draw();
 
 set([g.results.stat_summary.line_handle],'LineWidth',3);
