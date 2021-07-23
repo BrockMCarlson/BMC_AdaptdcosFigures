@@ -50,7 +50,7 @@ g.geom_vline('xintercept',0)
 g(1,1).stat_summary();
 g(1,1).set_title('stat_summary()');
 g(1,1).set_color_options('map','brewer2');
-g(1,1).set_order_options('x',0);
+g(1,1).set_order_options('x',0,'color',0);
 g(1,1).geom_polygon('x',{[.05 .1 .1 .05] ; [.15 .25 .25 .15]} ,'y',{[40 40 190 190];  [40 40 190 190]},'color',[.5 .5 .5]);
 
 

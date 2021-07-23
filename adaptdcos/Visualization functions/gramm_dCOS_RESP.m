@@ -50,7 +50,6 @@ end
 
 %% Gramm plots for vis repeated trajectories
 
-
 clear g
 
 x_resp = DataForVis.tmBlock;
@@ -58,38 +57,30 @@ y_resp = DataForVis.RESP;% Y values must be in format "double"
 c_resp = DataForVis.condLabel;
 
 
-
-g(1,1)=gramm('x',x_resp,'y',y_resp,'color',c_resp);
-g(1,2)=copy(g(1));
-g(1,3)=copy(g(1));
-
-%Averages with confidence interval
+% Violin plot with stat_summary
+g(1,1)=gramm('x',c_resp,'y',y_resp,'color',c_resp,'subset',strcmp(DataForVis.tmBlock,'Transient'));
+g(1,1).set_order_options('x',0,'color',0)
+g(1,1).set_names('x','Stimulus Presented','y','Impulses/sec','color','Stimulus Presented');
+g(1,1).stat_violin('normalization','width','dodge',0,'fill','transparent');
+% g(1,1).stat_boxplot('width',0.15);
 g(1,1).stat_summary('geom',{'point' 'errorbar'},'dodge',0.3,'width',0.5);
-g(1,1).set_title('stat_summary()');
-g(1,1).set_order_options('x',0,'color',0);
+g(1,1).set_title('Transient time period (50-100ms)');
+g(1,1).set_color_options('map','brewer_dark');
 
-
-
-%Boxplots
-g(1,2).stat_boxplot();
-g(1,2).set_title('stat_boxplot()');
-g(1,2).set_order_options('x',0,'color',0);
-
-
-
-%Violin plots
-g(1,3).stat_violin('fill','transparent');
-g(1,3).set_title('stat_violin()');
-g(1,3).set_order_options('x',0,'color',0);
-
-
-%These functions can be called on arrays of gramm objects
-g.set_names('x','Time Window','y','Impulses/sec','color','Visual Stimulus');
-g.set_title('Dichoptic Suppression');
+g(1,2)=gramm('x',c_resp,'y',y_resp,'color',c_resp,'subset',strcmp(DataForVis.tmBlock,'Sustained'));
+g(1,2).set_order_options('x',0,'color',0)
+g(1,2).set_names('x','Stimulus Presented','y','Impulses/sec','color','Stimulus Presented');
+g(1,2).stat_violin('normalization','width','dodge',0,'fill','transparent');
+% g(1,2).stat_boxplot('width',0.15);
+g(1,2).stat_summary('geom',{'point' 'errorbar'},'dodge',0.3,'width',0.5);
+g(1,2).set_title('Sustained time period (150-250ms)');
+g(1,2).set_color_options('map','brewer_dark');
 
 
 figure('Position',[107 403 1580 492]);
+g.axe_property('YLim',[0 450]);
 g.draw();
+
 
 
 

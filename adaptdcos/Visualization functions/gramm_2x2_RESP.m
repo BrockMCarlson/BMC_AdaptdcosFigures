@@ -1,4 +1,4 @@
-function gramm_2x2_RESP(IDX)
+function gramm_dCOS_RESP(IDX)
 %% Goal
 % use gramm and plot the simultaneous congruent, incongruent, and monoc
 % preferred.
@@ -18,26 +18,27 @@ for tmBlock = 1:2
            count = count + 1;       
            % Categoricals - IVs
            if tmBlock == 1
-               DataForVis.tmBlock{count} = 'Transient';
+               DataForVis.tmBlock{count,1} = 'Transient';
            elseif tmBlock == 2
-               DataForVis.tmBlock{count} = 'Sustained';
+               DataForVis.tmBlock{count,1} = 'Sustained';
            end
            
            if condLabel == 5
-               DataForVis.condLabel{count} = 'Binocular';
+               DataForVis.condLabel{count,1} = 'Binocular';
            elseif condLabel == 7
-               DataForVis.condLabel{count} = 'Dichoptic';
+               DataForVis.condLabel{count,1} = 'Dichoptic';
            elseif condLabel == 10
-               DataForVis.condLabel{count} = 'Binoc Adapted';
+               DataForVis.condLabel{count,1} = 'Binoc Adapted';
            elseif condLabel == 18
-               DataForVis.condLabel{count} = 'Dichop Adapted';
+               DataForVis.condLabel{count,1} = 'Dichop Adapted';       
            end
 
 
-           % DV - RESP
-           DataForVis.RESP{count} = IDX.allV1(uct).RESP_avg{condLabel}(tmBlock);
            
-           if isnan(DataForVis.RESP{count})
+           % DV - RESP
+           DataForVis.RESP(count,1) = IDX.allV1(uct).RESP_avg{condLabel}(tmBlock);
+           
+           if isnan(DataForVis.RESP(count,1))
                count = count - 1;  %write over NaNs
            end
 
@@ -48,50 +49,43 @@ end
 
 
 %% Gramm plots for vis repeated trajectories
-close all
 
-% Supra
+
 clear g
 
-g(1,1)=gramm('x',DataForVis.tmBlock,'y', DataForVis.RESP,'color',DataForVis.condLabel)
-g(1,2)=copy(g(1));
-g(1,3)=copy(g(1));
-g(2,1)=copy(g(1));
-g(2,2)=copy(g(1));
+x_resp = DataForVis.tmBlock;
+y_resp = DataForVis.RESP;% Y values must be in format "double"
+c_resp = DataForVis.condLabel;
 
 
-%Raw data as scatter plot
-g(1,1).geom_point();
-g(1,1).set_title('geom_point()');
-g(1,1).set_order_options('x',{'Transient','Sustained'});
+% Violin plot with stat_summary
+g(1,1)=gramm('x',c_resp,'y',y_resp,'color',c_resp,'subset',strcmp(DataForVis.tmBlock,'Transient'));
+g(1,1).set_order_options('x',0,'color',0)
+g(1,1).set_names('x','Stimulus Presented','y','Impulses/sec','color','Stimulus Presented');
+g(1,1).stat_violin('normalization','width','dodge',0,'fill','transparent');
+% g(1,1).stat_boxplot('width',0.15);
+g(1,1).stat_summary('geom',{'point' 'errorbar'},'dodge',0.3,'width',0.5);
+g(1,1).set_title('Transient time period (50-100ms)');
+g(1,1).set_color_options('map','brewer_dark');
+
+g(1,2)=gramm('x',c_resp,'y',y_resp,'color',c_resp,'subset',strcmp(DataForVis.tmBlock,'Sustained'));
+g(1,2).set_order_options('x',0,'color',0)
+g(1,2).set_names('x','Stimulus Presented','y','Impulses/sec','color','Stimulus Presented');
+g(1,2).stat_violin('normalization','width','dodge',0,'fill','transparent');
+% g(1,2).stat_boxplot('width',0.15);
+g(1,2).stat_summary('geom',{'point' 'errorbar'},'dodge',0.3,'width',0.5);
+g(1,2).set_title('Sustained time period (150-250ms)');
+g(1,2).set_color_options('map','brewer_dark');
 
 
-%Jittered scatter plot
-g(1,2).geom_jitter('width',0.4,'height',0);
-g(1,2).set_title('geom_jitter()');
-g(1,2).set_order_options('x',{'Transient','Sustained'});
-
-%Averages with confidence interval
-% g(1,3).stat_summary('geom',{'bar','black_errorbar'});
-g(1,3).set_title('stat_summary()');
-% g(1,3).set_order_options('x',{'Transient','Sustained'});
-
-%Boxplots
-% g(2,1).stat_boxplot();
-g(2,1).set_title('stat_boxplot()');
-% g(2,1).set_order_options('x',{'Transient','Sustained'});
-
-%Violin plots
-g(2,2).stat_violin('fill','transparent');
-g(2,2).set_title('stat_violin()');
-g(2,2).set_order_options('x',{'Transient','Sustained'});
-
-%These functions can be called on arrays of gramm objects
-% g.set_names('x','Resp Win','y','dII','color','SOA');
-g.set_title('dCOS RESP');
-
-
+figure('Position',[107 403 1580 492]);
+g.axe_property('YLim',[0 500]);
 g.draw();
+
+
+
+
+
 
 
 
