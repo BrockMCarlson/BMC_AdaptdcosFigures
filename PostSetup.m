@@ -12,7 +12,7 @@ switch user
         CODEDIR  = 'C:\Users\Brock Carlson\Documents\GitHub\BMC_AdaptdcosFigures\adaptdcos\Master figure releases\1.4 - LaminarAnalysis';
         IDXDIR   = 'D:\5 diIDX dir';
         STIMDIR  = 'D:\STIM for CRF data';
-        OUTDIR   = 'D:\6 Plot Dir\1.4 LaminarAnalysis\1.4.5 Replicate Old Results and testLFPspec';
+        OUTDIR   = 'E:\6 Plot Dir\1.5 Gramm\outputs from 1.5 master code';
         
         tasks    = 'brfs';
         
@@ -24,7 +24,7 @@ switch user
         CODEDIR  = 'C:\Users\Brock\Documents\MATLAB\GitHub\BMC_AdaptdcosFigures\adaptdcos\Master figure releases\1.4 - LaminarAnalysis';
         IDXDIR   = 'E:\5 diIDX dir';
         STIMDIR  = 'E:\STIM for CRF data';
-        OUTDIR   = 'E:\6 Plot Dir\1.4 LaminarAnalysis\1.4.5 Replicate Old Results and testLFPspec';
+        OUTDIR   = 'E:\6 Plot Dir\1.5 Gramm\outputs from 1.5 master code';
         
         tasks    = 'brfs';
         

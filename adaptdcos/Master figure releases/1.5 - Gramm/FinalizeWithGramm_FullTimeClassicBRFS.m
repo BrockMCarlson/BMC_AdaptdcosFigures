@@ -27,8 +27,6 @@ end
 % the violin plots of the response wins (trans and sustained) that
 % describes all of the different conditions of varying levels of "drive".
 
-
-
 close all
 
 %% gramm_dCOS -- built from dCOS fig and violinPlots
@@ -49,6 +47,10 @@ gramm_2x2laminar_subline(IDX)
 
 %% gramm_driveAndGain
 gramm_driveAndGain(IDX)
+gramm_adaptationEffect(IDX)
 
+
+global OUTDIR
+cd(OUTDIR)
 
 
