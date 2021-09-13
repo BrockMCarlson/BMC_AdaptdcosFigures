@@ -57,7 +57,7 @@ g(1,1).geom_polygon('x',{[.05 .1 .1 .05] ; [.15 .25 .25 .15]} ,'y',{[40 40 190 1
 g.set_names('x','Time (sec)','y','Impulses/sec','color','Visual Stimulus');
 g.set_title('Dichoptic Suppression');
 % figure('Position',[100 100 800 550]);
-figure('Position',[292 260 1042 550]);
+figure('Position',[166.6000 157.8000 1.0136e+03 549.6000]);
 
 g.draw();
 

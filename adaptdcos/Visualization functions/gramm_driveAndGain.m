@@ -78,10 +78,15 @@ c_resp = DataForVis.catColor;
 % Violin plot with stat_summary
 g(1,1)=gramm('x',c_resp,'y',y_resp,'color',c_resp,'subset',strcmp(DataForVis.tmBlock,'Transient'));
 g(2,1)=gramm('x',c_resp,'y',y_resp,'color',c_resp,'subset',strcmp(DataForVis.tmBlock,'Sustained'));
+% % for i = 1:2
+% %     g(i,1).stat_violin('normalization','width','dodge',0,'fill','transparent');
+% %     g(i,1).facet_grid([],x_resp);
+% %     g(i,1).stat_boxplot('width',0.5);
+% % end
+
 for i = 1:2
-    g(i,1).stat_violin('normalization','width','dodge',0,'fill','transparent');
+    g(i,1).stat_summary('geom',{'point' 'errorbar'},'dodge',0.3,'width',0.5);
     g(i,1).facet_grid([],x_resp);
-    g(i,1).stat_boxplot('width',0.5);
 end
 
 g.set_order_options('x',0,'color',0,'column',0)

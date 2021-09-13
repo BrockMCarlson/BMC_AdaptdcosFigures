@@ -21,7 +21,7 @@ switch user
     
     case {'BrockWork'}
         NS6DIR   = 'E:\brfs ns6 files\';
-        CODEDIR  = 'C:\Users\Brock\Documents\MATLAB\GitHub\BMC_AdaptdcosFigures\adaptdcos\Master figure releases\1.4 - LaminarAnalysis';
+        CODEDIR  = 'C:\Users\Brock\Documents\MATLAB\GitHub\BMC_AdaptdcosFigures\adaptdcos\Master figure releases\1.6 - JakesAdditions';
         IDXDIR   = 'E:\5 diIDX dir';
         STIMDIR  = 'E:\STIM for CRF data';
         OUTDIR   = 'E:\6 Plot Dir\1.5 Gramm\outputs from 1.5 master code';

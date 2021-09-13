@@ -67,9 +67,8 @@ end
 
 %% Gramm plots for vis repeated trajectories
 
-
+figure
 clear g
-close all
 
 x_resp = DataForVis.catX;
 y_resp = DataForVis.RESP;% Y values must be in format "double"
@@ -79,9 +78,12 @@ c_resp = DataForVis.catColor;
 % Violin plot with stat_summary
 g(1,1)=gramm('x',c_resp,'y',y_resp,'color',x_resp,'subset',strcmp(DataForVis.tmBlock,'Transient'));
 % % g(2,1)=gramm('x',c_resp,'y',y_resp,'color',x_resp,'subset',strcmp(DataForVis.tmBlock,'Sustained'));
-% % for i = 1:2
-    g(1,1).stat_summary('geom',{'area'});
-% % end
+
+% g(1,1).stat_summary('geom',{'area'});
+
+    g(1,1).stat_summary('geom',{'point' 'errorbar'},'dodge',0.3,'width',0.5);
+
+
 
 g.set_order_options('x',0,'color',0,'column',0)
 g.set_names('x','Stimulus Presented','y','Impulses/sec','color','Stimulus Presented');
