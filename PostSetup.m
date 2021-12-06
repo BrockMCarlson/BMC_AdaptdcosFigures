@@ -34,17 +34,14 @@ switch user
        
               
     case {'BrockExUnitTest'}
-        HOMEDIR  = 'C:\Users\Brock\Documents\MATLAB\GitHub\';
-        NS6DIR   = 'C:\Users\Brock\Desktop\151221_E_eD\';
-        AUTODIR  = 'C:\Users\Brock\Desktop\151221_E_eD\';
-        ALIGNDIR = 'C:\Users\Brock\Desktop\151221_E_eD\';
-        STIMDIR  = 'C:\Users\Brock\Desktop\151221_E_eD\';
-        SORTDIR  =  'C:\Users\Brock\Desktop\151221_E_eD\KLSoutputs\';
-        SAVEDIR  = 'C:\Users\Brock\Desktop\151221_E_eD\';
-        CODEDIR  =  'C:\Users\Brock\Documents\MATLAB\GitHub\';
-        OUTDIR   =  'C:\Users\Brock\Desktop\151221_E_eD\Plot Directory\';
+        CODEDIR  = 'C:\Users\Brock Carlson\Documents\GitHub\BMC_AdaptdcosFigures\adaptdcos\Master figure releases\1.5 - Gramm';
+        IDXDIR   = 'E:\5 diIDX dir';
+        STIMDIR  = 'E:\SANDBOX\STIM';
+        OUTDIR   = 'E:\6 Plot Dir\SANDBOX_OUTDIR';
+        
         tasks    = 'brfs';
-           
+        
+        cd(CODEDIR)
    
         
     case {'BrockHdMUA'}
@@ -61,14 +58,7 @@ switch user
 end
 
 
-%  addpath(...
-%             [HOMEDIR 'ephys-analysis'],...
-%             [HOMEDIR 'ephys-analysis' filesep 'stim'],...
-%             [HOMEDIR 'ephys-analysis' filesep 'stim' filesep 'NPMK'],...
-%             [HOMEDIR 'ephys-analysis' filesep 'stim' filesep 'NPMK' filesep 'NSx Utilities'],...
-%             [HOMEDIR 'ephys-analysis' filesep 'utils'],...
-%             [HOMEDIR 'MLAnalysisOnline'],...
-%             [HOMEDIR  'MLAnalysisOnline' filesep 'BHV Analysis'])
+
            
         
 end
