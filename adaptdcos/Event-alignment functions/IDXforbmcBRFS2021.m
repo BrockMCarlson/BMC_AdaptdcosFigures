@@ -14,7 +14,7 @@ flag_saveIDX    = 1;
 kls = 0;
 list    = dir([didir '*' anaType]);
 
-sdfwin  = [-0.05  .9];
+sdfwin  = [-0.15  .8];
 
 clear holder IDX
 SupraCount = 0;
@@ -172,82 +172,135 @@ clear  cond SDF SDF_uncrop SDF_crop sdf resp trlsLogical
 sdf  = squeeze(matobj.SDF(e,:,:));
 resp = squeeze(matobj.RESP(e,:,:));
 
-
-PULL OUT THE DESIRED CONDITIONS HERE
-You need full trial conditions adaptetor and suppressor. Thats it.
-
 clear trls  
-trls.Monocular1 = STIM.bmcBRFSparamNum == 8 &...
-    STIM.first800 == true;
-trls.Monocular2 = STIM.bmcBRFSparamNum == 9 &...
-    STIM.first800 == true;
-trls.Monocular3 = STIM.bmcBRFSparamNum == 10 &...
-    STIM.first800 == true;
-trls.Monocular4 = STIM.bmcBRFSparamNum == 11 &...
-    STIM.first800 == true;
+% % % monocular trials
+% % trls.Monocular1 = (STIM.bmcBRFSparamNum == [5,9,13,17]) &...
+% %     STIM.first800 == true;
 
-trls.First800_1 = STIM.bmcBRFSparamNum == 8 &...
+% brfs 9
+trls.adapter_9 = STIM.bmcBRFSparamNum == 9 &...
     STIM.first800 == true &...
     STIM.fullTrial == true;
-trls.Secon800_1 = STIM.bmcBRFSparamNum == 8 &...
+trls.suppressor_9 = STIM.bmcBRFSparamNum == 9 &...
+    STIM.first800 == false &...
+    STIM.fullTrial == true;
+% brfs 10
+trls.adapter_10 = STIM.bmcBRFSparamNum == 10 &...
+    STIM.first800 == true &...
+    STIM.fullTrial == true;
+trls.suppressor_10 = STIM.bmcBRFSparamNum == 10 &...
+    STIM.first800 == false &...
+    STIM.fullTrial == true;
+% brfs 11
+trls.adapter_11 = STIM.bmcBRFSparamNum == 11 &...
+    STIM.first800 == true &...
+    STIM.fullTrial == true;
+trls.suppressor_11 = STIM.bmcBRFSparamNum == 11 &...
+    STIM.first800 == false &...
+    STIM.fullTrial == true;
+% brfs 12
+trls.adapter_12 = STIM.bmcBRFSparamNum == 12 &...
+    STIM.first800 == true &...
+    STIM.fullTrial == true;
+trls.suppressor_12 = STIM.bmcBRFSparamNum == 12 &...
     STIM.first800 == false &...
     STIM.fullTrial == true;
 
 
-fields = fieldnames(trls);
-for f = 1:length(fields)
-    TuneList.(fields{f})(~I) = [];
+conditions = fieldnames(trls);
+for f = 1:length(conditions)
     
-    trlsLogical(:,f) = trls.(fields{f});
-    CondTrials{f} = find(trls);
-    CondTrialNum(f,1) = sum(trls); 
-    SDF_uncrop{f}   = sdf(:,trls); 
-    RESP_alltrls{f}        = resp(:,trls);
-    
+    trlsLogical(:,f) = trls.(conditions{f});
+    CondTrials{f} = find(trls.(conditions{f}));
+    CondTrialNum(f,1) = sum(trls.(conditions{f})); 
+    % SDF is a (1xf) cell. Each cell is (ms x trls) of data. i.e. (999 x 39) double
+        SDF_uncrop{f}   = sdf(:,trls.(conditions{f}));  
+    % RESP is a (1xf) cell. Each cell is (ms x trls) of data. i.e. (999 x 39) double
+        RESP_alltrls{f} = resp(:,trls.(conditions{f}));  
 end
 
+% Condition codes:
+% 1     'Simult. Dioptic. PO',...
+% 2     'Simult. Dioptic. NPO',...
+% 3     'Simult. Dichoptic. PO LeftEye - NPO RightEye',...
+% 4     'Simult. Dichoptic. NPO LeftEye - PO RightEye',...
+% 5     'BRFS-like Congruent Adapted Flash. C PO RightEye adapting - PO LeftEye flashed',... 
+% 6     'BRFS-like Congruent Adapted Flash. C NPO LeftEye adapting - NPO RightEye flashed',... 
+% 7     'BRFS-like Congruent Adapted Flash. C NPO RightEye  adapting - NPO LeftEye flashed',... 
+% 8     'BRFS-like Congruent Adapted Flash. C PO LeftEye adapting - PO RightEye flashed',... 
+% 9     'BRFS IC Adapted Flash. NPO RightEye adapting - PO LeftEye flashed',... 
+% 10    'BRFS IC Adapted Flash. PO LeftEye adapting - NPO RightEye flashed',... 
+% 11    'BRFS IC Adapted Flash. PO RightEye adapting - NPO LeftEye flashed',... 
+% 12    'BRFS IC Adapted Flash. NPO LeftEye adapting - PO RightEye flashed',... 
+% 13    'Monoc Alt Congruent Adapted. C PO RightEye adapting - PO LeftEye alternat monoc presentation',... 
+% 14    'Monoc Alt Congruent Adapted. C NPO LeftEye adapting - NPO RightEye alternat monoc presentation',... 
+% 15    'Monoc Alt Congruent Adapted. C NPO RightEye  adapting - NPO LeftEye alternat monoc presentation',... 
+% 16    'Monoc Alt Congruent Adapted. C PO LeftEye adapting - PO RightEye alternat monoc presentation',... 
+% 17    'Monoc Alt IC Adapted. NPO RightEye adapting - PO LeftEye alternat monoc presentation',... 
+% 18    'Monoc Alt IC Adapted. PO LeftEye adapting - NPO RightEye alternat monoc presentation',... 
+% 19    'Monoc Alt IC Adapted. PO RightEye adapting - NPO LeftEye alternat monoc presentation',... 
+% 20    'Monoc Alt IC Adapted. NPO LeftEye adapting - PO RightEye alternat monoc presentation',... 
 
 
 
 
-
-%% crop/pad SDF
-        % crop / pad SDF    
+%% crop SDF
+        % crop SDF    
         %% Pad works for MUA but not for LFP requires trial averaging...
         clear tm pad st en
         tm = matobj.sdftm;
         if tm(end) < sdfwin(2)  
-           error('padding not correctly set up for LFP -- check MAC code')
+           error('this code is set to crop, not to pad, check your window')
         else
-            pad = [];
             en = find(tm == sdfwin(2))-1;
             st = find(tm == sdfwin(1));
             TM = tm(st : en);
         end
         clear cond
-        for cond = 1:size(conditionarray,1)
+        for cond = 1:length(conditions)
             data = SDF_uncrop{cond}; % data is in [time x trials]
             if isempty(data)
-                % No conditions of this type were presented on this session
-                continue
+                error('no data found')                
             else
                 data_crop = data(st:en,:);
             end
             SDF_crop{cond} = data_crop;
         end
-
-%% Get avg results and cumsum
-SDF_avg     = cell(size(condition,1),1);
-SDF_cumsum 	= cell(size(condition,1),1);
-RESP_avg    = cell(size(condition,1),1);
+        
+%% baseline correct SDF
 clear cond
-for cond = 1:size(conditionarray,1)
+for cond = 1:size(conditions,1)
     sdfholder = SDF_crop{cond};
-    SDF_avg{cond} = mean(SDF_crop{cond},2);
-    SDF_cumsum{cond} = mean(cumsum(sdfholder),2); %get the cumulative sum for each trial, average over all trials, ouput is trial-averaged cumulative sum for each condition.
+    respholder = RESP_alltrls{cond};
+    SDF_blCor{cond} = sdfholder - respholder(4,:);
+end
+%% Get avg results
+SDF_avg     = cell(size(conditions,1),1);
+SDF_cumsum 	= cell(size(conditions,1),1);
+RESP_avg    = cell(size(conditions,1),1);
+
+clear cond
+for cond = 1:size(conditions,1)
+    sdfholder = SDF_crop{cond};
+    SDF_avg{cond} = mean(SDF_blCor{cond},2);
     RESP_avg{cond}= mean(RESP_alltrls{cond},2);
 end
-        
+
+
+% Plot the electrode's BFFS and save
+clear cond
+close all
+h = figure;
+for cond = 1:size(conditions,1)
+    subplot(4,2,cond)
+    plot(TM,SDF_avg{cond})
+end
+titleText = strcat(penetration,'_el#_',string(e));
+ sgtitle(titleText,'interpreter', 'none')  
+ global OUTDIR
+ cd(OUTDIR)
+exportgraphics(h,strcat(titleText, '.png'))
+ 
 
 %% SAVE  IDX
 
@@ -262,24 +315,16 @@ end
 
         holder.depth = STIM.depths(e,:)';
 
-        holder.dicontrast   = stimcontrast';
-        
-        %Anove tuning from diUnitTuning
-        holder.DE    = DE;
-        holder.PS    = PS;
-        holder.NDE    = NDE;
-        holder.NS    = NS; 
-        
+
         % Condition info
         holder.CondTrials = CondTrials;
-        holder.condition        = condition;
+        holder.conditions        = conditions;
         holder.CondTrialNum     = CondTrialNum;        
 
         % Continuous data info
         holder.TM           = TM;
         holder.SDF_crop     = SDF_crop;
         holder.SDF_avg      = SDF_avg;
-        holder.SDF_cumsum   = SDF_cumsum;  %get the cumulative sum for each trial, average over all trials, ouput is trial-averaged cumulative sum for each condition.
 
         % Time-win binned info;
         holder.win_ms           = win_ms;
@@ -324,7 +369,6 @@ if flag_saveIDX
 %         error('file already exists')        
 %     end
     save(saveName,'IDX')
-    save('ERR','ERR')
 else
     warning('IDX not saved')
 end
