@@ -2,7 +2,7 @@ function PostSetup(user)
 
 % helper function 
 % MAC, Feb 2020
-global HOMEDIR NS6DIR AUTODIR SORTDIR ALIGNDIR IDXDIR STIMDIR SAVEDIR CODEDIR OUTDIR tasks 
+global HOMEDIR NS6DIR AUTODIR SORTDIR ALIGNDIR IDXDIR STIMDIR SAVEDIR CODEDIR OUTDIR tasks LFPDIR
  
 
 switch user
@@ -17,6 +17,14 @@ switch user
         tasks    = 'brfs';
         
         cd(CODEDIR)
+        
+    case {'BrockHome_LLC'}
+        CODEDIR  = 'C:\Users\Brock Carlson\Documents\GitHub\BMC_AdaptdcosFigures\adaptdcos\Master figure releases\1.4 - LaminarAnalysis';
+        IDXDIR   = 'D:\5 diIDX dir\';
+        STIMDIR  = 'D:\2 all LFP STIM\';
+        LFPDIR   = 'D:\6. laminarLabelingLFPs\';
+        cd(CODEDIR)
+       
        
     
     case {'BrockWork'}
