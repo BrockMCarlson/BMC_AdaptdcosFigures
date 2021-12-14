@@ -20,6 +20,28 @@
 %   2. Align the .ns2 (1kHz) LFP data to stimulus onsets
 %       We then subsequently align to the photo diode onset
 
+
+
+
+%%%% GOAL OUTPUT: anaType = '_LFP.mat'; in STIMDIR
+
+
+
+%% IDX processing (laminarLabeling_LFP.m)
+% Load the penetration_STIM_LFP.mat files
+% Loop through filelist
+    % Loop through each electrode
+        % Pull out SDF for trials that have data out to 500ms.
+        % crop/pad SDF
+        % Save IDX
+
+
+%%  Reformat LFP to fix grand matrix on an individual session level (reformatLamLabLFP.m)
+%%%%% YOU CAN INCLUDE THIS IN THE PREVIOUS SECTION AND MAKE IT FASTER?
+% format the LFP (ch x time x trls) for each session
+% export
+
+
 %% CSD processing
 %   1. Identify Layer 4c CSD sink bottom.
 %   2. Align all penetrations along depth via CSD sink bottom.

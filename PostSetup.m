@@ -9,7 +9,7 @@ switch user
     
     case {'BrockHome'}
         NS6DIR   = 'D:\brfs ns6 files\';
-        CODEDIR  = 'C:\Users\Brock Carlson\Documents\GitHub\BMC_AdaptdcosFigures\adaptdcos\Master figure releases\1.4 - LaminarAnalysis';
+        CODEDIR  = 'C:\Users\Brock Carlson\Documents\GitHub\BMC_AdaptdcosFigures\adaptdcos\Master figure releases\1.5 - Gramm';
         IDXDIR   = 'D:\5 diIDX dir';
         STIMDIR  = 'E:\2 all LFP STIM';
         OUTDIR   = 'E:\6 Plot Dir\1.5 Gramm\outputs from 1.5 master code';
@@ -19,7 +19,7 @@ switch user
         cd(CODEDIR)
         
     case {'BrockHome_LLC'}
-        CODEDIR  = 'C:\Users\Brock Carlson\Documents\GitHub\BMC_AdaptdcosFigures\adaptdcos\Master figure releases\1.4 - LaminarAnalysis';
+        CODEDIR  = 'C:\Users\Brock Carlson\Documents\GitHub\BMC_AdaptdcosFigures\adaptdcos\Master figure releases\1.5 - Gramm';
         IDXDIR   = 'D:\5 diIDX dir\';
         STIMDIR  = 'D:\2 all LFP STIM\';
         LFPDIR   = 'D:\6. laminarLabelingLFPs\';

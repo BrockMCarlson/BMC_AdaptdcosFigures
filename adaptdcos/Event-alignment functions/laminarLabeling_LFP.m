@@ -159,6 +159,7 @@ SDF_crop = blSubData;
         
 end
 
+error('here is where you can reformat and save individual LFP files')
 
 end
 
