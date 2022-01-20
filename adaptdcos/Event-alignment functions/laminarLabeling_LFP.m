@@ -75,7 +75,7 @@ tm500 = find((tm == sdfwin(2)));
 
 % pull out photo diode trial lengths.
 idx_sdfLongPrez = ~isnan(sdf(tm500,:));
-eventCodeDiff = (STIM.tp_pt(:,2) - STIM.tp_pt(:,1))/30000;
+eventCodeDiff = (STIM.tp_pt(:,2) - STIM.tp_pt(:,1))/30000; % NEV is in 30000 sampling
 idx_eventCode = (eventCodeDiff > sdfwin(2))';% if the event code offset is more than .5 sec after the event code onset, then the data should fill out past the index of 500ms in our tm vector
 if any(idx_sdfLongPrez ~= idx_eventCode)
     error('stimulus offsets not well represented')

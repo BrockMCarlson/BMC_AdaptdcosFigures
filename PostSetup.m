@@ -19,7 +19,7 @@ switch user
         cd(CODEDIR)
         
     case {'BrockHome_LLC'}
-        CODEDIR  = 'C:\Users\Brock Carlson\Documents\GitHub\BMC_AdaptdcosFigures\adaptdcos\Master figure releases\1.5 - Gramm';
+        CODEDIR  = 'C:\Users\Brock Carlson\Documents\GitHub\laminarLabelingCollab\MasterScripts';
         IDXDIR   = 'D:\5 diIDX dir\';
         STIMDIR  = 'D:\2 all LFP STIM\';
         LFPDIR   = 'D:\6. laminarLabelingLFPs\';
