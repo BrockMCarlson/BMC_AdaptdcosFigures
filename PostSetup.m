@@ -1,4 +1,4 @@
-function PostSetup(user)
+function CODEDIR = PostSetup(user)
 
 % helper function 
 % MAC, Feb 2020
