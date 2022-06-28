@@ -1,15 +1,17 @@
 % FullTimeClassicBRFS
 clear
-close all
+% % close all
 PostSetup('BrockWork')
 flag_SaveFigs = false;
 
 
 %% Get IDX
-if ~exist('E:\5 diIDX dir\diIDX_AUTO_halfTM_MedMedC.mat','file')
-    AUTOdiIDX_halfTM_MedMedC
-end
-    load('E:\5 diIDX dir\diIDX_AUTO_halfTM_MedMedC.mat')
+% % % if ~exist('E:\5 diIDX dir\diIDX_AUTO_halfTM_MedMedC.mat','file')
+% % %     AUTOdiIDX_halfTM_MedMedC
+% % % end
+global IDXDIR
+
+    load(strcat(IDXDIR,'diIDX_AUTO_halfTM_MedMedC.mat'))
 
 
 %% Plot Full time course for 1 ex day with physically identical stimulus
@@ -63,7 +65,7 @@ end
 
 %% Plot and save re-trig
 %Plot
-close all
+% % % close all
 dataType = 'z-scored';
 visIDX_FullTmBRFS_ReTrig(IDX,dataType)
 
@@ -83,9 +85,10 @@ if flag_SaveFigs
 end
 
 %% Plot conditions as average of all units
-close all
+% % % close all
 dataType = 'z-scored';
 visIDX_FullTmBRFS_AllCond_AllContacts(IDX,dataType)
+
 if flag_SaveFigs
     FolderName = 'D:\6 Plot Dir\FullTm_AllContacts_AllCond';   % Your destination folder
     cd(FolderName)
@@ -100,7 +103,7 @@ if flag_SaveFigs
 end
 
 %% Plot dCOS as average of two IC
-close all
+% % % close all
 dataType = 'z-scored';
 visIDX_dCOSFig(IDX,dataType)
 if flag_SaveFigs
@@ -109,7 +112,7 @@ if flag_SaveFigs
 end
 
 %% Plot 2x2
-close all
+% % close all
 dataType = 'z-scored';
 visIDX_2x2Fig(IDX,dataType)
 if flag_SaveFigs
@@ -126,46 +129,33 @@ if flag_SaveFigs
 end
 
 
-%%
-
-%%
-%%
-%% Get new untuned IDX -- This did not work as expected
-% % clear
-% % close all
-% % dataType = 'z-scored';
-% % if ~exist('D:\5 diIDX dir\diIDX_AUTO_halfTM_MedMedC_Untuned.mat','file')
-% %     AUTOdiIDX_halfTM_MedMedC_Untuned
-% % end
-% %     load('D:\5 diIDX dir\diIDX_AUTO_halfTM_MedMedC_Untuned.mat')
-% % % visIDX_EffectofTuning(IDX,dataType)
-
-
 
 
 %% Get IDX
-if ~exist('E:\5 diIDX dir\AUTOdiIDX_RESPonly_AllTMandAdaptedEffect.mat','file')
-    AUTOdiIDX_RESPonly_AllTMandAdaptedEffect
-end
-    load('E:\5 diIDX dir\AUTOdiIDX_RESPonly_AllTMandAdaptedEffect.mat')
+% if ~exist('E:\5 diIDX dir\AUTOdiIDX_RESPonly_AllTMandAdaptedEffect.mat','file')
+%     AUTOdiIDX_RESPonly_AllTMandAdaptedEffect
+% end
+    load(strcat(IDXDIR,'AUTOdiIDX_RESPonly_AllTMandAdaptedEffect.mat'))
+    
 
  flag_SaveFigs = false;
- close all
+%  % % close all
 [rsq_simult,rsq_adapted] = visIDX_scatterRESPocc(IDX,flag_SaveFigs)
 
 
-
-if ~exist('E:\5 diIDX dir\AUTOdiIDX_RESPonly_equiocularIncluded.mat','file')
-    AUTOdiIDX_RESPonly_equiocularIncluded
-end
-    load('E:\5 diIDX dir\AUTOdiIDX_RESPonly_equiocularIncluded.mat')
-close all
+% % 
+% % if ~exist('E:\5 diIDX dir\AUTOdiIDX_RESPonly_equiocularIncluded.mat','file')
+% %     AUTOdiIDX_RESPonly_equiocularIncluded
+% % end
+    load(strcat(IDXDIR,'AUTOdiIDX_RESPonly_equiocularIncluded.mat'))
+    
+% % % close all
 
 
 %% BMC new occular split analysis 4/30/2021
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
- visIDX_scatterRESPocc_binnedOcc(IDX,flag_SaveFigs)
-% !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+% % % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% % %  visIDX_scatterRESPocc_binnedOcc(IDX,flag_SaveFigs)
+% % % % !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
 %% %% Bar plots on fig 2 and 3

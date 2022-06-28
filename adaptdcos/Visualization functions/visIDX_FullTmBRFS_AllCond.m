@@ -2,7 +2,7 @@ function visIDX_FullTmBRFS_AllCond(IDX,dataType)
 
 %% Initial variables
 conditNameForCC = IDX.allV1(1).condition.Properties.RowNames;
-TM = IDX.allV1(1).TM;
+TM = IDX.allV1(1).tm;
 
 
 uctLength = length(IDX.allV1);

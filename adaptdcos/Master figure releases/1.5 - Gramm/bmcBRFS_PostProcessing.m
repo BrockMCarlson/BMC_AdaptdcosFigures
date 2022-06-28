@@ -1,17 +1,17 @@
 % bmcBRFS_PostProcessing
 clear
 close all
-PostSetup('BrockExUnitTest')
+PostSetup('BrockWork')
 flag_SaveFigs = false;
 
 
 %% Get IDX
 global IDXDIR
 cd(IDXDIR)
-if ~exist(strcat(IDXDIR,'\IDXforbmcBRFS2021.mat'),'file')
+if ~exist(strcat(IDXDIR,'\IDXforGrammJuly2021.mat'),'file')
     IDXforbmcBRFS2021
 end
-    load(strcat(IDXDIR,'\IDXforbmcBRFS2021.mat'))
+    load(strcat(IDXDIR,'\IDXforGrammJuly2021.mat'))
     
 %% Goal - 
 % 1. Take the new IDXforGrammJuly2021 (based on SingleSessionIDX) 
@@ -38,6 +38,10 @@ gramm_2x2_line(IDX)
 gramm_2x2_subline(IDX)
 gramm_2x2_RESP(IDX)
 
+%NS NDE options
+gramm_2x2_line_NSNDEvariation(IDX)
+gramm_2x2_subline_NSNDEvariation(IDX)
+gramm_2x2_RESP_NSNDEvariation(IDX)
 
 
 %% gramm_2x2 laminar.
