@@ -1,39 +1,57 @@
-function PostSetup(user)
+function CODEDIR = PostSetup(user)
 
 % helper function 
 % MAC, Feb 2020
-global HOMEDIR NS6DIR AUTODIR SORTDIR ALIGNDIR STIMDIR SAVEDIR CODEDIR OUTDIR tasks 
+global HOMEDIR NS6DIR AUTODIR SORTDIR ALIGNDIR IDXDIR STIMDIR SAVEDIR CODEDIR OUTDIR tasks LFPDIR
  
 
 switch user
     
-    case {'brock'}
+    case {'BrockWork'}
+        NS6DIR   = 'T:\Brock - backups\Backup - WD harddrive - 220311\1 brfs ns6 files\';
+        CODEDIR  = 'C:\Users\Brock\Documents\MATLAB\GitHub\laminarLabelingCollab\MasterScripts';
+        IDXDIR   = 'T:\Brock - backups\Backup - WD harddrive - 220311\5 diIDX dir\';
+        STIMDIR  = 'T:\Brock - backups\Backup - WD harddrive - 220311\2 all LFP STIM\';
+        OUTDIR   = 'C:\Users\Brock\Documents\MATLAB\formattedDataOutputs\JASP output for brfs\';
+        LFPDIR   = [];
+
+        tasks    = 'brfs';
+        
+        cd(CODEDIR)
+
+
+
+    case {'BrockHome'}
         NS6DIR   = 'D:\brfs ns6 files\';
-        SORTDIR  = 'D:\3 brfs Phy outputs of KLS sorts\';
-        CODEDIR  = 'C:\Users\Brock\Documents\MATLAB\GitHub\';
-        STIMDIR  = 'D:\4 stimdir for KLS ex units\';
-        OUTDIR  = 'C:\Users\Brock\Documents\MATLAB\Working IDX Dir\dMUA-dCOF\';
+        CODEDIR  = 'C:\Users\Brock Carlson\Documents\GitHub\BMC_AdaptdcosFigures\adaptdcos\Master figure releases\1.5 - Gramm';
+        IDXDIR   = 'D:\5 diIDX dir';
+        STIMDIR  = 'E:\2 all LFP STIM';
+        OUTDIR   = 'E:\6 Plot Dir\1.5 Gramm\outputs from 1.5 master code';
         
         tasks    = 'brfs';
         
         cd(CODEDIR)
-       
+        
+    case {'BrockHome_LLC'}
+        CODEDIR  = 'C:\Users\Brock Carlson\Documents\GitHub\laminarLabelingCollab\MasterScripts';
+        IDXDIR   = 'D:\5 diIDX dir\';
+        STIMDIR  = 'D:\2 all LFP STIM\';
+        LFPDIR   = 'D:\6. laminarLabelingLFPs\';
+        cd(CODEDIR)
+  
               
-    case {'brockExUnitTest'}
-        HOMEDIR  = 'C:\Users\Brock\Documents\MATLAB\GitHub\';
-        NS6DIR   = 'C:\Users\Brock\Desktop\151221_E_eD\';
-        AUTODIR  = 'C:\Users\Brock\Desktop\151221_E_eD\';
-        ALIGNDIR = 'C:\Users\Brock\Desktop\151221_E_eD\';
-        STIMDIR  = 'C:\Users\Brock\Desktop\151221_E_eD\';
-        SORTDIR  =  'C:\Users\Brock\Desktop\151221_E_eD\KLSoutputs\';
-        SAVEDIR  = 'C:\Users\Brock\Desktop\151221_E_eD\';
-        CODEDIR  =  'C:\Users\Brock\Documents\MATLAB\GitHub\';
-        OUTDIR   =  'C:\Users\Brock\Desktop\151221_E_eD\Plot Directory\';
+    case {'BrockExUnitTest'}
+        CODEDIR  = 'C:\Users\Brock\Documents\MATLAB\GitHub\BMC_AdaptdcosFigures\adaptdcos\Master figure releases\1.6 - JakesAdditions';
+        IDXDIR   = 'E:\5 diIDX dir';
+        STIMDIR  = 'E:\SANDBOX\STIM';
+        OUTDIR   = 'E:\6 Plot Dir\SANDBOX_OUTDIR';
+        
         tasks    = 'brfs';
-           
+        
+        cd(CODEDIR)
    
         
-    case {'brockHdMUA'}
+    case {'BrockHdMUA'}
         HOMEDIR  = 'C:\Users\Brock\Documents\MATLAB\GitHub\';
         NS6DIR   = 'T:\SANDBOX diSTIM Pipeline\NeurophysData\';
         AUTODIR  = 'T:\SANDBOX diSTIM Pipeline\AutoSort-ed\';
@@ -47,14 +65,7 @@ switch user
 end
 
 
-%  addpath(...
-%             [HOMEDIR 'ephys-analysis'],...
-%             [HOMEDIR 'ephys-analysis' filesep 'stim'],...
-%             [HOMEDIR 'ephys-analysis' filesep 'stim' filesep 'NPMK'],...
-%             [HOMEDIR 'ephys-analysis' filesep 'stim' filesep 'NPMK' filesep 'NSx Utilities'],...
-%             [HOMEDIR 'ephys-analysis' filesep 'utils'],...
-%             [HOMEDIR 'MLAnalysisOnline'],...
-%             [HOMEDIR  'MLAnalysisOnline' filesep 'BHV Analysis'])
+
            
         
 end

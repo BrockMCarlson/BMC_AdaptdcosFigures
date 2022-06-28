@@ -1,4 +1,4 @@
-function AUTOdiIDX_halfTM_MedMedC
+function AUTOdiIDX_monocOccCompare
 % Make sure tm goes out to .9 (in time for the second stimuli) Hopefully I
 % can crop the extra .1 later if needed. But this should at least show me
 % the second peak as a sanity check.
@@ -8,7 +8,7 @@ tic
 
 
 didir = 'T:\diSTIM - adaptdcos&CRF\STIM\';
-saveName = 'diIDX_AUTO_halfTM_MedMedC'; % THIS IS CONTRAST LEVELS OF .41-.75 INCLUSIVE
+saveName = 'diIDX_AUTO_monocOccCompare'; % THIS IS CONTRAST LEVELS OF .41-.75 INCLUSIVE
 anaType = '_AUTO.mat';
 flag_saveIDX    = 1;
 
@@ -25,7 +25,6 @@ count = 0;
 ErrorCount = 0;
 noBrfs = 0;
 yesBrfs = 0;
-paradigm = cell(32,8);
 %% For loop on unit
 for i = 1:length(list)
     
@@ -40,10 +39,6 @@ end
 
 clear STIM nel difiles
 load([didir penetration '.mat'],'STIM')
-for j = 1:length(STIM.paradigm)
-    paradigm(i,j)= STIM.paradigm(j)';
-end
-
 
 % Balance conditions
 if ~any(contains(STIM.paradigm,'brfs'))
@@ -62,7 +57,6 @@ else
     nel = length(STIM.el_labels);
 end
 difiles = unique(STIM.filen(STIM.ditask));
-
 
 
 clear matobj_RESP matobj_SDF win_ms
@@ -158,13 +152,13 @@ if X.dianp(3) > 0.05
     ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
     continue
 end
-if X.dianp(1) > 0.05
-    ErrorCount = ErrorCount+1;
-    ERR(ErrorCount).reason = 'unit tuned to ori and contrast but NOT to contrast';
-    ERR(ErrorCount).penetration = STIM.penetration;
-    ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
-    continue
-end
+% if X.dianp(1) > 0.05
+%     ErrorCount = ErrorCount+1;
+%     ERR(ErrorCount).reason = 'unit tuned to ori and contrast but NOT to contrast';
+%     ERR(ErrorCount).penetration = STIM.penetration;
+%     ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
+%     continue
+% end
 
 
     
@@ -180,7 +174,7 @@ if isnan(DE)
 end
 
 
-[condition,conditionarray] = getCond(DE,NDE,PS,NS);
+ [condition,conditionarray] = getAdaptorCond(DE,NDE,PS,NS);
 
 
 
@@ -233,7 +227,6 @@ SDF_uncrop = nan(size(conditionarray,1),size(sdf,1));
 for cond = 1:size(conditionarray,1)
     clear trls    
     % get monocular trials
-    if cond < 5
       trls = I &...
             STIM.eye        == conditionarray(cond,1) &...
             STIM.tilt(:,1)  == conditionarray(cond,2) & ...
@@ -247,56 +240,6 @@ for cond = 1:size(conditionarray,1)
         CondTrials{cond} = find(trls);
         CondTrialNum_SDF(cond,1) = sum(trls); 
         SDF_uncrop(cond,:)   = nanmean(sdf(:,trls),2);    
-    elseif cond >= 5 && cond <= 8 % get simultaneous trials
-        trls = I &...
-            SORTED.tilts(:,1) == conditionarray(cond,2) & ...
-            STIM.tiltmatch == conditionarray(cond,3) & ...
-            STIM.adapter   == conditionarray(cond,4) & ...  
-            STIM.suppressor   == conditionarray(cond,5) & ...
-            STIM.soa       == conditionarray(cond,6) & ...
-            STIM.monocular == conditionarray(cond,7) & ...
-            ((SORTED.contrasts(:,1)  >= .3) & (SORTED.contrasts(:,1)  <= .6 )) &...
-            ((SORTED.contrasts(:,2)  >= .3) & (SORTED.contrasts(:,2)  <= .6 ));
-        trlsLogical(:,cond) = trls;
-        CondTrials{cond} = find(trls);
-        CondTrialNum_SDF(cond,1) = sum(trls); 
-        SDF_uncrop(cond,:)   = nanmean(sdf(:,trls),2);    
-        
-    elseif cond == 9 || cond == 11 || cond == 13 || cond == 15 || cond == 17 || cond == 19 || cond == 21 || cond == 23
-    % get adapter trials
-    trls = I &... %everything is in second column bc BRFS format is [adapter STIM.suppressor]
-        STIM.eyes(:,2) == conditionarray(cond,1) &...
-        STIM.tilt(:,1) == conditionarray(cond,2) & ...
-        STIM.tiltmatch == conditionarray(cond,3) & ...
-        STIM.adapter   == conditionarray(cond,4) & ...  
-        STIM.suppressor   == conditionarray(cond,5) & ...  
-        STIM.soa       == conditionarray(cond,6) & ...
-        STIM.monocular == conditionarray(cond,7) & ...
-        ((STIM.contrast(:,1)  >= .3) & (STIM.contrast(:,1)   <= .6 ));
-        
-    trlsLogical(:,cond) = trls;
-    CondTrials{cond} = find(trls);
-    CondTrialNum_SDF(cond,1) = sum(trls); 
-    SDF_uncrop(cond,:)   = nanmean(sdf(:,trls),2);    
-    
-    
-    elseif cond == 10 || cond == 12 || cond == 14 || cond == 16 || cond == 18 || cond == 20 || cond == 22 || cond == 24
-    % get suppresor trials
-    trls = I &... %everything is in second column bc BRFS format is [adapter STIM.suppressor]
-        STIM.eyes(:,2) == conditionarray(cond,1) &...
-        STIM.tilt(:,2) == conditionarray(cond,2) & ...
-        STIM.tiltmatch == conditionarray(cond,3) & ...
-        STIM.adapter   == conditionarray(cond,4) & ...  
-        STIM.suppressor   == conditionarray(cond,5) & ...  
-        STIM.soa       == conditionarray(cond,6) & ...
-        STIM.monocular == conditionarray(cond,7) & ...
-        ((STIM.contrast(:,1)  >= .3) & (STIM.contrast(:,1)   <= .6 )) &...
-        ((STIM.contrast(:,2)  >= .3) & (STIM.contrast(:,2)   <= .6 ));
-    trlsLogical(:,cond) = trls;
-    CondTrials{cond} = find(trls);
-    CondTrialNum_SDF(cond,1) = sum(trls); 
-    SDF_uncrop(cond,:)   = nanmean(sdf(:,trls),2);    % Use trls to pull out continuous data   
-    end
     
 end
 
@@ -479,7 +422,7 @@ end
 
 %% SAVE
 if flag_saveIDX
-    cd('D:\5 diIDX dir')
+    cd('E:\5 diIDX dir')
 %     if isfile(strcat(saveName,'.mat'))
 %         error('file already exists')        
 %     end

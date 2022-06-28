@@ -1,14 +1,13 @@
-function AUTOdiIDX_halfTM_MedMedC
-% Make sure tm goes out to .9 (in time for the second stimuli) Hopefully I
-% can crop the extra .1 later if needed. But this should at least show me
-% the second peak as a sanity check.
+function IDX = IDXforGrammJuly2021;
 
-clear
-tic
+%% load session data
+global STIMDIR
+cd(STIMDIR)
 
 
-didir = 'T:\diSTIM - adaptdcos&CRF\STIM\';
-saveName = 'diIDX_AUTO_halfTM_MedMedC'; % THIS IS CONTRAST LEVELS OF .41-.75 INCLUSIVE
+
+didir = strcat(STIMDIR,'\');
+saveName = 'IDXforGrammJuly2021'; % THIS IS CONTRAST LEVELS OF .41-.75 INCLUSIVE
 anaType = '_AUTO.mat';
 flag_saveIDX    = 1;
 
@@ -28,7 +27,6 @@ yesBrfs = 0;
 paradigm = cell(32,8);
 %% For loop on unit
 for i = 1:length(list)
-    
 
 %% load session data
 clear penetration
@@ -65,16 +63,15 @@ difiles = unique(STIM.filen(STIM.ditask));
 
 
 
-clear matobj_RESP matobj_SDF win_ms
-matobj_RESP = matfile([didir penetration '_AUTO.mat']);
+clear matobj matobj win_ms
+matobj = matfile([didir penetration anaType]);
 if contains(anaType,'CSD') || contains(anaType,'AUTO')
     youAreGood = true;
 else
-    matobj_RESP= matfile([didir penetration anaType]);
+    matobj= matfile([didir penetration anaType]);
 end
-matobj_SDF = matfile([didir penetration anaType]);
 
-win_ms = matobj_RESP.win_ms;
+win_ms = matobj.win_ms;
 if isequal(win_ms(3,:),[50 250])
     respDimension = 3;
 elseif isequal(win_ms(4,:),[50 250])
@@ -92,8 +89,8 @@ for e = 1:nel
     
    
 
-    clear RESP SDF sdf sdftm X M TRLS SUB 
-    RESP = squeeze(matobj_RESP.RESP(e,respDimension,:));
+    clear respFullTM resp sdf sdftm X M TRLS SUB 
+    respFullTM = squeeze(matobj.RESP(e,respDimension,:));
 
     % get "goodfiles" for each cluster
     % i.e., the files over which the cluster is present
@@ -128,7 +125,7 @@ for e = 1:nel
 
         
 %% Di Unit Tuning -- RESP is always from AUTO
-     X = diUnitTuning(RESP,STIM,goodfiles);
+     X = diUnitTuning(respFullTM,STIM,goodfiles);
      DE = X.dipref(1);
      NDE = X.dinull(1);
      PS = X.dipref(2);
@@ -144,23 +141,18 @@ if X.diana ~= 1
     ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
     continue
 end
-if X.dianp(2) > 0.05
-    ErrorCount = ErrorCount+1;
-    ERR(ErrorCount).reason = 'unit not tuned to ori';
-    ERR(ErrorCount).penetration = STIM.penetration;
-    ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
-    continue
-end
-if X.dianp(3) > 0.05
-    ErrorCount = ErrorCount+1;
-    ERR(ErrorCount).reason = 'unit tuned to ori but NOT to contrast';
-    ERR(ErrorCount).penetration = STIM.penetration;
-    ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
-    continue
-end
+
+% X.diang   = {'eye','tilt','contrast'};
 if X.dianp(1) > 0.05
     ErrorCount = ErrorCount+1;
-    ERR(ErrorCount).reason = 'unit tuned to ori and contrast but NOT to contrast';
+    ERR(ErrorCount).reason = 'unit not tuned to eye';
+    ERR(ErrorCount).penetration = STIM.penetration;
+    ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
+    continue
+end
+if X.dianp(2) > 0.05
+    ErrorCount = ErrorCount+1;
+    ERR(ErrorCount).reason = 'unit not tuned to eye and ori';
     ERR(ErrorCount).penetration = STIM.penetration;
     ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
     continue
@@ -180,17 +172,15 @@ if isnan(DE)
 end
 
 
+
 [condition,conditionarray] = getCond(DE,NDE,PS,NS);
-
-
 
 clear I
 I = STIM.ditask...
     & ~STIM.blank ...
     & STIM.rns == 0 ...
     & STIM.cued == 0 ...
-    & STIM.motion == 0 ...
-    & ismember(STIM.filen,goodfiles); % Add "klsfiles" here
+    & STIM.motion == 0; 
 
 
 % determine main contrasts levels
@@ -224,11 +214,14 @@ end; clear w
 
 %% Pull out SDF
 % Pre-allocate
-clear  cond SDF SDF_uncrop sdf trlsLogical
-CondTrialNum_SDF = nan(size(condition,1),1);
+clear  cond SDF SDF_uncrop SDF_crop sdf resp trlsLogical
+CondTrialNum = nan(size(condition,1),1);
 CondTrials = cell(size(condition,1),1);
-sdf  = squeeze(matobj_SDF.SDF(e,:,:));
-SDF_uncrop = nan(size(conditionarray,1),size(sdf,1));
+sdf  = squeeze(matobj.SDF(e,:,:));
+resp = squeeze(matobj.RESP(e,:,:));
+SDF_uncrop  = cell(size(condition,1),1);
+SDF_crop    = cell(size(condition,1),1);
+RESP_alltrls   = cell(size(condition,1),1);
 
 for cond = 1:size(conditionarray,1)
     clear trls    
@@ -238,15 +231,12 @@ for cond = 1:size(conditionarray,1)
             STIM.eye        == conditionarray(cond,1) &...
             STIM.tilt(:,1)  == conditionarray(cond,2) & ...
             STIM.tiltmatch  == conditionarray(cond,3) & ...
-            STIM.adapter   == conditionarray(cond,4) & ...  
+            STIM.adapter    == conditionarray(cond,4) & ...  
             STIM.suppressor == conditionarray(cond,5) & ...
             STIM.soa        == conditionarray(cond,6) & ...
             STIM.monocular  == conditionarray(cond,7) & ...
             (STIM.contrast(:,1)  >= .3 & STIM.contrast(:,1) <= .6);
-        trlsLogical(:,cond) = trls;
-        CondTrials{cond} = find(trls);
-        CondTrialNum_SDF(cond,1) = sum(trls); 
-        SDF_uncrop(cond,:)   = nanmean(sdf(:,trls),2);    
+   
     elseif cond >= 5 && cond <= 8 % get simultaneous trials
         trls = I &...
             SORTED.tilts(:,1) == conditionarray(cond,2) & ...
@@ -257,47 +247,66 @@ for cond = 1:size(conditionarray,1)
             STIM.monocular == conditionarray(cond,7) & ...
             ((SORTED.contrasts(:,1)  >= .3) & (SORTED.contrasts(:,1)  <= .6 )) &...
             ((SORTED.contrasts(:,2)  >= .3) & (SORTED.contrasts(:,2)  <= .6 ));
-        trlsLogical(:,cond) = trls;
-        CondTrials{cond} = find(trls);
-        CondTrialNum_SDF(cond,1) = sum(trls); 
-        SDF_uncrop(cond,:)   = nanmean(sdf(:,trls),2);    
+ 
         
     elseif cond == 9 || cond == 11 || cond == 13 || cond == 15 || cond == 17 || cond == 19 || cond == 21 || cond == 23
     % get adapter trials
-    trls = I &... %everything is in second column bc BRFS format is [adapter STIM.suppressor]
-        STIM.eyes(:,2) == conditionarray(cond,1) &...
-        STIM.tilt(:,1) == conditionarray(cond,2) & ...
-        STIM.tiltmatch == conditionarray(cond,3) & ...
-        STIM.adapter   == conditionarray(cond,4) & ...  
-        STIM.suppressor   == conditionarray(cond,5) & ...  
-        STIM.soa       == conditionarray(cond,6) & ...
-        STIM.monocular == conditionarray(cond,7) & ...
-        ((STIM.contrast(:,1)  >= .3) & (STIM.contrast(:,1)   <= .6 ));
-        
-    trlsLogical(:,cond) = trls;
-    CondTrials{cond} = find(trls);
-    CondTrialNum_SDF(cond,1) = sum(trls); 
-    SDF_uncrop(cond,:)   = nanmean(sdf(:,trls),2);    
+        trls = I &... %everything is in the first column bc BRFS format is [adapter STIM.suppressor]
+            STIM.eyes(:,2) == conditionarray(cond,1) &... % BUT -- We identify the eye by the suppressor in getCond.m -- (NDE - NDE)
+            STIM.tilt(:,1) == conditionarray(cond,2) & ...
+            STIM.tiltmatch == conditionarray(cond,3) & ...
+            STIM.adapter   == conditionarray(cond,4) & ...  
+            STIM.suppressor   == conditionarray(cond,5) & ...  
+            STIM.soa       == conditionarray(cond,6) & ...
+            STIM.monocular == conditionarray(cond,7) & ...
+            ((STIM.contrast(:,1)  >= .3) & (STIM.contrast(:,1)   <= .6 ));
     
+    % Make sure the adapter trials are only for 800ms soa brfs (you can
+    % change this to 200soa later if you want... you must also change
+    % getCond.m)
+        CondTrials{cond} = find(trls);
+        soa800count = 0;
+        soa200count = 0;
+        clear found800soaAdapterTrls found200soaAdapterTrls
+        for sp = 1:size(CondTrials{cond},1)
+            checkSoaTrls(sp,1) = CondTrials{cond}(sp)+1;
+            if STIM.soa(checkSoaTrls(sp,1)) == 800
+                soa800count = soa800count + 1;
+                found800soaAdapterTrls(soa800count) = CondTrials{cond}(sp);
+            elseif STIM.soa(checkSoaTrls(sp,1)) == 200
+                soa200count = soa200count + 1;
+                found200soaAdapterTrls(soa200count) = CondTrials{cond}(sp);
+            else
+                error('This does not work as you suspect it does')
+            end
+        end
+        
+        adapterTrlsWithCorrectSoa = false(size(trls));
+        if sum(trls) > 0 %found800soaAdapterTrls does not exist if trls is not > 0
+            adapterTrlsWithCorrectSoa(found800soaAdapterTrls) = true;
+        end
+       
     
     elseif cond == 10 || cond == 12 || cond == 14 || cond == 16 || cond == 18 || cond == 20 || cond == 22 || cond == 24
     % get suppresor trials
-    trls = I &... %everything is in second column bc BRFS format is [adapter STIM.suppressor]
-        STIM.eyes(:,2) == conditionarray(cond,1) &...
-        STIM.tilt(:,2) == conditionarray(cond,2) & ...
-        STIM.tiltmatch == conditionarray(cond,3) & ...
-        STIM.adapter   == conditionarray(cond,4) & ...  
-        STIM.suppressor   == conditionarray(cond,5) & ...  
-        STIM.soa       == conditionarray(cond,6) & ...
-        STIM.monocular == conditionarray(cond,7) & ...
-        ((STIM.contrast(:,1)  >= .3) & (STIM.contrast(:,1)   <= .6 )) &...
-        ((STIM.contrast(:,2)  >= .3) & (STIM.contrast(:,2)   <= .6 ));
-    trlsLogical(:,cond) = trls;
-    CondTrials{cond} = find(trls);
-    CondTrialNum_SDF(cond,1) = sum(trls); 
-    SDF_uncrop(cond,:)   = nanmean(sdf(:,trls),2);    % Use trls to pull out continuous data   
+        trls = I &... %everything is in second column bc BRFS format is [adapter STIM.suppressor]
+            STIM.eyes(:,2) == conditionarray(cond,1) &...
+            STIM.tilt(:,2) == conditionarray(cond,2) & ...
+            STIM.tiltmatch == conditionarray(cond,3) & ...
+            STIM.adapter   == conditionarray(cond,4) & ...  
+            STIM.suppressor   == conditionarray(cond,5) & ...  
+            STIM.soa       == conditionarray(cond,6) & ...
+            STIM.monocular == conditionarray(cond,7) & ...
+            ((STIM.contrast(:,1)  >= .3) & (STIM.contrast(:,1)   <= .6 )) &...
+            ((STIM.contrast(:,2)  >= .3) & (STIM.contrast(:,2)   <= .6 ));
+
     end
     
+    trlsLogical(:,cond) = trls;
+    CondTrials{cond} = find(trls);
+    CondTrialNum(cond,1) = sum(trls); 
+    SDF_uncrop{cond}   = sdf(:,trls); 
+    RESP_alltrls{cond}        = resp(:,trls);
 end
 
 
@@ -305,106 +314,46 @@ end
 
 
 %% crop/pad SDF
-        % crop / pad SDF    %%%%DEV_BMC: LATER - concatenate HERE
+        % crop / pad SDF    
+        %% Pad works for MUA but not for LFP requires trial averaging...
         clear tm pad st en
-        tm = matobj_SDF.sdftm;
+        tm = matobj.sdftm;
         if tm(end) < sdfwin(2)  
-            pad = [tm(end):diff(tm(1:2)):sdfwin(2)];
-            pad(1) = [];
-            en = length(tm);
-            st = find(tm> sdfwin(1),1);
-            tm = [tm pad];
-            tm = tm(st : end);
-            pad(:) = NaN;
+           error('padding not correctly set up for LFP -- check MAC code')
         else
             pad = [];
-            en = find(tm > sdfwin(2),1)-1;
-            st = find(tm > sdfwin(1),1);
-            tm = tm(st : en);
+            en = find(tm == sdfwin(2))-1;
+            st = find(tm == sdfwin(1));
+            TM = tm(st : en);
         end
-        if isnan(pad)
-            warning('this might not be set up to properly pad the contrast dimension')
-        end
-        padrows = repmat(pad,size(condition,1),1); % pads with NANs if you are not in that condition any more. 
-            clear SDF
-            SDF.raw = cat(2,SDF_uncrop(:, st : en,:), padrows); clear SDF_uncrop;                  
-            if size(SDF.raw,2) ~= length(tm)
-                error('check tm')
+        clear cond
+        for cond = 1:size(conditionarray,1)
+            data = SDF_uncrop{cond}; % data is in [time x trials]
+            if isempty(data)
+                % No conditions of this type were presented on this session
+                continue
+            else
+                data_crop = data(st:en,:);
             end
-            TM = tm;
-     
-       
-%% Normalize SDF
-    % out --> z-score, 
-    % inputs --> baseline population mean, baselin population stdev,
-    % SDF from binoc PS congruent simultaneous.
+            SDF_crop{cond} = data_crop;
+        end
 
-    %get inputs
-        % Pull out baseline period
-        % nota bene -- Exclude basline of suppressor trials later!! - cannot
-        % do it on the squeeze line because index must be numeric.
-        if isequal(win_ms(4,:),[-50 0])
-            blDimension = 4;
-        else
-            error('RESP dimension issue. fix by programatically finding where the window is.')
-        end    
-        baselineAll = squeeze(matobj_RESP.RESP(e,blDimension,:));
-
-        %bl pop average
-        % Get min response (avg of baseline period for all non-suppressor trials)
-        blAvg = nanmean(baselineAll(~STIM.suppressor,1));
- 
-        %bl pop stdev
-        % Get min response (avg of baseline period for all non-suppressor trials)
-        blStd = nanstd(baselineAll(~STIM.suppressor,1));
-    
-    % Z-score
-    % ZscoreDat = (ContinuousData - popAvgOfBL)./popSTDOfBL
-    SDF.zs = (SDF.raw - blAvg)./blStd;
-    
-
-    
-%% 1/2 wave rectify if CSD
-if contains(anaType,'CSD')
-    SDF.raw(SDF.raw > 0) = 0;
-    SDF.zs(SDF.zs > 0) = 0;
+%% Get avg results and cumsum
+SDF_avg     = cell(size(condition,1),1);
+SDF_cumsum 	= cell(size(condition,1),1);
+RESP_avg    = cell(size(condition,1),1);
+clear cond
+for cond = 1:size(conditionarray,1)
+    sdfholder = SDF_crop{cond};
+    SDF_avg{cond} = mean(SDF_crop{cond},2);
+    SDF_cumsum{cond} = mean(cumsum(sdfholder),2); %get the cumulative sum for each trial, average over all trials, ouput is trial-averaged cumulative sum for each condition.
+    RESP_avg{cond}= mean(RESP_alltrls{cond},2);
 end
-
-
-
-%% Difference of Conditions
-% condition indexing -- for reference
-
-% % SDFdiff.raw(1,:) = SDF.raw(5,:) - SDF.raw(1,:);
-% % SDFdiff.raw(2,:) = SDF.raw(6,:) - SDF.raw(1,:);
-% % SDFdiff.raw(3,:) = SDF.raw(5,:) - SDF.raw(6,:);
-% % SDFdiff.raw(4,:) = SDF.raw(9,:) - SDF.raw(10,:);
-% % 
-% % SDFdiff.zs(1,:) = SDF.zs(5,:) - SDF.zs(1,:);
-% % SDFdiff.zs(2,:) = SDF.zs(6,:) - SDF.zs(1,:);
-% % SDFdiff.zs(3,:) = SDF.zs(5,:) - SDF.zs(6,:);
-% % SDFdiff.zs(4,:) = SDF.zs(9,:) - SDF.zs(10,:);
-
-% Output is..
-% 2a. Monoc vs C Simult (1-2)
-% 2b. Monoc vs IC Simult (1-3)
-% 3a. C vs IC simult - show dCOS (2-3)
-% 3b. C vs IC suppressor - show dCOF (6-7)
-
-
-
-
+        
 
 %% SAVE  IDX
 
-        % skip if no data
-        if ~any([X.oriana X.occana X.diana])
-            ErrorCount = ErrorCount+1;
-            ERR(ErrorCount).reason = 'diana not run and not caught earlier - investigate';
-            ERR(ErrorCount).penetration = STIM.penetration;
-            ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
-            continue
-        end
+
 
         % SAVE UNIT INFO!
         clear holder
@@ -414,38 +363,34 @@ end
         holder.runtime = [date string(now)];
 
         holder.depth = STIM.depths(e,:)';
-        holder.kls   = kls;
 
-        
-        holder.X      =   X;
-        
-        holder.occana       = X.occana;
-        holder.oriana       = X.oriana;
-        holder.diana        = X.diana;
-        holder.mask         = any(STIM.rsvpmask(STIM.cued ~=0));
         holder.dicontrast   = stimcontrast';
-
-
-        holder.ori   = X.ori';
-        holder.occ   = X.occ';   % how much it prefers one eye over the other
-        holder.bio   = X.bio';        % How much it prefers both eyes over one
-
+        
+        %Anove tuning from diUnitTuning
         holder.DE    = DE;
         holder.PS    = PS;
         holder.NDE    = NDE;
-        holder.NS    = NS;        
-        holder.dianov     = X.dianp; % p for main effect of each 'eye' 'tilt' 'contrast'
-
-        %%%% NEW ADDITIONS FROM BMC
-        holder.tm        = TM;
-
-        holder.SDF      = SDF;
-%         holder.SDFdiff	= SDFdiff;
-
-
-        holder.condition        = condition;
-        holder.CondTrialNum_SDF     = CondTrialNum_SDF;        
+        holder.NS    = NS; 
         
+        % Condition info
+        holder.CondTrials = CondTrials;
+        holder.condition        = condition;
+        holder.CondTrialNum     = CondTrialNum;        
+
+        % Continuous data info
+        holder.TM           = TM;
+        holder.SDF_crop     = SDF_crop;
+        holder.SDF_avg      = SDF_avg;
+        holder.SDF_cumsum   = SDF_cumsum;  %get the cumulative sum for each trial, average over all trials, ouput is trial-averaged cumulative sum for each condition.
+
+        % Time-win binned info;
+        holder.win_ms           = win_ms;
+        holder.RESP_alltrls     = RESP_alltrls;
+        holder.RESP_avg         = RESP_avg;
+        
+        
+        %Save the STIM - in case you ever need to troubleshoot what the
+        %selections are for each trial. Access from CondTrials
         holder.STIM               = STIM;
 
 
@@ -464,22 +409,19 @@ end
         count = count + 1;
         IDX.allV1(count) = holder;
 
-
+        
 end
 
 
-
 end
-
-
-
 
 
 %%
 
 %% SAVE
 if flag_saveIDX
-    cd('D:\5 diIDX dir')
+    global IDXDIR
+    cd(IDXDIR)
 %     if isfile(strcat(saveName,'.mat'))
 %         error('file already exists')        
 %     end
@@ -489,9 +431,15 @@ else
     warning('IDX not saved')
 end
 
-toc
+
 
 load gong
 sound(y,Fs)
+
+
+
+
+
+
 
 end
