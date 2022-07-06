@@ -2,34 +2,27 @@ function CODEDIR = PostSetup(user)
 
 % helper function 
 % MAC, Feb 2020
-global HOMEDIR NS6DIR AUTODIR SORTDIR ALIGNDIR IDXDIR STIMDIR SAVEDIR CODEDIR OUTDIR tasks LFPDIR
+global HOMEDIR NS6DIR AUTODIR SORTDIR ALIGNDIR IDXDIR STIMDIR SAVEDIR CODEDIR OUTDIR tasks LFPDIR RIGDIR
  
 
 switch user
     
     case {'BrockWork'}
         NS6DIR   = 'T:\Brock - backups\Backup - WD harddrive - 220311\1 brfs ns6 files\';
+        RIGDIR   = 'T:\Brock - backups\Backup - WD harddrive - 220311\all BRFS\';
         CODEDIR  = 'C:\Users\Brock\Documents\MATLAB\GitHub\laminarLabelingCollab\MasterScripts';
         IDXDIR   = 'T:\Brock - backups\Backup - WD harddrive - 220311\5 diIDX dir\';
-        STIMDIR  = 'T:\Brock - backups\Backup - WD harddrive - 220311\2 all LFP STIM\';
-        OUTDIR   = 'C:\Users\Brock\Documents\MATLAB\formattedDataOutputs\JASP output for brfs\';
-        LFPDIR   = [];
-
-        tasks    = 'brfs';
-        
+        STIMDIR  = 'T:\diSTIM - adaptdcos&CRF\STIM\';
+        OUTDIR   = 'C:\Users\Brock\Box\JOV brfs submission\formattedDataOutputs\methodsFigOutput\';
         cd(CODEDIR)
 
-
-
     case {'BrockHome'}
-        NS6DIR   = 'D:\brfs ns6 files\';
-        CODEDIR  = 'C:\Users\Brock Carlson\Documents\GitHub\BMC_AdaptdcosFigures\adaptdcos\Master figure releases\1.5 - Gramm';
-        IDXDIR   = 'D:\5 diIDX dir';
-        STIMDIR  = 'E:\2 all LFP STIM';
-        OUTDIR   = 'E:\6 Plot Dir\1.5 Gramm\outputs from 1.5 master code';
-        
-        tasks    = 'brfs';
-        
+        NS6DIR   = 'T:\Brock - backups\Backup - WD harddrive - 220311\1 brfs ns6 files\';
+        RIGDIR   = 'D:\all BRFS\';
+        CODEDIR  = 'C:\Users\Brock Carlson\Documents\GitHub\BMC_AdaptdcosFigures\adaptdcos\Master figure releases\1.8 - Methods Figures';
+        IDXDIR   = 'T:\Brock - backups\Backup - WD harddrive - 220311\5 diIDX dir\';
+        STIMDIR  = 'T:\diSTIM - adaptdcos&CRF\STIM\';
+        OUTDIR   = 'C:\Users\Brock Carlson\Box\JOV brfs submission\formattedDataOutputs\methodsFigOutput\';
         cd(CODEDIR)
         
     case {'BrockHome_LLC'}

@@ -6,8 +6,8 @@ cd(STIMDIR)
 
 
 
-didir = strcat(STIMDIR,'\');
-saveName = 'IDXforGrammJuly2021'; % THIS IS CONTRAST LEVELS OF .41-.75 INCLUSIVE
+didir = strcat(STIMDIR);
+saveName = 'test'; % THIS IS CONTRAST LEVELS OF .41-.75 INCLUSIVE
 anaType = '_AUTO.mat';
 flag_saveIDX    = 1;
 
