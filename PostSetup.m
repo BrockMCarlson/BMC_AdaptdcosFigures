@@ -9,13 +9,6 @@ switch user
     
     case {'BrockWork'}
         NS6DIR   = 'T:\Brock - backups\Backup - WD harddrive - 220311\1 brfs ns6 files\';
-<<<<<<< Updated upstream
-        RIGDIR   = 'T:\Brock - backups\Backup - WD harddrive - 220311\all BRFS\';
-        CODEDIR  = 'C:\Users\Brock\Documents\MATLAB\GitHub\laminarLabelingCollab\MasterScripts';
-        IDXDIR   = 'T:\Brock - backups\Backup - WD harddrive - 220311\5 diIDX dir\';
-        STIMDIR  = 'T:\diSTIM - adaptdcos&CRF\STIM\';
-        OUTDIR   = 'C:\Users\Brock\Box\JOV brfs submission\formattedDataOutputs\methodsFigOutput\';
-=======
         CODEDIR  = 'C:\Users\Brock\Documents\MATLAB\GitHub\BMC_AdaptdcosFigures\adaptdcos\Master figure releases\1.9 - iScience Submission';
         IDXDIR   = 'T:\Brock - backups\Backup - WD harddrive - 220311\5 diIDX dir\';
         STIMDIR  = 'T:\diSTIM - adaptdcos&CRF\STIM\';
@@ -24,7 +17,6 @@ switch user
 
         tasks    = 'brfs';
         
->>>>>>> Stashed changes
         cd(CODEDIR)
 
     case {'BrockHome'}
