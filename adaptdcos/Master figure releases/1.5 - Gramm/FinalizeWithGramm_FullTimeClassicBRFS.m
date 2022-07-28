@@ -39,10 +39,9 @@ gramm_2x2_subline(IDX)
 gramm_2x2_RESP(IDX)
 
 
-
 %% gramm_2x2 laminar.
-gramm_2x2laminar_line(IDX)
-gramm_2x2laminar_subline(IDX)
+% % % gramm_2x2laminar_line(IDX)
+% % % gramm_2x2laminar_subline(IDX)
 
 
 %% gramm_driveAndGain

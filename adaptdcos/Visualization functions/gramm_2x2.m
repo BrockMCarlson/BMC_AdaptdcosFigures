@@ -2,7 +2,7 @@ function gramm_2x2(IDX,dataType)
 
 %% Initial variables
 conditNameForCC = IDX.allV1(1).condition.Properties.RowNames;
-TM = IDX.allV1(1).tm;
+TM = IDX.allV1(1).TM;
 
 
 uctLength = length(IDX.allV1);

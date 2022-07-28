@@ -279,6 +279,8 @@ for cond = 1:size(conditions,1)
     respholder = RESP_alltrls{cond};
     SDF_blCor{cond} = sdfholder - respholder(4,:);
 end
+
+error('z-score normalize your data')
 %% Get avg results
 SDF_avg     = cell(size(conditions,1),1);
 RESP_avg    = cell(size(conditions,1),1);

@@ -1,4 +1,4 @@
-function IDX = IDXforGrammJuly2021;
+function IDX = IDX_iScienceSubmission
 
 %% load session data
 global STIMDIR
@@ -6,8 +6,8 @@ cd(STIMDIR)
 
 
 
-didir = strcat(STIMDIR);
-saveName = 'test'; % THIS IS CONTRAST LEVELS OF .41-.75 INCLUSIVE
+didir = strcat(STIMDIR,'\');
+saveName = 'IDX_iScienceSubmission'; % THIS IS CONTRAST LEVELS OF .41-.75 INCLUSIVE
 anaType = '_AUTO.mat';
 flag_saveIDX    = 1;
 
@@ -143,6 +143,7 @@ if X.diana ~= 1
     continue
 end
 
+% Unit must be tuned to eye and orientation to be included in analysis
 % X.diang   = {'eye','tilt','contrast'};
 if X.dianp(1) > 0.05
     ErrorCount = ErrorCount+1;
@@ -158,6 +159,7 @@ if X.dianp(2) > 0.05
     ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
     continue
 end
+% We are not worried about being tuned to contrast - re: Blake Mitchell
 
 
     
@@ -315,29 +317,80 @@ end
 
 
 %% crop/pad SDF
-        % crop / pad SDF    
-        %% Pad works for MUA but not for LFP requires trial averaging...
-        clear tm pad st en
-        tm = matobj.sdftm;
-        if tm(end) < sdfwin(2)  
-           error('padding not correctly set up for LFP -- check MAC code')
-        else
-            pad = [];
-            en = find(tm == sdfwin(2))-1;
-            st = find(tm == sdfwin(1));
-            TM = tm(st : en);
-        end
-        clear cond
-        for cond = 1:size(conditionarray,1)
-            data = SDF_uncrop{cond}; % data is in [time x trials]
-            if isempty(data)
-                % No conditions of this type were presented on this session
-                continue
-            else
-                data_crop = data(st:en,:);
-            end
-            SDF_crop{cond} = data_crop;
-        end
+% crop / pad SDF    
+% Pad works for MUA but not for LFP requires trial averaging...
+clear tm pad st en
+tm = matobj.sdftm;
+if tm(end) < sdfwin(2)  
+   error('padding not correctly set up for LFP -- check MAC code')
+else
+    pad = [];
+    en = find(tm == sdfwin(2))-1;
+    st = find(tm == sdfwin(1));
+    TM = tm(st : en);
+end
+clear cond
+for cond = 1:size(conditionarray,1)
+    data = SDF_uncrop{cond}; % data is in [time x trials]
+    if isempty(data)
+        % No conditions of this type were presented on this session
+        continue
+    else
+        data_crop = data(st:en,:);
+    end
+    SDF_crop{cond} = data_crop;
+end
+
+%% Baseline correct the data
+% We cannot baseline correct this dataset until we figure out how to
+% baseline correct ONLY the monocular, simultaneous, and adapter trials.
+% The current format drafted here would also basleine correct the
+% suppressor onsets to the pre-suppression baseline.
+
+
+% % % % clear cond
+% % % % for cond = 1:size(conditionarray,1)
+% % % %     sdfholder = SDF_crop{cond}; % sdfholder dimensions are [time x trials]
+% % % %     respholder = RESP_alltrls{cond}; % respholder dimensions are [respWindowAvg x trials]
+% % % %     % Each trial's average baseline impulse rate is stored in
+% % % %     % respholder(4,:). We can subtract each trial's average baseline from
+% % % %     % every element (either along SDF's timeponts or the other response
+% % % %     % values) to baseline correct on a trial-by-trail basis. 
+% % % %         SDF_blCor{cond} = sdfholder - respholder(4,:); 
+% % % %         RESP_blCor{cond} = respholder - respholder(4,:);
+% % % % end
+
+
+
+%% Z-score normalize the data
+% This method of normalize should also help handle the lack of baseline
+% correction, as noted above. 
+if isequal(win_ms(4,:),[-50 0])
+    blDimension = 4;
+else
+    error('RESP dimension issue. fix by programatically finding where the window is.')
+end    
+baselineAll = squeeze(matobj_RESP.RESP(e,blDimension,:));
+
+resp = squeeze(matobj.RESP(e,:,:));
+
+% We do NOT want these suppressor trials included 
+    elseif cond == 10 || cond == 12 || cond == 14 || cond == 16 || cond == 18 || cond == 20 || cond == 22 || cond == 24
+
+clear cond
+for cond = 1:size(conditionarray,1)
+    sdfholder = SDF_crop{cond}; % sdfholder dimensions are [time x trials]
+    respholder = RESP_alltrls{cond}; % respholder dimensions are [respWindowAvg x trials]
+    % Each trial's average baseline impulse rate is stored in
+    % respholder(4,:). We can subtract each trial's average baseline from
+    % every element (either along SDF's timeponts or the other response
+    % values) to baseline correct on a trial-by-trail basis. 
+        SDF_blCor{cond} = sdfholder - respholder(4,:); 
+        RESP_blCor{cond} = respholder - respholder(4,:);
+end
+
+
+
 
 %% Get avg results and cumsum
 SDF_avg     = cell(size(condition,1),1);
@@ -426,8 +479,7 @@ if flag_saveIDX
 %     if isfile(strcat(saveName,'.mat'))
 %         error('file already exists')        
 %     end
-    save(saveName,'IDX')
-    save('ERR','ERR')
+    save(saveName,'IDX','ERR')
 else
     warning('IDX not saved')
 end
