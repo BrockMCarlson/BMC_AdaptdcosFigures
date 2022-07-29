@@ -7,7 +7,7 @@ cd(STIMDIR)
 
 
 didir = strcat(STIMDIR,'\');
-saveName = 'IDX_iScienceSubmission'; % THIS IS CONTRAST LEVELS OF .41-.75 INCLUSIVE
+saveName = 'IDX_iScienceSubmission.mat'; % THIS IS CONTRAST LEVELS OF .41-.75 INCLUSIVE
 anaType = '_AUTO.mat';
 flag_saveIDX    = 1;
 
@@ -154,7 +154,7 @@ if X.dianp(1) > 0.05
 end
 if X.dianp(2) > 0.05
     ErrorCount = ErrorCount+1;
-    ERR(ErrorCount).reason = 'unit not tuned to eye and ori';
+    ERR(ErrorCount).reason = 'unit not tuned to ori';
     ERR(ErrorCount).penetration = STIM.penetration;
     ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
     continue
@@ -215,13 +215,28 @@ for w = 1:length(SORTED.eyes)
     SORTED.tilts(w,:)     = SORTED.tilts(w,sortidx(w,:));
 end; clear w
 
-%% Pull out SDF
+
+%% Z-score normalize the data
+sdf  = squeeze(matobj.SDF(e,:,:));
+resp = squeeze(matobj.RESP(e,:,:));
+
+if isequal(win_ms(4,:),[-50 0])
+    blDimension = 4;
+else
+    error('RESP dimension issue. fix by programatically finding where the window is.')
+end    
+baselineOfOnsetsOnly = resp(blDimension,~STIM.suppressor);
+blAvg = nanmean(baselineOfOnsetsOnly);
+blStd = nanstd(baselineOfOnsetsOnly);
+SDF_Zscore = (sdf- blAvg) ./ blStd;
+RESP_Zscore = (resp - blAvg) ./ blStd;
+
+
+%% Pull out conditions of interest
 % Pre-allocate
 clear  cond SDF SDF_uncrop SDF_crop sdf resp trlsLogical
 CondTrialNum = nan(size(condition,1),1);
 CondTrials = cell(size(condition,1),1);
-sdf  = squeeze(matobj.SDF(e,:,:));
-resp = squeeze(matobj.RESP(e,:,:));
 SDF_uncrop  = cell(size(condition,1),1);
 SDF_crop    = cell(size(condition,1),1);
 RESP_alltrls   = cell(size(condition,1),1);
@@ -308,8 +323,8 @@ for cond = 1:size(conditionarray,1)
     trlsLogical(:,cond) = trls;
     CondTrials{cond} = find(trls);
     CondTrialNum(cond,1) = sum(trls); 
-    SDF_uncrop{cond}   = sdf(:,trls); 
-    RESP_alltrls{cond}        = resp(:,trls);
+    SDF_uncrop{cond}   = SDF_Zscore(:,trls); 
+    RESP_alltrls{cond}        = RESP_Zscore(:,trls);
 end
 
 
@@ -339,54 +354,6 @@ for cond = 1:size(conditionarray,1)
         data_crop = data(st:en,:);
     end
     SDF_crop{cond} = data_crop;
-end
-
-%% Baseline correct the data
-% We cannot baseline correct this dataset until we figure out how to
-% baseline correct ONLY the monocular, simultaneous, and adapter trials.
-% The current format drafted here would also basleine correct the
-% suppressor onsets to the pre-suppression baseline.
-
-
-% % % % clear cond
-% % % % for cond = 1:size(conditionarray,1)
-% % % %     sdfholder = SDF_crop{cond}; % sdfholder dimensions are [time x trials]
-% % % %     respholder = RESP_alltrls{cond}; % respholder dimensions are [respWindowAvg x trials]
-% % % %     % Each trial's average baseline impulse rate is stored in
-% % % %     % respholder(4,:). We can subtract each trial's average baseline from
-% % % %     % every element (either along SDF's timeponts or the other response
-% % % %     % values) to baseline correct on a trial-by-trail basis. 
-% % % %         SDF_blCor{cond} = sdfholder - respholder(4,:); 
-% % % %         RESP_blCor{cond} = respholder - respholder(4,:);
-% % % % end
-
-
-
-%% Z-score normalize the data
-% This method of normalize should also help handle the lack of baseline
-% correction, as noted above. 
-if isequal(win_ms(4,:),[-50 0])
-    blDimension = 4;
-else
-    error('RESP dimension issue. fix by programatically finding where the window is.')
-end    
-baselineAll = squeeze(matobj_RESP.RESP(e,blDimension,:));
-
-resp = squeeze(matobj.RESP(e,:,:));
-
-% We do NOT want these suppressor trials included 
-    elseif cond == 10 || cond == 12 || cond == 14 || cond == 16 || cond == 18 || cond == 20 || cond == 22 || cond == 24
-
-clear cond
-for cond = 1:size(conditionarray,1)
-    sdfholder = SDF_crop{cond}; % sdfholder dimensions are [time x trials]
-    respholder = RESP_alltrls{cond}; % respholder dimensions are [respWindowAvg x trials]
-    % Each trial's average baseline impulse rate is stored in
-    % respholder(4,:). We can subtract each trial's average baseline from
-    % every element (either along SDF's timeponts or the other response
-    % values) to baseline correct on a trial-by-trail basis. 
-        SDF_blCor{cond} = sdfholder - respholder(4,:); 
-        RESP_blCor{cond} = respholder - respholder(4,:);
 end
 
 

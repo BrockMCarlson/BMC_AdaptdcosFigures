@@ -1,4 +1,4 @@
-function gramm_dCOS_RESP(IDX)
+function gramm_adaptation_RESP(IDX)
 %% Goal
 % use gramm and plot the simultaneous congruent, incongruent, and monoc
 % preferred.
@@ -13,7 +13,7 @@ clear DataForVis
 count = 0;
 uctLength = length(IDX.allV1);
 for tmBlock = 1:2
-    for condLabel = [5 7 10 18]
+    for condLabel = [5 10]
        for uct = 1:uctLength
            count = count + 1;       
            % Categoricals - IVs
@@ -24,17 +24,11 @@ for tmBlock = 1:2
            end
            
            if condLabel == 5
-               DataForVis.condLabel{count,1} = 'Binocular';
-           elseif condLabel == 7
-               DataForVis.condLabel{count,1} = 'Dichoptic';
+               DataForVis.condLabel{count,1} = 'Dioptic Simultaneous';
            elseif condLabel == 10
-               DataForVis.condLabel{count,1} = 'Binoc Adapted';
-           elseif condLabel == 18
-               DataForVis.condLabel{count,1} = 'Dichop Adapted';       
+               DataForVis.condLabel{count,1} = 'Dioptic Adapted';
            end
 
-
-           
            % DV - RESP
            DataForVis.RESP(count,1) = IDX.allV1(uct).RESP_avg{condLabel}(tmBlock);
            
@@ -50,7 +44,6 @@ end
 
 %% Gramm plots for vis repeated trajectories
 
-
 clear g
 
 x_resp = DataForVis.tmBlock;
@@ -60,29 +53,30 @@ c_resp = DataForVis.condLabel;
 
 % Violin plot with stat_summary
 g(1,1)=gramm('x',c_resp,'y',y_resp,'color',c_resp,'subset',strcmp(DataForVis.tmBlock,'Transient'));
-g(1,1).set_order_options('x',0,'color',0)
+g(1,1).set_order_options('x',{'Dioptic Simultaneous','Dioptic Adapted'},'color',0)
 g(1,1).set_names('x','Stimulus Presented','y','Z-Scored change from baseline','color','Stimulus Presented');
 % g(1,1).stat_violin('normalization','width','dodge',0,'fill','transparent');
+% g(1,1).stat_boxplot('width',0.5,'dodge',0,'notch',true);
 g(1,1).stat_summary('geom',{'point' 'errorbar'},'dodge',0.3,'width',0.5);
 g(1,1).set_title('Transient time period (50-100ms)');
 g(1,1).set_color_options('map','brewer_dark');
 
+
+
 g(1,2)=gramm('x',c_resp,'y',y_resp,'color',c_resp,'subset',strcmp(DataForVis.tmBlock,'Sustained'));
-g(1,2).set_order_options('x',0,'color',0)
+g(1,2).set_order_options('x',{'Dioptic Simultaneous','Dioptic Adapted'},'color',0)
 g(1,2).set_names('x','Stimulus Presented','y','Z-Scored change from baseline','color','Stimulus Presented');
 % g(1,2).stat_violin('normalization','width','dodge',0,'fill','transparent');
-% g(1,2).stat_summary('width',0.5,'dodge',0,'notch',true);
+% g(1,2).stat_boxplot('width',0.5,'dodge',0,'notch',true);
 g(1,2).stat_summary('geom',{'point' 'errorbar'},'dodge',0.3,'width',0.5);
 g(1,2).set_title('Sustained time period (150-250ms)');
 g(1,2).set_color_options('map','brewer_dark');
 
 
+
 figure('Position',[2.1738e+03 28.2000 1172 520]);
 g.axe_property('YLim',[0 6]);
 g.draw();
-
-
-
 
 
 

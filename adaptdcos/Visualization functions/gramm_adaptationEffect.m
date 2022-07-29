@@ -86,14 +86,14 @@ g(1,1)=gramm('x',c_resp,'y',y_resp,'color',x_resp,'subset',strcmp(DataForVis.tmB
 
 
 g.set_order_options('x',0,'color',0,'column',0)
-g.set_names('x','Stimulus Presented','y','Impulses/sec','color','Stimulus Presented');
+g.set_names('x','Stimulus Presented','y','Z-Scored change from baseline','color','Stimulus Presented');
 g.set_title('Transient time period (50-100ms)');
 g.set_color_options('map','brewer_dark');
 
 
 
 % figure('Position',[107 71 1304 824]);
-g.axe_property('YLim',[0 250]);
+g.axe_property('YLim',[0 6]);
 g.draw();
 
 
