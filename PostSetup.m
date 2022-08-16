@@ -20,12 +20,12 @@ switch user
         cd(CODEDIR)
 
     case {'BrockHome'}
-        NS6DIR   = 'T:\Brock - backups\Backup - WD harddrive - 220311\1 brfs ns6 files\';
+        NS6DIR   = []; %why would this be different than rigdir?
         RIGDIR   = 'D:\all BRFS\';
-        CODEDIR  = 'C:\Users\Brock Carlson\Documents\GitHub\BMC_AdaptdcosFigures\adaptdcos\Master figure releases\1.8 - Methods Figures';
-        IDXDIR   = 'T:\Brock - backups\Backup - WD harddrive - 220311\5 diIDX dir\';
-        STIMDIR  = 'T:\diSTIM - adaptdcos&CRF\STIM\';
-        OUTDIR   = 'C:\Users\Brock Carlson\Box\JOV brfs submission\formattedDataOutputs\methodsFigOutput\';
+        CODEDIR  = 'C:\Users\Brock Carlson\Documents\GitHub\BMC_AdaptdcosFigures\adaptdcos\Master figure releases\1.9 - iScience Submission';
+        IDXDIR   = 'D:\5 diIDX dir\';
+        STIMDIR  = 'D:\STIM\';
+        OUTDIR   = 'C:\Users\Brock Carlson\Box\BRFS to iScience\plot outputs for BRFS to iScience';
         cd(CODEDIR)
         
     case {'BrockHome_LLC'}
