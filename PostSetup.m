@@ -2,30 +2,27 @@ function CODEDIR = PostSetup(user)
 
 % helper function 
 % MAC, Feb 2020
-global HOMEDIR NS6DIR AUTODIR SORTDIR ALIGNDIR IDXDIR STIMDIR SAVEDIR CODEDIR OUTDIR tasks LFPDIR RIGDIR
+global  LFPDIR RIGDIR CODEDIR IDXDIR STIMDIR OUTDIR
  
 
 switch user
     
     case {'BrockWork'}
-        NS6DIR   = 'T:\Brock - backups\Backup - WD harddrive - 220311\1 brfs ns6 files\';
         CODEDIR  = 'C:\Users\Brock\Documents\MATLAB\GitHub\BMC_AdaptdcosFigures\adaptdcos\Master figure releases\1.9 - iScience Submission';
         IDXDIR   = 'T:\Brock - backups\Backup - WD harddrive - 220311\5 diIDX dir\';
         STIMDIR  = 'T:\diSTIM - adaptdcos&CRF\STIM\';
         OUTDIR   = 'C:\Users\Brock\Documents\MATLAB\plotOutputs\plot outputs for BRFS to iScience\';
         LFPDIR   = [];
 
-        tasks    = 'brfs';
         
         cd(CODEDIR)
 
     case {'BrockHome'}
-        NS6DIR   = []; %why would this be different than rigdir?
-        RIGDIR   = 'D:\all BRFS\';
+        RIGDIR   = 'S:\all BRFS\';
         CODEDIR  = 'C:\Users\Brock Carlson\Documents\GitHub\BMC_AdaptdcosFigures\adaptdcos\Master figure releases\1.9 - iScience Submission';
-        IDXDIR   = 'D:\5 diIDX dir\';
-        STIMDIR  = 'D:\STIM\';
-        OUTDIR   = 'C:\Users\Brock Carlson\Box\BRFS to iScience\plot outputs for BRFS to iScience';
+        IDXDIR   = 'S:\FormattedDataOutputs';
+        STIMDIR  = 'S:\brfs_STIM_220811\';
+        OUTDIR   = 'S:\PlotOutputs';
         cd(CODEDIR)
         
     case {'BrockHome_LLC'}

@@ -7,9 +7,9 @@ cd(STIMDIR)
 
 
 didir = strcat(STIMDIR,'\');
-saveName = 'IDX_iScienceSubmission.mat'; % THIS IS CONTRAST LEVELS OF .41-.75 INCLUSIVE
+saveName = 'IDX_iScienceSubmission_v2.mat'; % THIS IS CONTRAST LEVELS OF .41-.75 INCLUSIVE
 anaType = '_AUTO.mat';
-flag_saveIDX    = 1;
+flag_saveIDX    = true;
 
 kls = 0;
 list    = dir([didir '*' anaType]);
@@ -31,10 +31,7 @@ for i = 1:length(list)
 %% load session data
 clear penetration
 penetration = list(i).name(1:11); 
-if strcmp(penetration,'160422_E_eD')
-    warning('160422 skipped -- problem with 4 null oris in di Unit Tuning?')
-    continue
-end
+
 
 clear STIM nel difiles
 load([didir penetration '.mat'],'STIM')
@@ -49,17 +46,15 @@ if ~any(contains(STIM.paradigm,'brfs'))
    disp(penetration)
    noBrfs = noBrfs + 1;
    MISSING(noBrfs,:) = penetration;
-   continue
+   error('there was a continue here')
 else
     yesBrfs = yesBrfs+1;
     FOUND(yesBrfs,:) = penetration;
 end
 
-if contains(anaType,'KLS')
-    nel = length(STIM.units);
-else
-    nel = length(STIM.el_labels);
-end
+
+nel = length(STIM.el_labels);
+
 difiles = unique(STIM.filen(STIM.ditask));
 
 
@@ -99,31 +94,9 @@ for e = 1:nel
     % DEV:  should be able to scrape more from
     %       STIM.rclusters, and non-used STIM.clusters
     clear goodfiles allfiles
-    allfiles = 1:length(STIM.filelist);
-    if ~kls
-        goodfiles = allfiles;
-    else
-        goodfiles = find(~isnan(STIM.clusters(e,:)));
-        if isempty(goodfiles)
-            ErrorCount = ErrorCount+1;
-            ERR(ErrorCount).reason = 'goodfiles is empty';
-            ERR(ErrorCount).penetration = STIM.penetration;
-            ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
-            continue
-        elseif ~isequal(goodfiles,allfiles)...
-                && length(goodfiles)>1 ...
-                && any(diff(goodfiles) > 1)
-            goodfiles = unique(STIM.filen(ismember(STIM.filen, goodfiles) & STIM.ditask));
-        end
-    end
-    if any(diff(goodfiles) > 1)
-        ErrorCount = ErrorCount+1;
-        ERR(ErrorCount).reason = 'goodfiles diff > 1 - salvage?';
-        ERR(ErrorCount).penetration = STIM.penetration;
-        ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
-        continue
-    end
-
+    goodfiles = 1:length(STIM.filelist);
+    
+   
         
 %% Di Unit Tuning -- RESP is always from AUTO
      X = diUnitTuning(respFullTM,STIM,goodfiles);
@@ -135,6 +108,7 @@ for e = 1:nel
      
  
 %% Set limits on acceptable tuning.
+% Unit must be tuned to eye and orientation to be included in analysis
 if X.diana ~= 1
     ErrorCount = ErrorCount+1;
     ERR(ErrorCount).reason = 'dichoptic analysis not run on unit';
@@ -143,13 +117,13 @@ if X.diana ~= 1
     continue
 end
 
-% Unit must be tuned to eye and orientation to be included in analysis
-% X.diang   = {'eye','tilt','contrast'};
+% X.diann   = {'eye','tilt','contrast'};
 if X.dianp(1) > 0.05
     ErrorCount = ErrorCount+1;
     ERR(ErrorCount).reason = 'unit not tuned to eye';
     ERR(ErrorCount).penetration = STIM.penetration;
     ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
+    warning('Unit not tuned to eye')
     continue
 end
 if X.dianp(2) > 0.05
@@ -157,6 +131,7 @@ if X.dianp(2) > 0.05
     ERR(ErrorCount).reason = 'unit not tuned to ori';
     ERR(ErrorCount).penetration = STIM.penetration;
     ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
+    warning('Unit not tuned to ori')
     continue
 end
 % We are not worried about being tuned to contrast - re: Blake Mitchell
@@ -170,8 +145,12 @@ if ~isequal(win_ms(1,:),[50 100])
 end
 
 if isnan(DE)
-    error('check why this unit doesnt have monoc tuning considering previous catch')
-    disp(uct+1);
+    ErrorCount = ErrorCount+1;
+    ERR(ErrorCount).reason = 'check why this unit doesnt have monoc tuning considering previous catch';
+    ERR(ErrorCount).penetration = STIM.penetration;
+    ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
+    warning('check why this unit doesnt have monoc tuning considering previous catch')
+    continue
 end
 
 
@@ -348,7 +327,8 @@ clear cond
 for cond = 1:size(conditionarray,1)
     data = SDF_uncrop{cond}; % data is in [time x trials]
     if isempty(data)
-        % No conditions of this type were presented on this session
+%         warning('no data in this condition')
+%         disp(strcat(penetration,'/ / contact =_ ',num2str(e)))
         continue
     else
         data_crop = data(st:en,:);
