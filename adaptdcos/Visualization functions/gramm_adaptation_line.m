@@ -51,13 +51,13 @@ g(1,1).stat_summary();
 g(1,1).set_title('stat_summary()');
 g(1,1).set_color_options('map','brewer2');
 g(1,1).set_order_options('x',0,'color',0);
-g(1,1).geom_polygon('x',{[.05 .1 .1 .05] ; [.15 .25 .25 .15]} ,'y',{[0 0 5 5];  [0 0 5 5]},'color',[.5 .5 .5]);
+g(1,1).geom_polygon('x',{[.05 .149 .149 .05] ; [.151 .25 .25 .151]} ,'y',{[0 0 5 5];  [0 0 5 5]},'color',[.5 .5 .5]);
 
 
 g.set_names('x','Time (sec)','y','Z-Scored change from baseline','color','Visual Stimulus');
 g.set_title('Effect of Adaptation');
 % figure('Position',[100 100 800 550]);
-figure('Position',[166.6000 157.8000 1.0136e+03 549.6000]);
+figure('Position',[166.6000 157.8000 644.4000 549.6000]);
 
 g.draw();
 

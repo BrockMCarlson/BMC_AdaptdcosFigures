@@ -7,7 +7,7 @@ cd(STIMDIR)
 
 
 didir = strcat(STIMDIR,'\');
-saveName = 'IDX_iScienceSubmission_v2.mat'; % THIS IS CONTRAST LEVELS OF .41-.75 INCLUSIVE
+saveName = 'IDX_iScienceSubmission.mat'; % THIS IS CONTRAST LEVELS OF .41-.75 INCLUSIVE
 anaType = '_AUTO.mat';
 flag_saveIDX    = true;
 
@@ -140,7 +140,7 @@ end
     
 %% Conditions established to pull out SDFs
    % loop through different resp windows based on win_ms;
-if ~isequal(win_ms(1,:),[50 100])
+if ~isequal(win_ms(1,:),[50 150])
     error('RESP dimension issue')
 end
 

@@ -8,10 +8,13 @@ flag_SaveFigs = false;
 %% Get IDX
 global IDXDIR
 cd(IDXDIR)
-if ~exist(strcat(IDXDIR,'\IDX_iScienceSubmission_v2.mat'),'file')
+if ~exist(strcat(IDXDIR,'\IDX_iScienceSubmission.mat'),'file')
     IDX_iScienceSubmission
 end
-    load(strcat(IDXDIR,'\IDX_iScienceSubmission_v2.mat'))
+    load(strcat(IDXDIR,'\IDX_iScienceSubmission.mat'))
+    
+%% IDX breakdown
+numUnits = idxBreakdown(IDX,ERR);
     
 %% gramm_dCOS -- built from dCOS fig and violinPlots
 gramm_dCOS_line(IDX);

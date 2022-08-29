@@ -21,7 +21,7 @@ switch user
         RIGDIR   = 'S:\all BRFS\';
         CODEDIR  = 'C:\Users\Brock Carlson\Documents\GitHub\BMC_AdaptdcosFigures\adaptdcos\Master figure releases\1.9 - iScience Submission';
         IDXDIR   = 'S:\FormattedDataOutputs';
-        STIMDIR  = 'S:\brfs_STIM_220811\';
+        STIMDIR  = 'S:\brfs_STIM_220827\';
         OUTDIR   = 'S:\PlotOutputs';
         cd(CODEDIR)
         

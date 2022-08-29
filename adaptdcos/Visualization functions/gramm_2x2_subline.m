@@ -67,12 +67,12 @@ g(1,1).stat_summary();
 g(1,1).set_title('stat_summary()');
 g(1,1).set_color_options('map','brewer2');
 g(1,1).set_order_options('color',0);
-g(1,1).geom_polygon('x',{[.05 .1 .1 .05] ; [.15 .25 .25 .15]} ,'y',{[-2 -2 2 2];  [-2 -2 2 2]},'color',[.5 .5 .5]);
+g(1,1).geom_polygon('x',{[.05 .149 .149 .05] ; [.151 .25 .25 .151]} ,'y',{[-2 -2 2 2];  [-2 -2 2 2]},'color',[.5 .5 .5]);
 g.geom_hline('yintercept',0)
 
 
 g.set_names('x','Time (sec)','y','Z-Scored change from baseline','color','Visual Stimulus');g.set_title('Simult vs Adapted');
-figure('Position',[292 260 1042 550]);
+figure('Position',[166.6000 157.8000 644.4000 549.6000]);
 g.draw();
 
 set([g.results.stat_summary.line_handle],'LineWidth',3);
