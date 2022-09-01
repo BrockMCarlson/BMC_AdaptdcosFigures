@@ -209,8 +209,8 @@ for i = 1:3
     g(i,1).set_color_options('map','brewer2');
     g(i,1).set_order_options('color',0);
     g(i,1).geom_polygon('x',{[.05 .1 .1 .05] ; [.15 .25 .25 .15]} ,'y',{[-75 -75 40 40];  [-75 -75 40 40]},'color',[.5 .5 .5]);
-    g(i,1).axe_property('XLim',[-.050 .5]);
-    g(i,1).axe_property('YLim',[-80 50]);
+    g(i,1).axe_property('XLim',[-.050 .3]);
+%     g(i,1).axe_property('YLim',[-80 50]);
     g(i,1).geom_vline('xintercept',0)
     g(i,1).geom_hline('yintercept',0)
 

@@ -1,16 +1,15 @@
 clear
 close all
-PostSetup('BrockWork')
-flag_SaveFigs = false;
+PostSetup('BrockHome')
 
 
 %% Get IDX
 global IDXDIR
 cd(IDXDIR)
-% % if ~exist(strcat(IDXDIR,'\IDXforGrammJuly2021.mat'),'file')
-% %     IDXforGrammJuly2021
-% % end
-load(strcat(IDXDIR,'\IDX_iScienceSubmission.mat'))
+if ~exist(strcat(IDXDIR,'\IDX_iScienceSubmission.mat'),'file')
+    IDX_iScienceSubmission
+end
+    load(strcat(IDXDIR,'\IDX_iScienceSubmission.mat'))
 
 %% JASP conversion
 % JASP requires each unit to be in a row vector with each column as the

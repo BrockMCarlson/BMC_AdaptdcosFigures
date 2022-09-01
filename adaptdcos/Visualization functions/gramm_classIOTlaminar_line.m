@@ -1,4 +1,4 @@
-function gramm_2x2laminar_line(IDX)
+function gramm_classIOTlaminar_line(IDX)
 %% Goal
 % use gramm and plot the simultaneous congruent, incongruent, and monoc
 % preferred.
@@ -7,24 +7,16 @@ function gramm_2x2laminar_line(IDX)
 
 %% Initial variables
 conditNameForCC = IDX.allV1(1).condition.Properties.RowNames;
-TM = IDX.allV1(1).TM(1:560);
+TM = IDX.allV1(1).TM;
 
 clear DataForVis uctLength
 count = 0;
 uctLength = length(IDX.allV1);
-for condLabel = [5 7 10 18]
+for condLabel = [1 10]
    for uct = 1:uctLength
        count = count + 1;       
        % Categoricals - IVs
-       if condLabel == 5
-           DataForVis.condLabel{count} = 'Binocular';
-       elseif condLabel == 7
-           DataForVis.condLabel{count} = 'Dichoptic';
-       elseif condLabel == 10
-           DataForVis.condLabel{count} = 'Binoc Adapted';
-       elseif condLabel == 18
-           DataForVis.condLabel{count} = 'Dichop Adapted';
-       end
+        DataForVis.condLabel{count,1} = conditNameForCC{condLabel};
 
        if IDX.allV1(uct).depth(2) > 5
            DataForVis.depth{count} = 'Supra';
@@ -36,11 +28,11 @@ for condLabel = [5 7 10 18]
        
        
        % DV - SDF
-       if isempty(IDX.allV1(uct).SDF_avg{condLabel}) || any(isnan(IDX.allV1(uct).SDF_avg{condLabel}(1:560)'))
+       if isempty(IDX.allV1(uct).SDF_avg{condLabel}) 
 %            DataForVis.SDF{count,1} = nan(1,size(TM,2));
            count = count - 1; %dont count it - rewrite over variable
        else
-           DataForVis.SDF{count,1} = IDX.allV1(uct).SDF_avg{condLabel}(1:560)';
+           DataForVis.SDF{count,1} = IDX.allV1(uct).SDF_avg{condLabel};
        end
        
    end

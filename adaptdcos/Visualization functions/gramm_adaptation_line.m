@@ -15,6 +15,18 @@ uctLength = length(IDX.allV1);
 for condLabel = [5 10]
    for uct = 1:uctLength
        count = count + 1;       
+       
+       
+       % DV - SDF
+       if isempty(IDX.allV1(uct).SDF_avg{condLabel}) || any(isnan(IDX.allV1(uct).SDF_avg{condLabel}(1:560)'))
+%            DataForVis.SDF{count,1} = nan(1,size(TM,2));
+           count = count - 1; %dont count it - rewrite over variable
+           continue
+       else
+           DataForVis.SDF{count,1} = IDX.allV1(uct).SDF_avg{condLabel}(1:560)';
+       end
+       
+       
        % Categoricals - IVs
        if condLabel == 5
            DataForVis.condLabel{count} = 'Dioptic Simultaneous';
@@ -26,13 +38,7 @@ for condLabel = [5 10]
 % %            DataForVis.condLabel{count} = 'Dichoptic Adapted';  
        end
 
-       % DV - SDF
-       if isempty(IDX.allV1(uct).SDF_avg{condLabel}) || any(isnan(IDX.allV1(uct).SDF_avg{condLabel}(1:560)'))
-%            DataForVis.SDF{count,1} = nan(1,size(TM,2));
-           count = count - 1; %dont count it - rewrite over variable
-       else
-           DataForVis.SDF{count,1} = IDX.allV1(uct).SDF_avg{condLabel}(1:560)';
-       end
+
        
    end
 end
