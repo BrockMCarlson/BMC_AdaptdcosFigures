@@ -1,7 +1,7 @@
 % FullTimeClassicBRFS - update to use Gramm
 clear
 close all
-PostSetup('BrockHome')
+PostSetup('BrockWork')
 flag_SaveFigs = false;
 
 

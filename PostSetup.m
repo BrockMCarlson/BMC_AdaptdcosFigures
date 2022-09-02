@@ -9,9 +9,9 @@ switch user
     
     case {'BrockWork'}
         CODEDIR  = 'C:\Users\Brock\Documents\MATLAB\GitHub\BMC_AdaptdcosFigures\adaptdcos\Master figure releases\1.9 - iScience Submission';
-        IDXDIR   = 'T:\Brock - backups\Backup - WD harddrive - 220311\5 diIDX dir\';
-        STIMDIR  = 'T:\diSTIM - adaptdcos&CRF\STIM\';
-        OUTDIR   = 'C:\Users\Brock\Documents\MATLAB\plotOutputs\plot outputs for BRFS to iScience\';
+        IDXDIR   = 'C:\Users\Brock\Box\BRFS to iScience\FormattedDataOutputs\';
+        STIMDIR  = 'C:\Users\Brock\Box\BRFS to iScience\';
+        OUTDIR   = 'C:\Users\Brock\Box\BRFS to iScience\plot outputs for BRFS to iScience\';
         LFPDIR   = [];
 
         
