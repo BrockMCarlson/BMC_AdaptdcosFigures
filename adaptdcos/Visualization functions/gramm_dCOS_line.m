@@ -7,43 +7,64 @@ function gramm_dCOS_line(IDX)
 
 %% Initial variables
 conditNameForCC = IDX.allV1(1).condition.Properties.RowNames;
-TM = IDX.allV1(1).TM(1:560);
+TM = IDX.allV1(1).TM;
 
-clear DataForVis
-count = 0;
+%% Grab Monoc and Diop/Dichop, but only if conditions are balanced per unit
 uctLength = length(IDX.allV1);
-for condLabel = [1 5 7]
-   for uct = 1:uctLength
-       count = count + 1;       
-       % Categoricals - IVs
-       if condLabel == 1
-           DataForVis.condLabel{count} = 'Monocular';
-       elseif condLabel == 5
-           DataForVis.condLabel{count} = 'Binocular';
-       elseif condLabel == 7
-           DataForVis.condLabel{count} = 'Dichoptic';
-% %        elseif condLabel == 8
-% %            DataForVis.condLabel{count} = 'Dichoptic';       
-       end
 
-       % DV - SDF
-       if isempty(IDX.allV1(uct).SDF_avg{condLabel}) || any(isnan(IDX.allV1(uct).SDF_avg{condLabel}(1:560)'))
-%            DataForVis.SDF{count,1} = nan(1,size(TM,2));
-           count = count - 1; %dont count it - rewrite over variable
-       else
-           DataForVis.SDF{count,1} = IDX.allV1(uct).SDF_avg{condLabel}(1:560)';
-       end
-       
-   end
+% Monoc vs dioptic
+monocCond = 1;
+diopCond = 5;
+count_missData_Diop = 0;
+count_MvsDiop = 0;
+for uct = 1:uctLength %for each unit
+    % Check that both Monocular and dichoptic conditions are present
+    if isempty(IDX.allV1(uct).SDF_avg{monocCond}) || isempty(IDX.allV1(uct).SDF_avg{diopCond}) % if either condition is missing, do not include unit in the plot.
+        count_missData_Diop = count_missData_Diop + 1;
+        missingData_Diop{count_missData_Diop,1} = strcat(IDX.allV1(uct).penetration,'_depth=',string(IDX.allV1(uct).depth(2)));
+    else
+        % If neither condition is missing, we collect the Monocular and
+        % then the dichoptic data for the unit
+        count_MvsDiop = count_MvsDiop + 1;
+            MvsDiop.SDF{count_MvsDiop,1} = IDX.allV1(uct).SDF_avg{monocCond}';
+            MvsDiop.condLabel{count_MvsDiop,1} = conditNameForCC{monocCond};
+        count_MvsDiop = count_MvsDiop + 1; % now we grab the dioptic
+            MvsDiop.SDF{count_MvsDiop,1} = IDX.allV1(uct).SDF_avg{diopCond}';
+            MvsDiop.condLabel{count_MvsDiop,1} = conditNameForCC{diopCond};
+    end
+end
+
+% Monoc vs dichoptic
+monocCond = 1;
+dichopCond = 7;
+count_missData_Dichop = 0;
+count_MvsDichop = 0;
+for uct = 1:uctLength %for each unit
+    % Check that both Monocular and dichoptic conditions are present
+    if isempty(IDX.allV1(uct).SDF_avg{monocCond}) || isempty(IDX.allV1(uct).SDF_avg{dichopCond}) % if either condition is missing, do not include unit in the plot.
+        count_missData_Dichop = count_missData_Dichop + 1;
+        missingData_Dichop{count_missData_Dichop,1} = strcat(IDX.allV1(uct).penetration,'_depth=',string(IDX.allV1(uct).depth(2)));
+    else
+        % If neither condition is missing, we collect the Monocular and
+        % then the dichoptic data for the unit
+        count_MvsDichop = count_MvsDichop + 1;
+            MvsDichop.SDF{count_MvsDichop,1} = IDX.allV1(uct).SDF_avg{monocCond}';
+            MvsDichop.condLabel{count_MvsDichop,1} = conditNameForCC{monocCond};
+        count_MvsDichop = count_MvsDichop + 1; % now we grab the dichoptic
+            MvsDichop.SDF{count_MvsDichop,1} = IDX.allV1(uct).SDF_avg{dichopCond}';
+            MvsDichop.condLabel{count_MvsDichop,1} = conditNameForCC{dichopCond};
+    end
 end
 
 
 
+
 %% Gramm plots for vis repeated trajectories
+
 clear g
 
-g(1,1)=gramm('x',TM,'y',DataForVis.SDF,'color',DataForVis.condLabel,'subset',~strcmp(DataForVis.condLabel,'Dichoptic'));
-g(1,2)=gramm('x',TM,'y',DataForVis.SDF,'color',DataForVis.condLabel,'subset',~strcmp(DataForVis.condLabel,'Binocular'));
+g(1,1)=gramm('x',TM,'y',MvsDiop.SDF,'color',MvsDiop.condLabel);
+g(1,2)=gramm('x',TM,'y',MvsDichop.SDF,'color',MvsDichop.condLabel);
 g.axe_property('XLim',[-.050 .30]);
 g.axe_property('YLim',[-.5 6]);
 g.geom_vline('xintercept',0)
@@ -64,12 +85,13 @@ g(1,2).geom_polygon('x',{[.05 .149 .149 .05] ; [.151 .25 .25 .151]} ,'y',{[0 0 5
 g.set_names('x','Time (sec)','y','Z-Scored change from baseline','color','Visual Stimulus');
 g.set_title('Dichoptic Suppression');
 % figure('Position',[100 100 800 550]);
-figure('Position',[166.6000 157.8000 644.4000 549.6000]);
+figure('Position',[166.6,157.8,1299.4,549.6]);
 
 g.draw();
 
 set([g(1,1).results.stat_summary.line_handle],'LineWidth',3);
 set([g(1,2).results.stat_summary.line_handle],'LineWidth',3);
+
 
 
 

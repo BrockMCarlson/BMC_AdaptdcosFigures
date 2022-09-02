@@ -1,7 +1,7 @@
 % FullTimeClassicBRFS - update to use Gramm
 clear
 close all
-PostSetup('BrockWork')
+PostSetup('BrockHome')
 flag_SaveFigs = false;
 
 
@@ -20,7 +20,14 @@ numUnits = idxBreakdown(IDX,ERR);
 gramm_dCOS_line(IDX);
 gramm_dCOS_RESP(IDX);
 
-%% Gramm adaptation control
+%% classic IOT comparison
+gramm_classicIOT_line(IDX)
+% gramm_adaptation_RESP(IDX)
+
+gramm_classIOTlaminar_line(IDX)
+
+
+%% Gramm adaptation control - diop simult vs diop adapted
 gramm_adaptation_line(IDX)
 gramm_adaptation_RESP(IDX)
 

@@ -14,13 +14,7 @@ count = 0;
 uctLength = length(IDX.allV1);
 for condLabel = [1 2]
    for uct = 1:uctLength
-       count = count + 1;       
-       % Categoricals - IVs
-       if condLabel == 1
-           DataForVis.condLabel{count} = 'Simultaneous';
-       elseif condLabel == 2
-           DataForVis.condLabel{count} = 'Adapted';
-       end
+       count = count + 1;   
 
        % DV - SDF
        if condLabel == 1
@@ -29,6 +23,7 @@ for condLabel = [1 2]
                    isempty(IDX.allV1(uct).SDF_avg{7})||...
                    any(isnan(IDX.allV1(uct).SDF_avg{7}(1:560)))
                count = count - 1;
+               continue
            else
                congSDF = IDX.allV1(uct).SDF_avg{5}(1:560)';
                inCoSDF = IDX.allV1(uct).SDF_avg{7}(1:560)';
@@ -41,6 +36,7 @@ for condLabel = [1 2]
                    isempty(IDX.allV1(uct).SDF_avg{18})||...
                    any(isnan(IDX.allV1(uct).SDF_avg{18}(1:560)))
                count = count - 1;
+               continue
            else
                congSDF = IDX.allV1(uct).SDF_avg{10}(1:560)';
                inCoSDF = IDX.allV1(uct).SDF_avg{18}(1:560)';
@@ -48,7 +44,16 @@ for condLabel = [1 2]
                DataForVis.SDF{count,1} = subSDF;
            end
        end
+ 
        
+       % Categoricals - IVs
+       if condLabel == 1
+           DataForVis.condLabel{count} = 'Simultaneous';
+       elseif condLabel == 2
+           DataForVis.condLabel{count} = 'Adapted';
+       end
+
+      
    end
 end
 
