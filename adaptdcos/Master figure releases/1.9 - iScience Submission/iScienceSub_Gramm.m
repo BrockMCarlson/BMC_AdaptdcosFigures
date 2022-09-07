@@ -8,10 +8,10 @@ flag_SaveFigs = false;
 %% Get IDX
 global IDXDIR
 cd(IDXDIR)
-if ~exist(strcat(IDXDIR,'\IDX_iScienceSubmission.mat'),'file')
+if ~exist(strcat(IDXDIR,'\IDX_iScienceSubmission_highContrast.mat'),'file')
     IDX_iScienceSubmission
 end
-    load(strcat(IDXDIR,'\IDX_iScienceSubmission.mat'))
+    load(strcat(IDXDIR,'\IDX_iScienceSubmission_highContrast.mat'))
     
 %% IDX breakdown
 numUnits = idxBreakdown(IDX,ERR);
