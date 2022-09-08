@@ -49,7 +49,7 @@ end
 clear g
 
 g(1,1)=gramm('x',TM,'y',DataForVis.SDF,'color',DataForVis.condLabel);
-g.axe_property('XLim',[-.050 .30]);
+g.axe_property('XLim',[-.050 .25]);
 g.axe_property('YLim',[-.5 6]);
 g.geom_vline('xintercept',0)
 

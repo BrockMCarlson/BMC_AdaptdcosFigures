@@ -83,7 +83,7 @@ g(1,2).geom_polygon('x',{[.05 .149 .149 .05] ; [.151 .25 .25 .151]} ,'y',{[0 0 5
 
 
 g.set_names('x','Time (sec)','y','Z-Scored change from baseline','color','Visual Stimulus');
-g.set_title('Dichoptic Suppression');
+g.set_title('Classic Interocular Suppression');
 % figure('Position',[100 100 800 550]);
 figure('Position',[166.6,157.8,1299.4,549.6]);
 
