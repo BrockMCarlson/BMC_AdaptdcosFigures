@@ -1,9 +1,9 @@
 % FullTimeClassicBRFS - update to use Gramm
 clear
 close all
-PostSetup('BrockHome')
+PostSetup('BrockWork')
 flag_SaveFigs = true;
-anaName = 'IDX_iScienceSubmission_unbalancedContrast';
+anaName = 'IDX_iScienceSubmission';
 
 
 
@@ -48,6 +48,7 @@ gramm_adaptationEffect(IDX)
 %% Save all the figs
 global OUTDIR
 folderName = strcat(OUTDIR,filesep,anaName);
+mkdir(folderName)
 cd(folderName)
 
 if flag_SaveFigs
@@ -55,6 +56,6 @@ if flag_SaveFigs
         'adaptation_line', 'adaptation_RESP',...
         '2x2_line', '2x2_subline', '2x2_RESP', ...
         'adaptationEffect'});
-    saveAllTheFigs(figNameList,OUTDIR)
+    saveAllTheFigs(figNameList,folderName)
 end
 
