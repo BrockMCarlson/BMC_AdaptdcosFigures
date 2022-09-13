@@ -1,6 +1,6 @@
 clear
 close all
-PostSetup('BrockHome')
+PostSetup('BrockWork')
 
 
 %% Get IDX
@@ -30,6 +30,12 @@ for i = 1:numberOfUnits
         outputForJASP_sustained(i,j) = IDX.allV1(i).RESP_avg{j}(2);
     end
 end
+
+
+%%  Delta calculation
+
+
+
 
 %% Writetable
 % Now we need to export these values to .csv for JASP import. It would be

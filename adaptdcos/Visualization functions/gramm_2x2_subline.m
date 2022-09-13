@@ -27,7 +27,7 @@ for condLabel = [1 2]
            else
                congSDF = IDX.allV1(uct).SDF_avg{5}(1:560)';
                inCoSDF = IDX.allV1(uct).SDF_avg{7}(1:560)';
-               subSDF = congSDF - inCoSDF;
+               subSDF = inCoSDF - congSDF;
                DataForVis.SDF{count,1} = subSDF;
            end
        elseif condLabel == 2
@@ -40,7 +40,7 @@ for condLabel = [1 2]
            else
                congSDF = IDX.allV1(uct).SDF_avg{10}(1:560)';
                inCoSDF = IDX.allV1(uct).SDF_avg{18}(1:560)';
-               subSDF = congSDF - inCoSDF;
+               subSDF = inCoSDF - congSDF;
                DataForVis.SDF{count,1} = subSDF;
            end
        end

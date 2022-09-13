@@ -114,6 +114,7 @@ if X.diana ~= 1
     ERR(ErrorCount).reason = 'dichoptic analysis not run on unit';
     ERR(ErrorCount).penetration = STIM.penetration;
     ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
+    warning('diana not run on unit')
     continue
 end
 
@@ -372,6 +373,8 @@ end
         holder.PS    = PS;
         holder.NDE    = NDE;
         holder.NS    = NS; 
+        holder.X    = X; % This should get you all the tuning info
+        holder.occ  = X.occ(3);
         
         % Condition info
         holder.CondTrials = CondTrials;

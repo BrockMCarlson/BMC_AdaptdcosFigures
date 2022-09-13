@@ -107,7 +107,7 @@ g(1,2).set_order_options('x',0,'color',0)
 g(1,2).set_names('x','Stimulus Presented','y','Z-Scored change from baseline','color','Stimulus Presented');
 % g(1,2).stat_violin('normalization','width','dodge',0,'fill','transparent');
 % g(1,2).stat_boxplot('width',0.5,'dodge',0,'notch',true);
-g(1,2).stat_summary('geom',{'point' 'errorbar'},'dodge',0.3,'width',0.5);
+g(1,2).stat_summary('type','sem','geom',{'point' 'errorbar'},'dodge',0.3,'width',0.5);
 g(1,2).set_title('Sustained time period (150-250ms)');
 g(1,2).set_color_options('map','brewer_dark');
 
@@ -131,7 +131,7 @@ h(1,1).set_order_options('x',0,'color',0)
 h(1,1).set_names('x','Stimulus Presented','y','Z-Scored change from baseline','color','Stimulus Presented');
 % h(1,1).stat_violin('normalization','width','dodge',0,'fill','transparent');
 % h(1,1).stat_boxplot('width',0.5,'dodge',0,'notch',true);
-h(1,1).stat_summary('geom',{'point' 'errorbar'},'dodge',0.3,'width',0.5);
+h(1,1).stat_summary('type','sem','geom',{'point' 'errorbar'},'dodge',0.3,'width',0.5);
 h(1,1).set_title('Transient time period (50-100ms)');
 h(1,1).set_color_options('map','brewer_dark');
 
