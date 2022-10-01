@@ -65,14 +65,14 @@ clear g
 
 g(1,1)=gramm('x',TM,'y',DataForVis.SDF,'color',DataForVis.condLabel);
 g.axe_property('XLim',[-.050 .25]);
-g.axe_property('YLim',[-1.5 1.5]);
+g.axe_property('YLim',[-50 50]);
 g.geom_vline('xintercept',0)
 
 g(1,1).stat_summary();
 g(1,1).set_title('stat_summary()');
 g(1,1).set_color_options('map','brewer2');
 g(1,1).set_order_options('color',0);
-g(1,1).geom_polygon('x',{[.05 .149 .149 .05] ; [.151 .25 .25 .151]} ,'y',{[-2 -2 2 2];  [-2 -2 2 2]},'color',[.5 .5 .5]);
+g(1,1).geom_polygon('x',{[.05 .145 .145 .05] ; [.155 .25 .25 .155]} ,'y',{[-30 -30 40 40];  [-30 -30 40 40]},'color',[.5 .5 .5]);
 g.geom_hline('yintercept',0)
 
 

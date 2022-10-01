@@ -42,21 +42,21 @@ g(1,1)=gramm('x',TM,'y',DataForVis.SDF,'color',DataForVis.condLabel,...
 g(1,2)=gramm('x',TM,'y',DataForVis.SDF,'color',DataForVis.condLabel,...
     'subset',(strcmp(DataForVis.condLabel, conditNameForCC{10}) | strcmp(DataForVis.condLabel,conditNameForCC{18})));
 g.axe_property('XLim',[-.050 .25]);
-g.axe_property('YLim',[-.5 6]);
+g.axe_property('YLim',[0 175]);
 g.geom_vline('xintercept',0)
 
 g(1,1).stat_summary();
 g(1,1).set_title('stat_summary()');
 g(1,1).set_color_options('map','brewer2');
 g(1,1).set_order_options('color',0);
-g(1,1).geom_polygon('x',{[.05 .149 .149 .05] ; [.151 .25 .25 .151]} ,'y',{[0 0 5 5];  [0 0 5 5]},'color',[.5 .5 .5]);
+g(1,1).geom_polygon('x',{[.05 .145 .145 .05] ; [.155 .25 .25 .155]} ,'y',{[50 50 160 160];  [50 50 160 160]},'color',[.5 .5 .5]);
 
 
 g(1,2).stat_summary();
 g(1,2).set_title('stat_summary()');
 g(1,2).set_color_options('map','brewer2');
 g(1,2).set_order_options('color',0);
-g(1,2).geom_polygon('x',{[.05 .149 .149 .05] ; [.151 .25 .25 .151]} ,'y',{[0 0 5 5];  [0 0 5 5]},'color',[.5 .5 .5]);
+g(1,2).geom_polygon('x',{[.05 .145 .145 .05] ; [.155 .25 .25 .155]} ,'y',{[50 50 160 160];  [50 50 160 160]},'color',[.5 .5 .5]);
 
 
 g.set_names('x','Time (sec)','y','Z-Scored change from baseline','color','Visual Stimulus');g.set_title('Simult vs Adapted');

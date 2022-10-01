@@ -3,7 +3,7 @@ clear
 close all
 PostSetup('BrockWork')
 flag_SaveFigs = true;
-anaName = 'IDX_iScienceSubmission';
+anaName = 'IDX_findTimingOffsets_rawResp';
 
 
 
@@ -43,6 +43,17 @@ gramm_2x2_RESP(IDX)
 %% gramm_adaptationEffect -- across all levels of drive
 % gramm_driveAndGain(IDX)
 gramm_adaptationEffect(IDX)
+
+
+%% find the source of the timing offset
+% Is is due to animal?
+
+
+% Is it due to session specific offsets? 
+
+
+% Does it depend on % change from baseline in stead of z-scored change?
+
 
 
 %% Save all the figs

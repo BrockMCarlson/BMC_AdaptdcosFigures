@@ -1,4 +1,4 @@
-function gramm_dCOS_line(IDX)
+function gramm_dCOS_line_testMedian(IDX)
 %% Goal
 % use gramm and plot the simultaneous congruent, incongruent, and monoc
 % preferred.
@@ -65,32 +65,32 @@ clear g
 
 g(1,1)=gramm('x',TM,'y',MvsDiop.SDF,'color',MvsDiop.condLabel);
 g(1,2)=gramm('x',TM,'y',MvsDichop.SDF,'color',MvsDichop.condLabel);
-g.axe_property('XLim',[-.050 .25]);
-g.axe_property('YLim',[0 175]);
+% g.axe_property('XLim',[-.050 .25]);
+% g.axe_property('YLim',[-.5 6]);
 g.geom_vline('xintercept',0)
 
-g(1,1).stat_summary();
-g(1,1).set_title('Monoc vs dioptic');
+g(1,1).stat_smooth();
+g(1,1).set_title('stat_summary()');
 g(1,1).set_color_options('map','brewer2');
 g(1,1).set_order_options('x',0,'color',0);
-g(1,1).geom_polygon('x',{[.05 .145 .145 .05] ; [.155 .25 .25 .155]} ,'y',{[50 50 160 160];  [50 50 160 160]},'color',[.5 .5 .5]);
+g(1,1).geom_polygon('x',{[.05 .149 .149 .05] ; [.151 .25 .25 .151]} ,'y',{[0 0 5 5];  [0 0 5 5]},'color',[.5 .5 .5]);
 
-g(1,2).stat_summary();
-g(1,2).set_title('Monoc vs dichoptic');
+g(1,2).stat_smooth();
+g(1,2).set_title('stat_summary()');
 g(1,2).set_color_options('map','brewer2');
 g(1,2).set_order_options('x',0,'color',0);
-g(1,2).geom_polygon('x',{[.05 .145 .145 .05] ; [.155 .25 .25 .155]} ,'y',{[50 50 160 160];  [50 50 160 160]},'color',[.5 .5 .5]);
+g(1,2).geom_polygon('x',{[.05 .149 .149 .05] ; [.151 .25 .25 .151]} ,'y',{[0 0 5 5];  [0 0 5 5]},'color',[.5 .5 .5]);
 
 
-g.set_names('x','Time (sec)','y','% Change from baseline','color','Visual Stimulus');
-g.set_title('% change from baseline');
+g.set_names('x','Time (sec)','y','Z-Scored change from baseline','color','Visual Stimulus');
+g.set_title('Classic Interocular Suppression');
 % figure('Position',[100 100 800 550]);
 figure('Position',[166.6,157.8,1299.4,549.6]);
 
 g.draw();
 
-set([g(1,1).results.stat_summary.line_handle],'LineWidth',3);
-set([g(1,2).results.stat_summary.line_handle],'LineWidth',3);
+% % set([g(1,1).results.stat_summary.line_handle],'LineWidth',3);
+% % set([g(1,2).results.stat_summary.line_handle],'LineWidth',3);
 
 
 

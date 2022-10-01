@@ -1,15 +1,17 @@
 clear
 close all
 PostSetup('BrockWork')
+anaName = 'IDX_findTimingOffsets_rawResp';
+
 
 
 %% Get IDX
 global IDXDIR
 cd(IDXDIR)
-if ~exist(strcat(IDXDIR,'\IDX_iScienceSubmission.mat'),'file')
+if ~exist(strcat(IDXDIR,strcat(filesep,anaName,'.mat')),'file')
     IDX_iScienceSubmission
 end
-    load(strcat(IDXDIR,'\IDX_iScienceSubmission.mat'))
+    load(strcat(IDXDIR,strcat(filesep,anaName,'.mat')))
 
 %% JASP conversion
 % JASP requires each unit to be in a row vector with each column as the
@@ -50,6 +52,6 @@ outputForJASP_transient_table.Properties.VariableNames = conditionNames;
 outputForJASP_sustained_table.Properties.VariableNames = conditionNames;
 
 global OUTDIR
-cd(OUTDIR)
+cd('C:\Users\Brock\Box\BRFS to iScience\plot outputs for BRFS to iScience\IDX_findTimingOffsets_rawResp')
 writetable(outputForJASP_transient_table,'outputForJASP_transient_table.csv')
 writetable(outputForJASP_sustained_table,'outputForJASP_sustained_table.csv')

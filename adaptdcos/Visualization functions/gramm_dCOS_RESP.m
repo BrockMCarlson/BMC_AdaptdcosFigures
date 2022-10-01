@@ -112,7 +112,7 @@ g(1,2).set_title('Sustained time period (150-250ms)');
 g(1,2).set_color_options('map','brewer_dark');
 
 figure('Position',[2.1738e+03 28.2000 1172 520]);
-g.axe_property('YLim',[0 6]);
+g.axe_property('YLim',[0 175]);
 g.draw();
 
 
@@ -147,7 +147,7 @@ h(1,2).set_title('Sustained time period (150-250ms)');
 h(1,2).set_color_options('map','brewer_dark');
 
 figure('Position',[2.1738e+03 28.2000 1172 520]);
-h.axe_property('YLim',[0 6]);
+h.axe_property('YLim',[0 175]);
 h.draw();
 
 
