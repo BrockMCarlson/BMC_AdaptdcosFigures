@@ -28,6 +28,7 @@ for uct = 1:uctLength %for each unit
         count_MvsDiop = count_MvsDiop + 1;
             MvsDiop.SDF{count_MvsDiop,1} = IDX.allV1(uct).SDF_avg{monocCond}';
             MvsDiop.condLabel{count_MvsDiop,1} = conditNameForCC{monocCond};
+            x1(count_MvsDiop,:) = IDX.allV1(uct).SDF_avg{monocCond}';
         count_MvsDiop = count_MvsDiop + 1; % now we grab the dioptic
             MvsDiop.SDF{count_MvsDiop,1} = IDX.allV1(uct).SDF_avg{diopCond}';
             MvsDiop.condLabel{count_MvsDiop,1} = conditNameForCC{diopCond};
@@ -56,8 +57,74 @@ for uct = 1:uctLength %for each unit
     end
 end
 
+%% Evaluate moving window binned stats for dioptic
+% Monoc vs dioptic
+monocCond = 1;
+diopCond = 5;
+count_missData_Diop = 0;
+count_monoc = 0;
+count_diop = 0;
+clear x1 y1
+for uct = 1:uctLength %for each unit
+    % Check that both Monocular and dichoptic conditions are present
+    if ~isempty(IDX.allV1(uct).SDF_avg{monocCond}) && ~isempty(IDX.allV1(uct).SDF_avg{diopCond}) % if either condition is missing, do not include unit in the plot.
+        % If neither condition is missing, we collect the Monocular and
+        % then the dichoptic data for the unit
+        count_monoc = count_monoc + 1;
+            x1(count_monoc,:) = IDX.allV1(uct).SDF_avg{monocCond}';
+        count_diop = count_diop + 1; % now we grab the dioptic
+            y1(count_diop,:) = IDX.allV1(uct).SDF_avg{diopCond}';
+    end
+end
 
+% create 59 x 17 vector that is the moving binned average
+binStartTimeVector = 1:25:350;
+for contMat = 1:size(x1,1) %"continuous Matrix"
+    for bins = 1:length(binStartTimeVector)
+        binWindow = binStartTimeVector:binStartTimeVector+25;
+        x1ForStats(contMat,bins) = nanmean(x1(contMat,binWindow));
+        y1ForStats(contMat,bins) = nanmean(y1(contMat,binWindow));
+    end
+end
 
+clear bins
+for bins = 1:size(x1ForStats,2)
+    [p_diop(bins),h_diop(bins)] = signrank(x1ForStats(:,bins),y1ForStats(:,bins));
+end
+
+% Monoc vs dichoptic
+monocCond = 1;
+dichopCond = 7;
+count_missData_Diop = 0;
+count_monoc = 0;
+count_dichop = 0;
+clear x1 y1
+for uct = 1:uctLength %for each unit
+    % Check that both Monocular and dichoptic conditions are present
+    if ~isempty(IDX.allV1(uct).SDF_avg{monocCond}) && ~isempty(IDX.allV1(uct).SDF_avg{dichopCond}) % if either condition is missing, do not include unit in the plot.
+        % If neither condition is missing, we collect the Monocular and
+        % then the dichoptic data for the unit
+        count_monoc = count_monoc + 1;
+            x1(count_monoc,:) = IDX.allV1(uct).SDF_avg{monocCond}';
+        count_dichop = count_dichop + 1; % now we grab the dioptic
+            y1(count_dichop,:) = IDX.allV1(uct).SDF_avg{dichopCond}';
+    end
+end
+
+% create 59 x 17 vector that is the moving binned average
+binStartTimeVector = 1:25:350;
+for contMat = 1:size(x1,1) %"continuous Matrix"
+    for bins = 1:length(binStartTimeVector)
+        binWindow = binStartTimeVector:binStartTimeVector+25;
+        x1ForStats(contMat,bins) = nanmean(x1(contMat,binWindow));
+        y1ForStats(contMat,bins) = nanmean(y1(contMat,binWindow));
+    end
+end
+
+clear bins
+for bins = 1:size(x1ForStats,2)
+    [p_dichop(bins),h_dichop(bins)] = signrank(x1ForStats(:,bins),y1ForStats(:,bins));
+end
 
 %% Gramm plots for vis repeated trajectories
 
@@ -65,8 +132,8 @@ clear g
 
 g(1,1)=gramm('x',TM,'y',MvsDiop.SDF,'color',MvsDiop.condLabel);
 g(1,2)=gramm('x',TM,'y',MvsDichop.SDF,'color',MvsDichop.condLabel);
-g.axe_property('XLim',[-.050 .25]);
-g.axe_property('YLim',[0 175]);
+g.axe_property('XLim',[-.050 .35]);
+g.axe_property('YLim',[-.5 5]);
 g.geom_vline('xintercept',0)
 
 g(1,1).stat_summary();

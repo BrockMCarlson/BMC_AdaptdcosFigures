@@ -49,8 +49,8 @@ end
 clear g
 
 g(1,1)=gramm('x',TM,'y',DataForVis.SDF,'color',DataForVis.condLabel);
-g.axe_property('XLim',[-.050 .25]);
-g.axe_property('YLim',[0 175]);
+g.axe_property('XLim',[-.050 .35]);
+g.axe_property('YLim',[-.5 5]);
 g.geom_vline('xintercept',0)
 
 g(1,1).stat_summary();

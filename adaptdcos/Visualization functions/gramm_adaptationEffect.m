@@ -93,7 +93,7 @@ g.set_color_options('map','brewer_dark');
 
 
 % figure('Position',[107 71 1304 824]);
-g.axe_property('YLim',[0 175]);
+g.axe_property('YLim',[-.5 5]);
 g.draw();
 
 

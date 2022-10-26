@@ -5,9 +5,28 @@
 % iScience submission. These include contrast levels, time period of
 % stastical comparison, and format of normalization. 
 
-% Blake suggeted plotting the time to peak or time to 1/2 max to look at
-% latency comparisons.
+% We will plot monoc vs dCOS in 9 plots (3x3 facit gid)
+% X dim - scale with normlilzation method. 
 
+%%
+clear
+close all
+PostSetup('BrockWork')
+flag_SaveFigs = false;
+
+
+global IDXDIR
+cd(IDXDIR)
+
+%% Get desired variables out of STIM files
+IDX = IDX_iScienceSubmission_findTimingOffsets;
+
+
+
+
+
+
+%% Other analysis ideas...
 % I would also like to evaluate for outliers. Part of this process may
 % simply involve replotitng descriptive stats for each session as well as
 % each unit. These can all be supplemental figures!
@@ -38,31 +57,3 @@
     % values with respect to the mean/median
     % Eye and orientation tuning across the electrode. (results may vary
     % based on normalization method...
-
-
-%%
-clear
-close all
-PostSetup('BrockWork')
-flag_SaveFigs = false;
-
-
-global IDXDIR
-cd(IDXDIR)
-
-%% Raw
-load('IDX_findTimingOffsets_rawResp.mat')   
-gramm_dCOS_line(IDX);
-
-%% % change
-load('IDX_findTimingOffsets_%changeFromBl.mat')  
-gramm_dCOS_line(IDX);
-
-%% Control (i.e. z-scored)
-load('IDX_findTimingOffsets_control.mat')  
-gramm_dCOS_line(IDX);
-
-%% Within the control (z-score normalized data), which session is the problem?
-%% Control (i.e. z-scored)
-load('IDX_findTimingOffsets_control.mat')  
-findOutlierInZscoreResp(IDX);

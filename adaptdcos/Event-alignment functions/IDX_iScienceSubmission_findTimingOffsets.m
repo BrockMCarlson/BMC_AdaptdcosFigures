@@ -7,7 +7,7 @@ cd(STIMDIR)
 
 
 didir = strcat(STIMDIR,'\');
-saveName = 'IDX_findTimingOffsets_%changeFromBl.mat'; 
+saveName = 'IDX_iScienceSubmission_highContrast.mat'; % THIS IS CONTRAST LEVELS OF .41-.75 INCLUSIVE
 anaType = '_AUTO.mat';
 flag_saveIDX    = true;
 
@@ -155,17 +155,6 @@ if isnan(DE)
 end
 
 
-
-[condition,conditionarray] = getCond(DE,NDE,PS,NS);
-
-clear I
-I = STIM.ditask...
-    & ~STIM.blank ...
-    & STIM.rns == 0 ...
-    & STIM.cued == 0 ...
-    & STIM.motion == 0; 
-
-
 % determine main contrasts levels
 %%%% BMC --> THIS IS CURRENTLY UNUSED 3-3-2020
 clear uContrast contrast_*
@@ -180,7 +169,7 @@ stimcontrast = [contrast_half contrast_max]; % note -- this is flipped from MAC'
 % Sort by eyes      
 clear SORTED
 SORTED.eyes      = STIM.eyes;
-SORTED.contrast = STIM.contrast;
+SORTED.contrasts = STIM.contrast;
 SORTED.tilts     = STIM.tilt;
 SORTED.flippedSOA = zeros(size(STIM.tilt));
 
@@ -191,28 +180,12 @@ else
 end
 clear w
 for w = 1:length(SORTED.eyes)
-    SORTED.contrast(w,:) = SORTED.contrast(w,sortidx(w,:));
+    SORTED.contrasts(w,:) = SORTED.contrasts(w,sortidx(w,:));
     SORTED.tilts(w,:)     = SORTED.tilts(w,sortidx(w,:));
 end; clear w
 
 
-% % %% Z-score normalize the data
-% % sdf  = squeeze(matobj.SDF(e,:,:));
-% % resp = squeeze(matobj.RESP(e,:,:));
-% % 
-% % if isequal(win_ms(4,:),[-50 0])
-% %     blDimension = 4;
-% % else
-% %     error('RESP dimension issue. fix by programatically finding where the window is.')
-% % end    
-% % baselineOfOnsetsOnly = resp(blDimension,~STIM.suppressor);
-% % blAvg = nanmean(baselineOfOnsetsOnly);
-% % blStd = nanstd(baselineOfOnsetsOnly);
-% % SDF_Zscore = (sdf- blAvg) ./ blStd;
-% % RESP_Zscore = (resp - blAvg) ./ blStd;
-
-
-%% percent-change the data
+%% Z-score normalize the data
 sdf  = squeeze(matobj.SDF(e,:,:));
 resp = squeeze(matobj.RESP(e,:,:));
 
@@ -223,111 +196,54 @@ else
 end    
 baselineOfOnsetsOnly = resp(blDimension,~STIM.suppressor);
 blAvg = nanmean(baselineOfOnsetsOnly);
-SDF_percentChange = abs((blAvg - sdf) ./ blAvg);
-RESP_percentChange = abs((blAvg - resp) ./ blAvg);
-
-% % %% raw data
-% % clear sdf resp
-% % sdf  = squeeze(matobj.SDF(e,:,:));
-% % resp = squeeze(matobj.RESP(e,:,:));
-
-
+blStd = nanstd(baselineOfOnsetsOnly);
+SDF_Zscore = (sdf- blAvg) ./ blStd;
+RESP_Zscore = (resp - blAvg) ./ blStd;
 
 
 %% Pull out conditions of interest
-% Pre-allocate
-clear  cond trlsLogical
-CondTrialNum = nan(size(condition,1),1);
-CondTrials = cell(size(condition,1),1);
-SDF_uncrop  = cell(size(condition,1),1);
-SDF_crop    = cell(size(condition,1),1);
-RESP_alltrls   = cell(size(condition,1),1);
 
-for cond = 1:size(conditionarray,1)
-    clear trls    
-    % get monocular trials
-    if cond < 5
-      trls = I &...
-            STIM.eye        == conditionarray(cond,1) &...
-            STIM.tilt(:,1)  == conditionarray(cond,2) & ...
-            STIM.tiltmatch  == conditionarray(cond,3) & ...
-            STIM.adapter    == conditionarray(cond,4) & ...  
-            STIM.suppressor == conditionarray(cond,5) & ...
-            STIM.soa        == conditionarray(cond,6) & ...
-            STIM.monocular  == conditionarray(cond,7) & ...
-            (STIM.contrast(:,1)  >= .3) & (STIM.contrast(:,1)  <= .5);
-   
-    elseif cond >= 5 && cond <= 8 % get simultaneous trials
-        trls = I &...
-            SORTED.tilts(:,1) == conditionarray(cond,2) & ...
-            STIM.tiltmatch == conditionarray(cond,3) & ...
-            STIM.adapter   == conditionarray(cond,4) & ...  
-            STIM.suppressor   == conditionarray(cond,5) & ...
-            STIM.soa       == conditionarray(cond,6) & ...
-            STIM.monocular == conditionarray(cond,7) & ...
-            (SORTED.contrast(:,1)  >= .3) & (SORTED.contrast(:,1)  <= .5) & ...
-            (SORTED.contrast(:,2)  >= .3) & (SORTED.contrast(:,2)  <= .5);
+clear I
+I = STIM.ditask...
+    & ~STIM.blank ...
+    & STIM.rns == 0 ...
+    & STIM.cued == 0 ...
+    & STIM.motion == 0; 
+
+
+
+% We need to get rid of the "condition" loop.
+% But I have no fucking idea how to do that...
+clear trls    
+% get monocular trials
+  trls_monoc = I &...
+        STIM.eye        == DE &...
+        STIM.tilt(:,1)  == PS & ...
+        STIM.tiltmatch  == 1  & ...
+        STIM.adapter    == 0  & ...  
+        STIM.suppressor == 0  & ...
+        STIM.soa        == 0  & ...
+        STIM.monocular  == 1  & ...
+        (STIM.contrast(:,1)  >= .8);
+
+ % get simultaneous trials
+    trls_dCOS = I &...
+        SORTED.tilts(:,1)   == PS & ... %we want the prefered stimulus in the dominant eye
+        STIM.tiltmatch      == 0 & ...
+        STIM.adapter        == 0 & ...  
+        STIM.suppressor     == 0 & ...
+        STIM.soa            == 0 & ...
+        STIM.monocular      == 0 & ...
+        (SORTED.contrasts(:,1)  >= .8) &...
+        (SORTED.contrasts(:,2)  >= .8); 
+
  
-        
-    elseif cond == 9 || cond == 11 || cond == 13 || cond == 15 || cond == 17 || cond == 19 || cond == 21 || cond == 23
-    % get adapter trials
-        trls = I &... %everything is in the first column bc BRFS format is [adapter STIM.suppressor]
-            STIM.eyes(:,2) == conditionarray(cond,1) &... % BUT -- We identify the eye by the suppressor in getCond.m -- (NDE - NDE)
-            STIM.tilt(:,1) == conditionarray(cond,2) & ...
-            STIM.tiltmatch == conditionarray(cond,3) & ...
-            STIM.adapter   == conditionarray(cond,4) & ...  
-            STIM.suppressor   == conditionarray(cond,5) & ...  
-            STIM.soa       == conditionarray(cond,6) & ...
-            STIM.monocular == conditionarray(cond,7) & ...
-            (STIM.contrast(:,1)  >= .3) & (STIM.contrast(:,1)  <= .5);
-    
-    % Make sure the adapter trials are only for 800ms soa brfs (you can
-    % change this to 200soa later if you want... you must also change
-    % getCond.m)
-        CondTrials{cond} = find(trls);
-        soa800count = 0;
-        soa200count = 0;
-        clear found800soaAdapterTrls found200soaAdapterTrls
-        for sp = 1:size(CondTrials{cond},1)
-            checkSoaTrls(sp,1) = CondTrials{cond}(sp)+1;
-            if STIM.soa(checkSoaTrls(sp,1)) == 800
-                soa800count = soa800count + 1;
-                found800soaAdapterTrls(soa800count) = CondTrials{cond}(sp);
-            elseif STIM.soa(checkSoaTrls(sp,1)) == 200
-                soa200count = soa200count + 1;
-                found200soaAdapterTrls(soa200count) = CondTrials{cond}(sp);
-            else
-                error('This does not work as you suspect it does')
-            end
-        end
-        
-        adapterTrlsWithCorrectSoa = false(size(trls));
-        if sum(trls) > 0 %found800soaAdapterTrls does not exist if trls is not > 0
-            adapterTrlsWithCorrectSoa(found800soaAdapterTrls) = true;
-        end
-       
-    
-    elseif cond == 10 || cond == 12 || cond == 14 || cond == 16 || cond == 18 || cond == 20 || cond == 22 || cond == 24
-    % get suppresor trials
-        trls = I &... %everything is in second column bc BRFS format is [adapter STIM.suppressor]
-            STIM.eyes(:,2) == conditionarray(cond,1) &...
-            STIM.tilt(:,2) == conditionarray(cond,2) & ...
-            STIM.tiltmatch == conditionarray(cond,3) & ...
-            STIM.adapter   == conditionarray(cond,4) & ...  
-            STIM.suppressor   == conditionarray(cond,5) & ...  
-            STIM.soa       == conditionarray(cond,6) & ...
-            STIM.monocular == conditionarray(cond,7) & ...
-            (STIM.contrast(:,1)  >= .3) & (STIM.contrast(:,1)  <= .5) & ...
-            (STIM.contrast(:,2)  >= .3) & (STIM.contrast(:,2)  <= .5);
+trlsLogical(:,cond) = trls;
+CondTrials{cond} = find(trls);
+CondTrialNum(cond,1) = sum(trls); 
+SDF_uncrop{cond}   = SDF_Zscore(:,trls); 
+RESP_alltrls{cond}        = RESP_Zscore(:,trls);
 
-    end
-    
-    trlsLogical(:,cond) = trls;
-    CondTrials{cond} = find(trls);
-    CondTrialNum(cond,1) = sum(trls); 
-    SDF_uncrop{cond}   = sdf(:,trls); 
-    RESP_alltrls{cond}        = resp(:,trls);
-end
 
 
 
