@@ -1,80 +1,28 @@
 # # BMC_AdaptdcosFigures
+This is the GitHub repository for the following manuscript in preperation:
 
-This is "release issue" formatted code. 
-The idea is that the process to produce a figure for every step along a given paper's progression is stored here.
-When a goal for a figure is made, the following steps are executed:
-1. the "master branch" is branched and named for the goal figure.
-1. The code is tested and figure outputs are shown to PI/Lab.
-1. The data directories and repositories are then stored in the "Docs" page for each figures' master fucntion.
-1. The docs page contains required data input directories, pre-processing repositories, and workflow for fast recreation of the figure in the future. The Docs page is named for each release update (i.e. 1.1, 1.2, 1.3, 1.4, etc...)
-1. The branch is then merged with a pull request back into master and deleted.
-1. A "release" of master **must** be issued at this point.
+V1 does not undergo dichoptic cross orientation suppression at the onset of binocular rivalry flash suppression						
+Brock M. Carlson, Blake A. Mitchell1, Kacie Dougherty, Jacob A. Westerberg, Michele A. Cox, & Alexander Maier
 
+# ABSTRACT 
+The role of primate primary visual cortex (V1) for binocular rivalry is debated. Existing work has predominantly studied V1’s contribution to the perceptual alternations that occur after binocular rivalry stimuli are observed for several seconds. Here, we assess V1’s role for the onset of binocular rivalry that occurs immediately after stimuli are presented. Recent observations suggest that V1 initiates binocular rivalry by paving the way for selection of one eye’s view (Lee et al., 2007), while later stages of visual processing are required for this selection to be promoted to conscious perception. A leading hypothesis that could provide a mechanistic explanation for V1’s role in initiating binocular rivalry is based on dichoptic cross orientation suppression (dCOS) (Cox et al., 2019; Sengpiel, Blakemore, et al., 1995). dCOS describes the indiscriminate reduction of V1 visual responses that occurs when incompatible stimuli are simultaneously presented to the eyes. By reducing response magnitude, dCOS destabilizes cortical stimulus representations. It has been hypothesized that this destabilization of V1 representations paves the way for destabilized perception. Here we utilize binocular rivalry flash suppression (BRFS) to test this hypothesis. BRFS incorporates a period of monocular adaptation before presenting binocular incompatible (rivalrous) stimuli. BRFS results in onset of binocular rivalry as soon as the monocular adaptation period ends. We hypothesized that if initiation of binocular rivalry is dependent on dCOS, then BRFS should elicit dCOS at the onset of the incompatible stimuli. To test this prediction, we compared V1 spiking responses in two awake and behaving macaques as they passively observed BRFS. We found that BRFS resulted in facilitation rather than suppression of binocular responses. This finding suggests that dichoptic suppression in V1 does not serve as a general prerequisite for, nor as initiator of, binocular rivalry. We propose that in the particular case of BRFS the adaptation period, which reduced V1 activity, may adequality destabilize V1’s visual representation in place of dCOS. 
 
-## Description: 
-The adaptdcos project is looking at dioptic and dichoptic stimuli under varying history conditions. The included levels of analysis are currently 
-- dMUA from AUTO-sorted data
-- KLS on a few example sessions.
+# USING THIS REPOSITORY
+This repository is published under the GNU GPL v3.0 license.
+This repository is for the creation of figures in the current version of
+the manuscript. If you would like the pre-processed data required to run
+this code, please email Brock Carlson at brock.m.carlson@vanderbilt.edu
 
-We are interested in probing data types, history, and contrast across a complex stimuli matrix to descriminate the origns of bincoular fusion.
+## Setup
+The function PostSetup.m establishes your main directories as globals
+The script *Controller.m* is the only interface you should need to interact
+with. It runs the following processes:
 
+1. makeIDX. IDX_ is a (Nx1) structure variable where N in the number of
+individual units. The fields contain metadata about each unit as well as 
+event-locked data.
 
-## Table of Contents:
-### Issues released
-- 1.1 Example Units A
-  - 11/10/20
-  - looked at units from 151221_E, 160108_E, 160211_I, & 161005_E.
-- 1.2 dMUA-dCOF
-  - 11/10/20
-  - current fig2. Code updated into "release" framework.
-- 1.3 FullTimeClassicBRFS
-  - 1/1/2021 - 5/15/2021
-  - Spring 2021 semester
-  - Plotted all figures 1-5 for manuscript draft in the master function
-- 1.4 LaminarAnalysis
-  - 5/15/2021 - present
-  - 2021 Summer
-  - dII by layers and Jake's adaptation analysis.
+2. plot continuous data with Gramm
 
-## Usage: 
-Please access the accompanying Docs FILE_setup page for re-producing any set of figures. These contain the required direcotires and code repos to be accessed in the case of returning to a figure at a later date.
-### For KiloSort
-1. Batch – download ns6 files
-1. Batch – process KLS sorts with correct kiloconfig files
-1. Download a few Phy files to SSD
-1. Analyze in phy
-1. Export to external drive
-   1. repeat 3-5 until entire directory is done.
-1. Create STIM file (may already be done) from .bhv files and event codes
-   1. Find/Load stim file if already created
-1. run "master function" under PostProcessing (This repo) to viz. data.
-   1. Run diNeuralDat.m – creates SDFs and RESP vectors
-   1. Run continuousDatConditionsSelect.m  gets condition specific avg SDFs
-   1. Crop continuous data
-   1. Plot 
-      1. Raster
-      1. SDF.
-
-### For all other file types (dMUA, LFP, CSD, etc.)
-1. Create STIM file (may already be done) from .bhv files and event codes
-   1. Find/Load stim file if already created
-1. Create/find STIM_MUA.mat/STIM_LFP.mat etc.
-   1. the data file contains the STIM and BHV info along with SDF variables.
-1. run "master function" under PostProcessing (This repo) to viz. data.
-   1. Run continuousDatConditionsSelect.m  gets condition specific avg SDFs
-   1. Crop continuous data
-   1. Plot 
-      1. SDF.
-      
-
-## Contributing authors
-Code within this direcotry is custome designed by Brock M. Carlson within the Maier Lab.
-Production of this respository would not be possible wihout the guidance of **Alex Maier, PhD.**
-Special influence, example code, and individual instruction was received from current and former senior lab members:
-- Michele A. Cox
-- Kacie Dougherty
-- Jacob A Westerberg
-
-Special thank you to other Maier Lab members for their influence and advice
-- Loïc Daumail
-- Blake Mitchell
+3. format data for input to JASP
+ 
