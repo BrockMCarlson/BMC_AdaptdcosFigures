@@ -1,10 +1,9 @@
-function [CODEDIR, IDXDIR, STIMDIR, OUTDIR] = directorySetup()
+function [CODEDIR, FORMDATDIR, STIMDIR, OUTDIR] = directorySetup()
 %directorySetup creates global variables hold your filepaths
-%   Detailed explanation goes here
 
-global  CODEDIR IDXDIR STIMDIR OUTDIR
-    CODEDIR  = [];
-    IDXDIR   = [];
-    STIMDIR  = [];
-    OUTDIR   = [];
+global  CODEDIR FORMDATDIR STIMDIR OUTDIR
+    CODEDIR  = 'C:\Users\Brock Carlson\Documents\GitHub\BMC_AdaptdcosFigures\';
+    FORMDATDIR   = 'C:\Users\Brock Carlson\Documents\MATLAB\FormattedDataOutputs\';
+    STIMDIR  = 'D:\brfs_STIM_220827';
+    OUTDIR   = 'C:\Users\Brock Carlson\Documents\MATLAB\PlotOutputs\';
 end

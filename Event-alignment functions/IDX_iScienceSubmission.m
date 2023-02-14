@@ -7,7 +7,7 @@ cd(STIMDIR)
 
 
 didir = strcat(STIMDIR,'\');
-saveName = 'IDX_iScienceSubmission_highContrast.mat'; % THIS IS CONTRAST LEVELS OF .41-.75 INCLUSIVE
+saveName = 'IDX_iScienceSubmission_highContrast.mat'; % THIS IS CONTRAST LEVELS > .8
 anaType = '_AUTO.mat';
 flag_saveIDX    = true;
 
@@ -109,32 +109,32 @@ for e = 1:nel
  
 %% Set limits on acceptable tuning.
 % Unit must be tuned to eye and orientation to be included in analysis
-if X.diana ~= 1
-    ErrorCount = ErrorCount+1;
-    ERR(ErrorCount).reason = 'dichoptic analysis not run on unit';
-    ERR(ErrorCount).penetration = STIM.penetration;
-    ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
-    warning('diana not run on unit')
-    continue
-end
+% if X.diana ~= 1
+%     ErrorCount = ErrorCount+1;
+%     ERR(ErrorCount).reason = 'dichoptic analysis not run on unit';
+%     ERR(ErrorCount).penetration = STIM.penetration;
+%     ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
+%     warning('diana not run on unit')
+%     continue
+% end
 
-% X.diann   = {'eye','tilt','contrast'};
-if X.dianp(1) > 0.05
-    ErrorCount = ErrorCount+1;
-    ERR(ErrorCount).reason = 'unit not tuned to eye';
-    ERR(ErrorCount).penetration = STIM.penetration;
-    ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
-    warning('Unit not tuned to eye')
-    continue
-end
-if X.dianp(2) > 0.05
-    ErrorCount = ErrorCount+1;
-    ERR(ErrorCount).reason = 'unit not tuned to ori';
-    ERR(ErrorCount).penetration = STIM.penetration;
-    ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
-    warning('Unit not tuned to ori')
-    continue
-end
+% % X.diann   = {'eye','tilt','contrast'};
+% if X.dianp(1) > 0.05
+%     ErrorCount = ErrorCount+1;
+%     ERR(ErrorCount).reason = 'unit not tuned to eye';
+%     ERR(ErrorCount).penetration = STIM.penetration;
+%     ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
+%     warning('Unit not tuned to eye')
+%     continue
+% end
+% if X.dianp(2) > 0.05
+%     ErrorCount = ErrorCount+1;
+%     ERR(ErrorCount).reason = 'unit not tuned to ori';
+%     ERR(ErrorCount).penetration = STIM.penetration;
+%     ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
+%     warning('Unit not tuned to ori')
+%     continue
+% end
 % We are not worried about being tuned to contrast - re: Blake Mitchell
 
 

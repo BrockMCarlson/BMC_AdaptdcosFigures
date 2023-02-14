@@ -26,3 +26,8 @@ event-locked data.
 
 3. format data for input to JASP
  
+
+## Dependencies
+This script also requires the following toolboxes to run:
+- NPMK from Blackrock
+- Gramm

@@ -54,7 +54,6 @@ for tmBlock = 1:2
                
           % DV - RESP
            DataForVis.RESP(count,1) = IDX.allV1(uct).RESP_avg{condLabel}(tmBlock);
-           
            if isnan(DataForVis.RESP(count,1))
                count = count - 1;  %write over NaNs
            end
