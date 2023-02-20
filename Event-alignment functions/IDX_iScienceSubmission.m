@@ -1,4 +1,4 @@
-function IDX = IDX_iScienceSubmission
+function [IDX,ERR] = IDX_iScienceSubmission(anaName)
 
 %% load session data
 global STIMDIR
@@ -7,7 +7,6 @@ cd(STIMDIR)
 
 
 didir = strcat(STIMDIR,'\');
-saveName = 'IDX_iScienceSubmission_highContrast.mat'; % THIS IS CONTRAST LEVELS > .8
 anaType = '_AUTO.mat';
 flag_saveIDX    = true;
 
@@ -109,14 +108,14 @@ for e = 1:nel
  
 %% Set limits on acceptable tuning.
 % Unit must be tuned to eye and orientation to be included in analysis
-% if X.diana ~= 1
-%     ErrorCount = ErrorCount+1;
-%     ERR(ErrorCount).reason = 'dichoptic analysis not run on unit';
-%     ERR(ErrorCount).penetration = STIM.penetration;
-%     ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
-%     warning('diana not run on unit')
-%     continue
-% end
+if X.diana ~= 1       %diana is true if the monocular data is complete
+    ErrorCount = ErrorCount+1;
+    ERR(ErrorCount).reason = 'dichoptic analysis not run on unit';
+    ERR(ErrorCount).penetration = STIM.penetration;
+    ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
+    warning('diana not run on unit')
+    continue
+end
 
 % % X.diann   = {'eye','tilt','contrast'};
 % if X.dianp(1) > 0.05
@@ -150,7 +149,7 @@ if isnan(DE)
     ERR(ErrorCount).reason = 'check why this unit doesnt have monoc tuning considering previous catch';
     ERR(ErrorCount).penetration = STIM.penetration;
     ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
-    warning('check why this unit doesnt have monoc tuning considering previous catch')
+    warning('check why this unit doesnt have DE assigned')
     continue
 end
 
@@ -167,7 +166,6 @@ I = STIM.ditask...
 
 
 % determine main contrasts levels
-%%%% BMC --> THIS IS CURRENTLY UNUSED 3-3-2020
 clear uContrast contrast_*
 uContrast = unique(STIM.contrast(I,:));
 uContrast(uContrast==0) = [];
@@ -233,7 +231,7 @@ for cond = 1:size(conditionarray,1)
             STIM.suppressor == conditionarray(cond,5) & ...
             STIM.soa        == conditionarray(cond,6) & ...
             STIM.monocular  == conditionarray(cond,7) & ...
-            (STIM.contrast(:,1)  >= .8);
+            (STIM.contrast(:,1)  == contrast_half);
    
     elseif cond >= 5 && cond <= 8 % get simultaneous trials
         trls = I &...
@@ -243,8 +241,8 @@ for cond = 1:size(conditionarray,1)
             STIM.suppressor   == conditionarray(cond,5) & ...
             STIM.soa       == conditionarray(cond,6) & ...
             STIM.monocular == conditionarray(cond,7) & ...
-            (SORTED.contrasts(:,1)  >= .8) &...
-            (SORTED.contrasts(:,2)  >= .8); 
+            (SORTED.contrasts(:,1)  == contrast_half) &...
+            (SORTED.contrasts(:,2)  == contrast_half); 
  
         
     elseif cond == 9 || cond == 11 || cond == 13 || cond == 15 || cond == 17 || cond == 19 || cond == 21 || cond == 23
@@ -257,7 +255,7 @@ for cond = 1:size(conditionarray,1)
             STIM.suppressor   == conditionarray(cond,5) & ...  
             STIM.soa       == conditionarray(cond,6) & ...
             STIM.monocular == conditionarray(cond,7) & ...
-            (STIM.contrast(:,1)  >= .8) ;
+            (STIM.contrast(:,1)  == contrast_half) ;
     
     % Make sure the adapter trials are only for 800ms soa brfs (you can
     % change this to 200soa later if you want... you must also change
@@ -295,8 +293,8 @@ for cond = 1:size(conditionarray,1)
             STIM.suppressor   == conditionarray(cond,5) & ...  
             STIM.soa       == conditionarray(cond,6) & ...
             STIM.monocular == conditionarray(cond,7) & ...
-            (STIM.contrast(:,1)  >= .8) &...
-            (STIM.contrast(:,2)  >= .8);
+            (STIM.contrast(:,1)  == contrast_half) &...
+            (STIM.contrast(:,2)  == contrast_half);
 
     end
     
@@ -352,6 +350,54 @@ for cond = 1:size(conditionarray,1)
     RESP_avg{cond}= mean(RESP_alltrls{cond},2);
 end
         
+
+%% Remove units if not tuned for dCOS
+%% First we check to see if the dichoptic condition was presented
+if isempty(RESP_alltrls{7}(2,:)) &&  isempty(RESP_alltrls{8}(2,:)) 
+    ErrorCount = ErrorCount+1;
+    ERR(ErrorCount).reason = 'now dichoptic condition presented';
+    ERR(ErrorCount).penetration = STIM.penetration;
+    ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
+    warning('no dichoptic condition presneted')
+    continue
+end
+
+
+
+% we want to do a 1-tailed t-test between monocular sustained and dichoptic
+% simultaneous sustained
+% Condition Number: 
+% 1 = Monocular PS DE 
+% 7 = IC PS DE - NS NDE Simult
+% we want to index in RESP_avg, 150-250 ms time window
+if ~isempty(RESP_alltrls{7}(2,:)) &&  ~isempty(RESP_alltrls{1}(2,:)) 
+    monocTrls   = RESP_alltrls{1}(2,:);
+    dcosTrls    = RESP_alltrls{7}(2,:);
+elseif ~isempty(RESP_alltrls{8}(2,:)) &&  ~isempty(RESP_alltrls{3}(2,:)) 
+    monocTrls   = RESP_alltrls{3}(2,:); %NS DE is second highest
+    dcosTrls    = RESP_alltrls{8}(2,:); % IC NS DE - PS NDE Simult - when not empty
+else
+    error('missing correct condition combination for this unit')
+end
+% We will now perform a two samples t-test
+    % Right-tailed hypothesis test.
+    %'right' — Test against the alternative hypothesis that the population 
+    % mean of x is greater than the population mean of y.
+[h,p,ci,stats] = ttest2(monocTrls,dcosTrls,'tail','right');
+% The result h is 1 if the test rejects the null hypothesis at the 5% 
+% significance level, and 0 otherwise.
+if isnan(h)
+    error('missing values')
+end
+if ~h %if we do not reject the null
+    ErrorCount = ErrorCount+1;
+    ERR(ErrorCount).reason = 'unit does not show dCOS';
+    ERR(ErrorCount).penetration = STIM.penetration;
+    ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
+    warning('unit does not show dCOS')
+    continue
+end
+
 
 %% SAVE  IDX
 
@@ -424,11 +470,9 @@ end
 
 %% SAVE
 if flag_saveIDX
-    global IDXDIR
-    cd(IDXDIR)
-%     if isfile(strcat(saveName,'.mat'))
-%         error('file already exists')        
-%     end
+    global FORMDATDIR
+    cd(FORMDATDIR)
+    saveName = strcat(anaName,'.mat');
     save(saveName,'IDX','ERR')
 else
     warning('IDX not saved')
