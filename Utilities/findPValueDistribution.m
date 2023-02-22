@@ -1,4 +1,4 @@
-function [IDX,ERR] = IDX_iScienceSubmission(anaName)
+function [IDX,ERR,pValue,effect] = findPValueDistribution()
 
 %% load session data
 global STIMDIR
@@ -108,14 +108,14 @@ for e = 1:nel
  
 %% Set limits on acceptable tuning.
 % Unit must be tuned to eye and orientation to be included in analysis
-% % if X.diana ~= 1       %diana is true if the monocular data is complete
-% %     ErrorCount = ErrorCount+1;
-% %     ERR(ErrorCount).reason = 'dichoptic analysis not run on unit';
-% %     ERR(ErrorCount).penetration = STIM.penetration;
-% %     ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
-% %     warning('diana not run on unit')
-% %     continue
-% % end
+if X.diana ~= 1       %diana is true if the monocular data is complete
+    ErrorCount = ErrorCount+1;
+    ERR(ErrorCount).reason = 'dichoptic analysis not run on unit';
+    ERR(ErrorCount).penetration = STIM.penetration;
+    ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
+    warning('diana not run on unit')
+    continue
+end
 
 % % X.diann   = {'eye','tilt','contrast'};
 % if X.dianp(1) > 0.05
@@ -353,145 +353,91 @@ end
 
 %% Remove units if not tuned for dCOS
 % First we check to see if the dichoptic condition was presented
-% % if isempty(RESP_alltrls{7}(2,:)) && isempty(RESP_alltrls{8}(2,:)) 
-% %     ErrorCount = ErrorCount+1;
-% %     ERR(ErrorCount).reason = 'no dichoptic condition presented';
-% %     ERR(ErrorCount).penetration = STIM.penetration;
-% %     ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
-% %     warning('no dichoptic condition presneted')
-% %     continue
-% % end
-try
-
-    % we want to do a 1-tailed t-test between monocular sustained and dichoptic
-    % simultaneous sustained
-    % Condition Number: 
-    % 1 = Monocular PS DE 
-    % 7 = IC PS DE - NS NDE Simult
-    % we want to index in RESP_avg, 150-250 ms time window
-    if ~isempty(RESP_alltrls{7}(2,:)) &&  ~isempty(RESP_alltrls{1}(2,:)) 
-        monocTrls   = RESP_alltrls{1}(2,:);
-        dcosTrls    = RESP_alltrls{7}(2,:);
-    elseif ~isempty(RESP_alltrls{8}(2,:)) &&  ~isempty(RESP_alltrls{3}(2,:)) 
-        monocTrls   = RESP_alltrls{3}(2,:); %NS DE is second highest
-        dcosTrls    = RESP_alltrls{8}(2,:); % IC NS DE - PS NDE Simult - when not empty
-    else
-        error('missing correct condition combination for this unit')
-    end
-    % We will now perform a two samples t-test
-        % Right-tailed hypothesis test.
-        %'right' — Test against the alternative hypothesis that the population 
-        % mean of x is greater than the population mean of y.
-    [h,p,ci,stats] = ttest2(monocTrls,dcosTrls,'tail','right');
-    % The result h is 1 if the test rejects the null hypothesis at the 5% 
-    % significance level, and 0 otherwise.
-    if isnan(h)
-        error('missing values')
-    end
-    
-    
-    
-    effect = meanEffectSize(monocTrls,dcosTrls,Effect="cohen");
-    if effect{1,1} < .2
-        ErrorCount = ErrorCount+1;
-        ERR(ErrorCount).reason = 'unit does not have even a small effect for dCOS';
-        ERR(ErrorCount).penetration = STIM.penetration;
-        ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
-        continue
-    end
-
-catch
+if isempty(RESP_alltrls{7}(2,:)) &&  isempty(RESP_alltrls{8}(2,:)) 
+    ErrorCount = ErrorCount+1;
+    ERR(ErrorCount).reason = 'now dichoptic condition presented';
+    ERR(ErrorCount).penetration = STIM.penetration;
+    ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
+    warning('no dichoptic condition presneted')
+    continue
 end
 
-%% SAVE  IDX
-
-
-
-        % SAVE UNIT INFO!
-        clear holder
-        holder.effect = effect{1,1};
-        holder.penetration = penetration;
-        holder.header = penetration(1:8);
-        holder.monkey = penetration(8);
-        holder.runtime = [date string(now)];
-
-        holder.depth = STIM.depths(e,:)';
-
-        holder.dicontrast   = stimcontrast';
-        
-        %Anove tuning from diUnitTuning
-        holder.DE    = DE;
-        holder.PS    = PS;
-        holder.NDE    = NDE;
-        holder.NS    = NS; 
-        holder.X    = X; % This should get you all the tuning info
-        holder.occ  = X.occ(3);
-        
-        % Condition info
-        holder.CondTrials = CondTrials;
-        holder.condition        = condition;
-        holder.CondTrialNum     = CondTrialNum;        
-
-        % Continuous data info
-        holder.TM           = TM;
-        holder.SDF_crop     = SDF_crop;
-        holder.SDF_avg      = SDF_avg;
-        holder.SDF_cumsum   = SDF_cumsum;  %get the cumulative sum for each trial, average over all trials, ouput is trial-averaged cumulative sum for each condition.
-
-        % Time-win binned info;
-        holder.win_ms           = win_ms;
-        holder.RESP_alltrls     = RESP_alltrls;
-        holder.RESP_avg         = RESP_avg;
-        
-        
-        %Save the STIM - in case you ever need to troubleshoot what the
-        %selections are for each trial. Access from CondTrials
-        holder.STIM               = STIM;
-
-
-        
-        % Laminar Division
-        if holder.depth(2) >5
-            SupraCount = SupraCount + 1;  
-            IDX.Supra(SupraCount) = holder;
-        elseif holder.depth(2) >= 0 && holder.depth(2) <= 5
-            GranularCount = GranularCount + 1;
-            IDX.Granular(GranularCount) = holder;
-        elseif holder.depth(2) < 0
-            InfraCount = InfraCount + 1;
-            IDX.Infra(InfraCount) = holder;
-        end
-        count = count + 1;
-        IDX.allV1(count) = holder;
-
-        
+% we want to do a 1-tailed t-test between monocular sustained and dichoptic
+% simultaneous sustained
+% Condition Number: 
+% 1 = Monocular PS DE 
+% 7 = IC PS DE - NS NDE Simult
+% we want to index in RESP_avg, 150-250 ms time window
+if ~isempty(RESP_alltrls{7}(2,:)) &&  ~isempty(RESP_alltrls{1}(2,:)) 
+    monocTrls   = RESP_alltrls{1}(2,:);
+    dcosTrls    = RESP_alltrls{7}(2,:);
+elseif ~isempty(RESP_alltrls{8}(2,:)) &&  ~isempty(RESP_alltrls{3}(2,:)) 
+    monocTrls   = RESP_alltrls{3}(2,:); %NS DE is second highest
+    dcosTrls    = RESP_alltrls{8}(2,:); % IC NS DE - PS NDE Simult - when not empty
+else
+    error('missing correct condition combination for this unit')
 end
-
-
+% We will now perform a two samples t-test
+    % Right-tailed hypothesis test.
+    %'right' — Test against the alternative hypothesis that the population 
+    % mean of x is greater than the population mean of y.
+[h,p,ci,stats] = ttest2(monocTrls,dcosTrls,'tail','right');
+% The result h is 1 if the test rejects the null hypothesis at the 5% 
+% significance level, and 0 otherwise.
+if isnan(h)
+    error('missing values')
 end
+count = count + 1;
+pValue(count) = p;
 
+effect(count,:) = meanEffectSize(monocTrls,dcosTrls,Effect="cohen");
 
 %%
+% SAVE UNIT INFO!
+clear holder
+holder.pValue       = p;
+holder.effect       = effect(count,1);
+holder.penetration = penetration;
+holder.header = penetration(1:8);
+holder.monkey = penetration(8);
+holder.runtime = [date string(now)];
 
-%% SAVE
-if flag_saveIDX
-    global FORMDATDIR
-    cd(FORMDATDIR)
-    saveName = strcat(anaName,'.mat');
-    save(saveName,'IDX','ERR')
-else
-    warning('IDX not saved')
+holder.depth = STIM.depths(e,:)';
+
+holder.dicontrast   = stimcontrast';
+
+%Anove tuning from diUnitTuning
+holder.DE    = DE;
+holder.PS    = PS;
+holder.NDE    = NDE;
+holder.NS    = NS; 
+holder.X    = X; % This should get you all the tuning info
+holder.occ  = X.occ(3);
+
+% Condition info
+holder.CondTrials = CondTrials;
+holder.condition        = condition;
+holder.CondTrialNum     = CondTrialNum;        
+
+% Continuous data info
+holder.TM           = TM;
+holder.SDF_crop     = SDF_crop;
+holder.SDF_avg      = SDF_avg;
+holder.SDF_cumsum   = SDF_cumsum;  %get the cumulative sum for each trial, average over all trials, ouput is trial-averaged cumulative sum for each condition.
+
+% Time-win binned info;
+holder.win_ms           = win_ms;
+holder.RESP_alltrls     = RESP_alltrls;
+holder.RESP_avg         = RESP_avg;
+
+
+%Save the STIM - in case you ever need to troubleshoot what the
+%selections are for each trial. Access from CondTrials
+holder.STIM               = STIM;
+
+        
+IDX.allV1(count) = holder;
+
 end
-
-
-
-load gong
-sound(y,Fs)
-
-
-
-
-
-
-
+end
 end
