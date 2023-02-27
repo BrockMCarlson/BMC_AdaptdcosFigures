@@ -115,7 +115,7 @@ end
 binStartTimeVector = 1:25:350;
 for contMat = 1:size(x1,1) %"continuous Matrix"
     for bins = 1:length(binStartTimeVector)
-        binWindow = binStartTimeVector:binStartTimeVector+25;
+        binWindow = binStartTimeVector(bins):binStartTimeVector(bins)+25;
         x1ForStats(contMat,bins) = nanmean(x1(contMat,binWindow));
         y1ForStats(contMat,bins) = nanmean(y1(contMat,binWindow));
     end
@@ -125,6 +125,13 @@ clear bins
 for bins = 1:size(x1ForStats,2)
     [p_dichop(bins),h_dichop(bins)] = signrank(x1ForStats(:,bins),y1ForStats(:,bins));
 end
+
+% Test plot
+monocOutput = nanmean(x1ForStats,1);
+dichoptOutput = nanmean(y1ForStats,1);
+figure
+plot(monocOutput); hold on
+plot(dichoptOutput)
 
 %% Gramm plots for vis repeated trajectories
 
