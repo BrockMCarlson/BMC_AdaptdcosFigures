@@ -108,33 +108,32 @@ for e = 1:nel
  
 %% Set limits on acceptable tuning.
 % Unit must be tuned to eye and orientation to be included in analysis
-% % if X.diana ~= 1       %diana is true if the monocular data is complete
-% %     ErrorCount = ErrorCount+1;
-% %     ERR(ErrorCount).reason = 'dichoptic analysis not run on unit';
-% %     ERR(ErrorCount).penetration = STIM.penetration;
-% %     ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
-% %     warning('diana not run on unit')
-% %     continue
-% % end
+if X.diana ~= 1       %diana is true if the monocular data is complete
+    ErrorCount = ErrorCount+1;
+    ERR(ErrorCount).reason = 'dichoptic analysis not run on unit';
+    ERR(ErrorCount).penetration = STIM.penetration;
+    ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
+    warning('diana not run on unit')
+    continue
+end
 
- % X.diann   = {'eye','tilt','contrast'};
-% % if X.dianp(1) > 0.05
-% %     ErrorCount = ErrorCount+1;
-% %     ERR(ErrorCount).reason = 'unit not tuned to eye';
-% %     ERR(ErrorCount).penetration = STIM.penetration;
-% %     ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
-% %     warning('Unit not tuned to eye')
-% %     continue
-% % end
-% % if X.dianp(2) > 0.05
-% %     ErrorCount = ErrorCount+1;
-% %     ERR(ErrorCount).reason = 'unit not tuned to ori';
-% %     ERR(ErrorCount).penetration = STIM.penetration;
-% %     ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
-% %     warning('Unit not tuned to ori')
-% %     continue
-% % end
-% We are not worried about being tuned to contrast - re: Blake Mitchell
+ X.diann   = {'eye','tilt','contrast'};
+if X.dianp(1) > 0.05
+    ErrorCount = ErrorCount+1;
+    ERR(ErrorCount).reason = 'unit not tuned to eye';
+    ERR(ErrorCount).penetration = STIM.penetration;
+    ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
+    warning('Unit not tuned to eye')
+    continue
+end
+if X.dianp(2) > 0.05
+    ErrorCount = ErrorCount+1;
+    ERR(ErrorCount).reason = 'unit not tuned to ori';
+    ERR(ErrorCount).penetration = STIM.penetration;
+    ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
+    warning('Unit not tuned to ori')
+    continue
+end
 
 
     
@@ -361,33 +360,33 @@ end
 % %     warning('no dichoptic condition presneted')
 % %     continue
 % % end
-try
-
-    % we want to do a 1-tailed t-test between monocular sustained and dichoptic
-    % simultaneous sustained
-    % Condition Number: 
-    % 1 = Monocular PS DE 
-    % 7 = IC PS DE - NS NDE Simult
-    % we want to index in RESP_avg, 150-250 ms time window
-    if ~isempty(RESP_alltrls{7}(2,:)) &&  ~isempty(RESP_alltrls{1}(2,:)) 
-        monocTrls   = RESP_alltrls{1}(2,:);
-        dcosTrls    = RESP_alltrls{7}(2,:);
-    elseif ~isempty(RESP_alltrls{8}(2,:)) &&  ~isempty(RESP_alltrls{3}(2,:)) 
-        monocTrls   = RESP_alltrls{3}(2,:); %NS DE is second highest
-        dcosTrls    = RESP_alltrls{8}(2,:); % IC NS DE - PS NDE Simult - when not empty
-    else
-        error('missing correct condition combination for this unit')
-    end
-    % We will now perform a two samples t-test
-        % Right-tailed hypothesis test.
-        %'right' — Test against the alternative hypothesis that the population 
-        % mean of x is greater than the population mean of y.
-    [h,p,ci,stats] = ttest2(monocTrls,dcosTrls,'tail','right');
-    % The result h is 1 if the test rejects the null hypothesis at the 5% 
-    % significance level, and 0 otherwise.
-    if isnan(h)
-        error('missing values')
-    end
+% % try
+% % 
+% %     % we want to do a 1-tailed t-test between monocular sustained and dichoptic
+% %     % simultaneous sustained
+% %     % Condition Number: 
+% %     % 1 = Monocular PS DE 
+% %     % 7 = IC PS DE - NS NDE Simult
+% %     % we want to index in RESP_avg, 150-250 ms time window
+% %     if ~isempty(RESP_alltrls{7}(2,:)) &&  ~isempty(RESP_alltrls{1}(2,:)) 
+% %         monocTrls   = RESP_alltrls{1}(2,:);
+% %         dcosTrls    = RESP_alltrls{7}(2,:);
+% %     elseif ~isempty(RESP_alltrls{8}(2,:)) &&  ~isempty(RESP_alltrls{3}(2,:)) 
+% %         monocTrls   = RESP_alltrls{3}(2,:); %NS DE is second highest
+% %         dcosTrls    = RESP_alltrls{8}(2,:); % IC NS DE - PS NDE Simult - when not empty
+% %     else
+% %         error('missing correct condition combination for this unit')
+% %     end
+% %     % We will now perform a two samples t-test
+% %         % Right-tailed hypothesis test.
+% %         %'right' — Test against the alternative hypothesis that the population 
+% %         % mean of x is greater than the population mean of y.
+% %     [h,p,ci,stats] = ttest2(monocTrls,dcosTrls,'tail','right');
+% %     % The result h is 1 if the test rejects the null hypothesis at the 5% 
+% %     % significance level, and 0 otherwise.
+% %     if isnan(h)
+% %         error('missing values')
+% %     end
     
 %     if p > .05
 %         ErrorCount = ErrorCount+1;
@@ -398,17 +397,18 @@ try
 %     end
 %     
     
-    effect = meanEffectSize(monocTrls,dcosTrls,Effect="cohen");
-    if effect{1,1} < .2
-        ErrorCount = ErrorCount+1;
-        ERR(ErrorCount).reason = 'unit does not show small effect or greater for dCOS';
-        ERR(ErrorCount).penetration = STIM.penetration;
-        ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
-        continue
-    end
+% %     effect = meanEffectSize(monocTrls,dcosTrls,Effect="cohen");
+% %     if effect{1,1} < .2
+% %         ErrorCount = ErrorCount+1;
+% %         ERR(ErrorCount).reason = 'unit does not show small effect or greater for dCOS';
+% %         ERR(ErrorCount).penetration = STIM.penetration;
+% %         ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
+% %         continue
+% %     end
+% % 
+% % catch
 
-catch
-end
+
 
 %% SAVE  IDX
 
@@ -416,7 +416,7 @@ end
 
         % SAVE UNIT INFO!
         clear holder
-        holder.effect = effect{1,1};
+% %         holder.effect = effect{1,1};
         holder.penetration = penetration;
         holder.header = penetration(1:8);
         holder.monkey = penetration(8);
@@ -482,8 +482,8 @@ end
 
 %% SAVE
 if flag_saveIDX
-    global FORMDATDIR
-    cd(FORMDATDIR)
+    global IDXDIR
+    cd(IDXDIR)
     saveName = strcat(anaName,'.mat');
     save(saveName,'IDX','ERR')
 else

@@ -1,9 +1,9 @@
 % FullTimeClassicBRFS - update to use Gramm
 clear
 close all
-PostSetup('BrockHome')
+PostSetup('BrockWork')
 flag_SaveFigs = false;
-anaName = 'IDX_iScienceSubmission';
+anaName = 'IDX_iScienceSubmission_EyeAndOriTuned';
 
 
 
