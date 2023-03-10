@@ -1,7 +1,7 @@
 % FullTimeClassicBRFS - update to use Gramm
 clear
 close all
-PostSetup('BrockWork')
+PostSetup('Neuropixel')
 flag_SaveFigs = false;
 anaName = 'IDX_iScienceSubmission_EyeAndOriTuned';
 
