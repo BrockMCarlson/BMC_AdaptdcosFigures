@@ -117,23 +117,23 @@ for e = 1:nel
 % %     continue
 % % end
 
-% % X.diann   = {'eye','tilt','contrast'};
-% if X.dianp(1) > 0.05
-%     ErrorCount = ErrorCount+1;
-%     ERR(ErrorCount).reason = 'unit not tuned to eye';
-%     ERR(ErrorCount).penetration = STIM.penetration;
-%     ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
-%     warning('Unit not tuned to eye')
-%     continue
-% end
-% if X.dianp(2) > 0.05
-%     ErrorCount = ErrorCount+1;
-%     ERR(ErrorCount).reason = 'unit not tuned to ori';
-%     ERR(ErrorCount).penetration = STIM.penetration;
-%     ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
-%     warning('Unit not tuned to ori')
-%     continue
-% end
+ % X.diann   = {'eye','tilt','contrast'};
+% % if X.dianp(1) > 0.05
+% %     ErrorCount = ErrorCount+1;
+% %     ERR(ErrorCount).reason = 'unit not tuned to eye';
+% %     ERR(ErrorCount).penetration = STIM.penetration;
+% %     ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
+% %     warning('Unit not tuned to eye')
+% %     continue
+% % end
+% % if X.dianp(2) > 0.05
+% %     ErrorCount = ErrorCount+1;
+% %     ERR(ErrorCount).reason = 'unit not tuned to ori';
+% %     ERR(ErrorCount).penetration = STIM.penetration;
+% %     ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
+% %     warning('Unit not tuned to ori')
+% %     continue
+% % end
 % We are not worried about being tuned to contrast - re: Blake Mitchell
 
 
@@ -389,12 +389,19 @@ try
         error('missing values')
     end
     
-    
+%     if p > .05
+%         ErrorCount = ErrorCount+1;
+%         ERR(ErrorCount).reason = 'unit not tuned to dCOS at alpha .05';
+%         ERR(ErrorCount).penetration = STIM.penetration;
+%         ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
+%         continue
+%     end
+%     
     
     effect = meanEffectSize(monocTrls,dcosTrls,Effect="cohen");
     if effect{1,1} < .2
         ErrorCount = ErrorCount+1;
-        ERR(ErrorCount).reason = 'unit does not have even a small effect for dCOS';
+        ERR(ErrorCount).reason = 'unit does not show small effect or greater for dCOS';
         ERR(ErrorCount).penetration = STIM.penetration;
         ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
         continue

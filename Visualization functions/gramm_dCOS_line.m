@@ -126,12 +126,13 @@ for bins = 1:size(x1ForStats,2)
     [p_dichop(bins),h_dichop(bins)] = signrank(x1ForStats(:,bins),y1ForStats(:,bins));
 end
 
-% Test plot
-monocOutput = nanmean(x1ForStats,1);
-dichoptOutput = nanmean(y1ForStats,1);
-figure
-plot(monocOutput); hold on
-plot(dichoptOutput)
+% % Test plot
+% monocOutput = nanmean(x1ForStats,1);
+% dichoptOutput = nanmean(y1ForStats,1);
+% figure
+% plot(monocOutput); hold on
+% plot(dichoptOutput)
+% plot(h_dichop)
 
 %% Gramm plots for vis repeated trajectories
 
@@ -147,13 +148,13 @@ g(1,1).stat_summary();
 g(1,1).set_title('Monoc vs dioptic');
 g(1,1).set_color_options('map','brewer2');
 g(1,1).set_order_options('x',0,'color',0);
-g(1,1).geom_polygon('x',{[.05 .145 .145 .05] ; [.155 .25 .25 .155]} ,'y',{[50 50 160 160];  [50 50 160 160]},'color',[.5 .5 .5]);
+g(1,1).geom_polygon('x',{[.05 .145 .145 .05] ; [.155 .25 .25 .155]} ,'y',{[0 0 5 5];  [0 0 5 5]},'color',[.5 .5 .5]);
 
 g(1,2).stat_summary();
 g(1,2).set_title('Monoc vs dichoptic');
 g(1,2).set_color_options('map','brewer2');
 g(1,2).set_order_options('x',0,'color',0);
-g(1,2).geom_polygon('x',{[.05 .145 .145 .05] ; [.155 .25 .25 .155]} ,'y',{[50 50 160 160];  [50 50 160 160]},'color',[.5 .5 .5]);
+g(1,2).geom_polygon('x',{[.05 .145 .145 .05] ; [.155 .25 .25 .155]} ,'y',{[0 0 5 5];  [0 0 5 5]},'color',[.5 .5 .5]);
 
 
 g.set_names('x','Time (sec)','y','% Change from baseline','color','Visual Stimulus');
