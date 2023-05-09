@@ -1,9 +1,4 @@
-function [IDX,ERR] = IDX_iScienceSubmission(anaName)
-
-%% load session data
-global STIMDIR
-cd(STIMDIR)
-
+function [IDX,ERR] = IDX_iScienceSubmission(anaName,STIMDIR)
 
 
 didir = strcat(STIMDIR,'\');
