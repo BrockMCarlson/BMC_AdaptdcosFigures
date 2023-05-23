@@ -1,12 +1,13 @@
-function [IDX,ERR] = IDX_iScienceSubmission(anaName,STIMDIR)
+function [IDX,ERR] = IDX_iScienceSubmission(ROOTDIR)
+% This function loads in event-triggered data, establishes unit
+% preferences, and then sorts condition types from the perspective of the
+% individual multi-unit's tuning. 
 
 
-didir = strcat(STIMDIR,'\');
 anaType = '_AUTO.mat';
 flag_saveIDX    = true;
 
-kls = 0;
-list    = dir([didir '*' anaType]);
+list    = dir([ROOTDIR '*' anaType]);
 
 sdfwin  = [-0.05  .9];
 
@@ -28,7 +29,7 @@ penetration = list(i).name(1:11);
 
 
 clear STIM nel difiles
-load([didir penetration '.mat'],'STIM')
+load([ROOTDIR penetration '.mat'],'STIM')
 for j = 1:length(STIM.paradigm)
     paradigm(i,j)= STIM.paradigm(j)';
 end
@@ -54,11 +55,11 @@ difiles = unique(STIM.filen(STIM.ditask));
 
 
 clear matobj matobj win_ms
-matobj = matfile([didir penetration anaType]);
+matobj = matfile([ROOTDIR penetration anaType]);
 if contains(anaType,'CSD') || contains(anaType,'AUTO')
     youAreGood = true;
 else
-    matobj= matfile([didir penetration anaType]);
+    matobj= matfile([ROOTDIR penetration anaType]);
 end
 
 win_ms = matobj.win_ms;
