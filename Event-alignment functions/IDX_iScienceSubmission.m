@@ -5,8 +5,6 @@ function [IDX,ERR] = IDX_iScienceSubmission(ROOTDIR)
 
 
 anaType = '_AUTO.mat';
-flag_saveIDX    = true;
-
 list    = dir([ROOTDIR '*' anaType]);
 
 sdfwin  = [-0.05  .9];
@@ -477,14 +475,10 @@ end
 %%
 
 %% SAVE
-if flag_saveIDX
-    global IDXDIR
-    cd(IDXDIR)
-    saveName = strcat(anaName,'.mat');
-    save(saveName,'IDX','ERR')
-else
-    warning('IDX not saved')
-end
+cd(ROOTDIR)
+saveName = strcat(anaName,'.mat');
+save(saveName,'IDX','ERR')
+
 
 
 
