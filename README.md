@@ -1,33 +1,44 @@
-# # BMC_AdaptdcosFigures
+# BMC_AdaptdcosFigures
 This is the GitHub repository for the following manuscript in preperation:
 
-V1 does not undergo dichoptic cross orientation suppression at the onset of binocular rivalry flash suppression						
+Does V1 response suppression initiate binocular rivalry?				
 Brock M. Carlson, Blake A. Mitchell1, Kacie Dougherty, Jacob A. Westerberg, Michele A. Cox, & Alexander Maier
+- Corresponding author: alex.maier@vanderbilt.edu
+- Repository manager: brock.m.carlson@vanderbilt.edu
 
-# ABSTRACT 
-The role of primate primary visual cortex (V1) for binocular rivalry is debated. Existing work has predominantly studied V1’s contribution to the perceptual alternations that occur after binocular rivalry stimuli are observed for several seconds. Here, we assess V1’s role for the onset of binocular rivalry that occurs immediately after stimuli are presented. Recent observations suggest that V1 initiates binocular rivalry by paving the way for selection of one eye’s view (Lee et al., 2007), while later stages of visual processing are required for this selection to be promoted to conscious perception. A leading hypothesis that could provide a mechanistic explanation for V1’s role in initiating binocular rivalry is based on dichoptic cross orientation suppression (dCOS) (Cox et al., 2019; Sengpiel, Blakemore, et al., 1995). dCOS describes the indiscriminate reduction of V1 visual responses that occurs when incompatible stimuli are simultaneously presented to the eyes. By reducing response magnitude, dCOS destabilizes cortical stimulus representations. It has been hypothesized that this destabilization of V1 representations paves the way for destabilized perception. Here we utilize binocular rivalry flash suppression (BRFS) to test this hypothesis. BRFS incorporates a period of monocular adaptation before presenting binocular incompatible (rivalrous) stimuli. BRFS results in onset of binocular rivalry as soon as the monocular adaptation period ends. We hypothesized that if initiation of binocular rivalry is dependent on dCOS, then BRFS should elicit dCOS at the onset of the incompatible stimuli. To test this prediction, we compared V1 spiking responses in two awake and behaving macaques as they passively observed BRFS. We found that BRFS resulted in facilitation rather than suppression of binocular responses. This finding suggests that dichoptic suppression in V1 does not serve as a general prerequisite for, nor as initiator of, binocular rivalry. We propose that in the particular case of BRFS the adaptation period, which reduced V1 activity, may adequality destabilize V1’s visual representation in place of dCOS. 
+## HIGHLIGHTS
+-	The role of primary visual cortex (V1) for binocular rivalry (BR) is unclear.
+-	V1 population spiking is reduced at the onset of BR, providing a potential trigger.
+-	However, this broad spiking suppression in does not occur for a variant of BR.
+-	The BR variant reduces subpopulation responses, a potential alternate trigger. 
+
+## SUMMARY 
+In binocular rivalry (BR) only one’s view is perceived. The neural underpinnings of BR are debated. Recent studies suggest that primary visual cortex (V1) initiates BR. One such trigger might be response-suppression across most V1 neurons at the onset of BR. Here we utilize a variant of BR called binocular rivalry flash suppression (BRFS) to test this hypothesis. BRFS is identical to binocular rivalry, except stimuli are shown with a ~1s delay. If V1 response suppression was required to initiate BR, it should occur during BRFS as well. To test this hypothesis, we compared V1 spiking in two macaques observing BRFS. We found that BRFS resulted in response-facilitation rather than response-suppression across V1 neurons. However, BRFS still reduces responses in a subset of V1 neurons due to the adaptive effects of asynchronous stimulus presentation. We argue that this selective response suppression could serve as an alternate initiator of BR. 
 
 # USING THIS REPOSITORY
-This repository is published under the GNU GPL v3.0 license.
-This repository is for the creation of figures in the current version of
-the manuscript. If you would like the pre-processed data required to run
-this code, please email Brock Carlson at brock.m.carlson@vanderbilt.edu
-
-## Setup
-The function PostSetup.m establishes your main directories as globals
-The script *Controller.m* is the only interface you should need to interact
-with. It runs the following processes:
-
-1. makeIDX. IDX_ is a (Nx1) structure variable where N in the number of
-individual units. The fields contain metadata about each unit as well as 
-event-locked data.
-
-2. plot continuous data with Gramm
-
-3. format data for input to JASP
- 
+This repository is written in MATLAB. The user interface is Controller_iScienceSubmission.mlx, which is a MATLAB Live Script. 
+The filtered and event-locked data have been published in an open-science directory on Zenodo.
+You can download the data at: https://zenodo.org/record/7949495
+### Carlson, Brock, M., Mitchell, Blake, A., Kacie Dougherty, Westerberg, Jacob, A., & Maier, Alexander. (2023). Does V1 response suppression initiate binocular rivalry? Iscience. https://doi.org/10.5281/zenodo.7951315
 
 ## Dependencies
-This script also requires the following toolboxes to run:
-- NPMK from Blackrock
-- Gramm
+This script is dependent on Gramm which can be found at https://github.com/piermorel/gramm
+
+## Controller
+The controlling interface for this repository is the MATLAB Live Script Controller_iScienceSubmission.mlx. 
+Please follow ininstruction in this notebook to recreate the figures for our manuscript in revision.
+This notebook performs the following tasks:
+1. Each muti-unit in the even-locked data has its tuning preferences evaluated (for ocularity and orientation).
+2. From the perspective of each unit's tuning preference for doiminant eye (DE) and preferred stimulus (PS), trial-wise data are sorted into relevant categorical events. The output of this stage is the index variable: IDX.
+3. Aggregate data are plotted using Gramm.
+4. .CSV outputs are formatted for JASP and saved to the rootdirectory.
+
+## Expected outputs to ROOTDIR:
+You will have to create a base directory called ROOTDIR to download the Zenodo data to. These other outputs will be generated and saved to this directory.
+- **carlsonEtAl_iScienceFigs_allTunedUnits.mat** is a MATLAB data file that contains the IDX and ERR variable. IDX contains all 91 tuned multi-units used in subsequent analyses. Note that a copy of this variable is availalbe in the Zenodo directory for any desired comparison.
+- Gramm generates all figures used in the manuscript and saves outputs to the ROOTDIR as .svgs and .pngs. The .svg files are used to create final figure outputs with Adobe Illustrator.
+- **JASP_transient.csv** and **JASP_sustained.csv** are outputs for repeated measures ANOVA analysis using JASP. JASP is a stastical package that can perform frequentist and bayesian based statistics. JASP Team (2023). JASP (Version 0.17.2)[Computer software].
+https://jasp-stats.org/
+
+----
+Thank you for your interest in our project! Please do not hesitate to reach out to brock.m.carlson@vanderbilt.edu with any questions or comments. 
