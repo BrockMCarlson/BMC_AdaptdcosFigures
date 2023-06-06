@@ -333,77 +333,13 @@ end
 
 %% Get avg results and cumsum
 SDF_avg     = cell(size(condition,1),1);
-SDF_cumsum 	= cell(size(condition,1),1);
 RESP_avg    = cell(size(condition,1),1);
 clear cond
 for cond = 1:size(conditionarray,1)
-    sdfholder = SDF_crop{cond};
     SDF_avg{cond} = mean(SDF_crop{cond},2);
-    SDF_cumsum{cond} = mean(cumsum(sdfholder),2); %get the cumulative sum for each trial, average over all trials, ouput is trial-averaged cumulative sum for each condition.
     RESP_avg{cond}= mean(RESP_alltrls{cond},2);
 end
         
-
-%% Remove units if not tuned for dCOS
-% First we check to see if the dichoptic condition was presented
-% % if isempty(RESP_alltrls{7}(2,:)) && isempty(RESP_alltrls{8}(2,:)) 
-% %     ErrorCount = ErrorCount+1;
-% %     ERR(ErrorCount).reason = 'no dichoptic condition presented';
-% %     ERR(ErrorCount).penetration = STIM.penetration;
-% %     ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
-% %     warning('no dichoptic condition presneted')
-% %     continue
-% % end
-% % try
-% % 
-% %     % we want to do a 1-tailed t-test between monocular sustained and dichoptic
-% %     % simultaneous sustained
-% %     % Condition Number: 
-% %     % 1 = Monocular PS DE 
-% %     % 7 = IC PS DE - NS NDE Simult
-% %     % we want to index in RESP_avg, 150-250 ms time window
-% %     if ~isempty(RESP_alltrls{7}(2,:)) &&  ~isempty(RESP_alltrls{1}(2,:)) 
-% %         monocTrls   = RESP_alltrls{1}(2,:);
-% %         dcosTrls    = RESP_alltrls{7}(2,:);
-% %     elseif ~isempty(RESP_alltrls{8}(2,:)) &&  ~isempty(RESP_alltrls{3}(2,:)) 
-% %         monocTrls   = RESP_alltrls{3}(2,:); %NS DE is second highest
-% %         dcosTrls    = RESP_alltrls{8}(2,:); % IC NS DE - PS NDE Simult - when not empty
-% %     else
-% %         error('missing correct condition combination for this unit')
-% %     end
-% %     % We will now perform a two samples t-test
-% %         % Right-tailed hypothesis test.
-% %         %'right' — Test against the alternative hypothesis that the population 
-% %         % mean of x is greater than the population mean of y.
-% %     [h,p,ci,stats] = ttest2(monocTrls,dcosTrls,'tail','right');
-% %     % The result h is 1 if the test rejects the null hypothesis at the 5% 
-% %     % significance level, and 0 otherwise.
-% %     if isnan(h)
-% %         error('missing values')
-% %     end
-    
-%     if p > .05
-%         ErrorCount = ErrorCount+1;
-%         ERR(ErrorCount).reason = 'unit not tuned to dCOS at alpha .05';
-%         ERR(ErrorCount).penetration = STIM.penetration;
-%         ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
-%         continue
-%     end
-%     
-    
-% %     effect = meanEffectSize(monocTrls,dcosTrls,Effect="cohen");
-% %     if effect{1,1} < .2
-% %         ErrorCount = ErrorCount+1;
-% %         ERR(ErrorCount).reason = 'unit does not show small effect or greater for dCOS';
-% %         ERR(ErrorCount).penetration = STIM.penetration;
-% %         ERR(ErrorCount).depthFromSinkBtm = STIM.depths(e,2);
-% %         continue
-% %     end
-% % 
-% % catch
-
-
-
 %% SAVE  IDX
 
 
@@ -437,7 +373,6 @@ end
         holder.TM           = TM;
         holder.SDF_crop     = SDF_crop;
         holder.SDF_avg      = SDF_avg;
-        holder.SDF_cumsum   = SDF_cumsum;  %get the cumulative sum for each trial, average over all trials, ouput is trial-averaged cumulative sum for each condition.
 
         % Time-win binned info;
         holder.win_ms           = win_ms;
@@ -476,8 +411,7 @@ end
 
 %% SAVE
 cd(ROOTDIR)
-saveName = strcat(anaName,'.mat');
-save(saveName,'IDX','ERR')
+save('IDX_iScienceSubmission.mat','IDX','ERR')
 
 
 
