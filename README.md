@@ -18,8 +18,8 @@ In binocular rivalry (BR) only one’s view is perceived. The neural underpinnin
 # USING THIS REPOSITORY
 This repository is written in MATLAB. The user interface is Controller_iScienceSubmission.mlx, which is a MATLAB Live Script. 
 The filtered and event-locked data have been published in an open-science directory on Zenodo.
-You can download the data at: https://zenodo.org/record/7949495
-### Carlson, Brock, M., Mitchell, Blake, A., Kacie Dougherty, Westerberg, Jacob, A., & Maier, Alexander. (2023). Does V1 response suppression initiate binocular rivalry? Iscience. https://doi.org/10.5281/zenodo.7951315
+You can download the data at: https://doi.org/10.5281/zenodo.7949494
+### Carlson, Brock, M., Mitchell, Blake, A., Kacie Dougherty, Westerberg, Jacob, A., & Maier, Alexander. (2023). Does V1 response suppression initiate binocular rivalry? Iscience. https://doi.org/10.5281/zenodo.7949494
 
 ## Dependencies
 This script is dependent on Gramm which can be found at https://github.com/piermorel/gramm
